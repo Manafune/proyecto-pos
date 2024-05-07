@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import supabase from '@/lib/supabase';
 import { Link } from '@tanstack/react-router';
-export const SignIn = () => {
+const SignIn = () => {
 	const { auth } = useAuth();
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -26,7 +26,7 @@ export const SignIn = () => {
 		}
 	};
 	return (
-		<Card className='w-full max-w-sm h-fit m-auto'>
+		<Card className='w-full absolute inset-1/2 [translate:-50%_-50%] max-w-md h-fit'>
 			<CardHeader>
 				<CardTitle className='text-2xl'>Login</CardTitle>
 				<CardDescription>Enter your email below to login to your account</CardDescription>
@@ -57,3 +57,4 @@ export const SignIn = () => {
 		</Card>
 	);
 };
+export default SignIn;

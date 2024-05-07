@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import supabase from '@/lib/supabase';
 
-export const SignOut = () => {
+const SignOut = () => {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
@@ -21,7 +21,7 @@ export const SignOut = () => {
 	};
 
 	return (
-		<Card className='w-full max-w-sm h-fit m-auto'>
+		<Card className='w-full absolute inset-1/2 [translate:-50%_-50%] max-w-md h-fit'>
 			<CardHeader>
 				<CardTitle className='text-xl'>Sign Up</CardTitle>
 				<CardDescription>Enter your information to create an account</CardDescription>
@@ -54,3 +54,4 @@ export const SignOut = () => {
 		</Card>
 	);
 };
+export default SignOut;

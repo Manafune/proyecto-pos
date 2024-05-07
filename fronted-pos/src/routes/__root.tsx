@@ -3,9 +3,11 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 
 const RootComponent = () => {
 	return (
-		<div className='smin-h-screen w-full grid flex-col bg-muted/40 grid-rows-[100svh_0]'>
+		<div className='min-h-screen w-full  relative flex-col bg-muted/40 '>
 			<Outlet />
-			<TanStackRouterDevtools position='bottom-right' />
+			<div className='fixed '>
+				<TanStackRouterDevtools position='bottom-right' />
+			</div>
 		</div>
 	);
 };
