@@ -4,16 +4,25 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import supabase from '@/lib/supabase';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
+import { toast } from 'sonner';
 const SignIn = () => {
 	const { auth } = useAuth();
+	const navigate = useNavigate();
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const { email, password } = Object.fromEntries(formData.entries());
 		try {
 			if (auth !== null) {
-				alert('si');
+				toast('Usuario ya registrado', {
+					action: {
+						label: 'Regresa a Home',
+						onClick: () => {
+							navigate({ to: '/' });
+						},
+					},
+				});
 			} else {
 				await supabase.auth.signInWithPassword({
 					email: email.toString(),
