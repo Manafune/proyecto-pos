@@ -3,10 +3,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import supabase from '@/lib/supabase';
-import { SignOutSchema, type SignOutSchemaValidator } from '@/lib/validation';
+import { SignOutSchema, type SignOutSchemaValidator } from '@/lib/validation/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+
 const SignOut = () => {
+	const navigate = useNavigate();
+
 	const {
 		handleSubmit,
 		register,
@@ -17,21 +22,30 @@ const SignOut = () => {
 
 	const onSubmit = handleSubmit(async (data) => {
 		try {
-			await supabase.auth.signUp({
+			const { data: supaData, error } = await supabase.auth.signUp({
 				email: data.email,
 				password: data.password,
 				options: {
 					data: {
 						name: data.name,
-						dni: data.dni,
 					},
+					emailRedirectTo: `${window.location.origin}/sign-in`,
 				},
 			});
-			window.location.href = '/sign-in';
+			if (supaData.user && supaData.user.identities && supaData.user.identities.length === 0)
+				return toast.error('AuthApiError', { duration: 2000, description: 'User already exists' });
+
+			if (error) return toast.error(error.name, { duration: 2000, description: error.message });
+			return navigate({
+				search: {
+					confirm: `Verifica tu Email ${data.email} para continuar con el proceso`,
+				},
+			});
 		} catch (error) {
 			console.log(error);
 		}
 	});
+
 	return (
 		<Card className='w-full absolute inset-1/2 [translate:-50%_-50%] max-w-md h-fit'>
 			<CardHeader>
@@ -64,6 +78,12 @@ const SignOut = () => {
 						Create an account
 					</Button>
 				</form>
+				<div className='mt-4 text-center text-sm'>
+					Do you already have an account?
+					<Link to='/sign-in' className='underline'>
+						Sign In
+					</Link>
+				</div>
 			</CardContent>
 		</Card>
 	);

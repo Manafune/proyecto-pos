@@ -4,18 +4,25 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import supabase from '@/lib/supabase';
+import { BaseSchema, SignInSchemaValidator } from '@/lib/validation/validation';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from '@tanstack/react-router';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 const SignIn = () => {
 	const { auth } = useAuth();
+	const {
+		handleSubmit,
+		register,
+		formState: { errors },
+	} = useForm<SignInSchemaValidator>({
+		resolver: zodResolver(BaseSchema),
+	});
 	const navigate = useNavigate();
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const formData = new FormData(e.currentTarget);
-		const { email, password } = Object.fromEntries(formData.entries());
+	const onSubmit = handleSubmit(async (data) => {
 		try {
 			if (auth !== null) {
-				toast('Usuario ya registrado', {
+				return toast('Usuario ya registrado', {
 					action: {
 						label: 'Regresa a Home',
 						onClick: () => {
@@ -23,17 +30,18 @@ const SignIn = () => {
 						},
 					},
 				});
-			} else {
-				await supabase.auth.signInWithPassword({
-					email: email.toString(),
-					password: password.toString(),
-				});
-				window.location.href = '/';
 			}
+			const { data: supaData, error } = await supabase.auth.signInWithPassword({
+				email: data.email,
+				password: data.password,
+			});
+			if (error) return toast.error(error.name, { duration: 2000, description: error.message });
+
+			window.location.href = '/';
 		} catch (error) {
 			console.log(error);
 		}
-	};
+	});
 	return (
 		<Card className='w-full absolute inset-1/2 [translate:-50%_-50%] max-w-md h-fit'>
 			<CardHeader>
@@ -41,24 +49,25 @@ const SignIn = () => {
 				<CardDescription>Enter your email below to login to your account</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<form className='grid gap-4' onSubmit={handleSubmit}>
+				<form className='grid gap-4' onSubmit={onSubmit}>
 					<div className='grid gap-2'>
 						<Label htmlFor='email'>Email</Label>
-						<Input id='email' name='email' type='email' placeholder='m@example.com' required autoComplete='username' />
+						<Input id='email' type='email' placeholder='m@example.com' autoComplete='username' {...register('email')} />
 					</div>
 					<div className='grid gap-2'>
 						<div className='flex items-center'>
 							<Label htmlFor='password'>Password</Label>
 						</div>
-						<Input id='password' name='password' type='password' required autoComplete='current-password' />
+						<Input id='password' type='password' autoComplete='current-password' {...register('password')} />
+						{errors.password !== undefined && <span className='text-sm text-red-600'>{errors.password?.message}</span>}
 					</div>
 					<Button type='submit' className='w-full'>
 						Login
 					</Button>
 				</form>
 				<div className='mt-4 text-center text-sm'>
-					Don&apos;t have an account?{' '}
-					<Link to='/sign-out' className='underline'>
+					Don&apos;t have an account?
+					<Link to='/sign-up' className='underline'>
 						Sign up
 					</Link>
 				</div>

@@ -104,7 +104,9 @@ const MobileNav = () => {
 					<DropdownMenuContent align='end'>
 						<DropdownMenuLabel>My Account</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>Settings</DropdownMenuItem>
+						<DropdownMenuItem>
+							<Link to='/settings'>Settingss</Link>
+						</DropdownMenuItem>
 						<DropdownMenuItem>Support</DropdownMenuItem>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem>Logout</DropdownMenuItem>

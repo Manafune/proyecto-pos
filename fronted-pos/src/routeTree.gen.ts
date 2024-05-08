@@ -19,10 +19,13 @@ import { Route as AuthImport } from './routes/_auth'
 // Create Virtual Routes
 
 const AuthenticatedIndexLazyImport = createFileRoute('/_authenticated/')()
+const AuthenticatedSettingsLazyImport = createFileRoute(
+  '/_authenticated/settings',
+)()
 const AuthenticatedProductsLazyImport = createFileRoute(
   '/_authenticated/products',
 )()
-const AuthSignOutLazyImport = createFileRoute('/_auth/sign-out')()
+const AuthSignUpLazyImport = createFileRoute('/_auth/sign-up')()
 const AuthSignInLazyImport = createFileRoute('/_auth/sign-in')()
 
 // Create/Update Routes
@@ -44,6 +47,13 @@ const AuthenticatedIndexLazyRoute = AuthenticatedIndexLazyImport.update({
   import('./routes/_authenticated/index.lazy').then((d) => d.Route),
 )
 
+const AuthenticatedSettingsLazyRoute = AuthenticatedSettingsLazyImport.update({
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRoute,
+} as any).lazy(() =>
+  import('./routes/_authenticated/settings.lazy').then((d) => d.Route),
+)
+
 const AuthenticatedProductsLazyRoute = AuthenticatedProductsLazyImport.update({
   path: '/products',
   getParentRoute: () => AuthenticatedRoute,
@@ -51,12 +61,10 @@ const AuthenticatedProductsLazyRoute = AuthenticatedProductsLazyImport.update({
   import('./routes/_authenticated/products.lazy').then((d) => d.Route),
 )
 
-const AuthSignOutLazyRoute = AuthSignOutLazyImport.update({
-  path: '/sign-out',
+const AuthSignUpLazyRoute = AuthSignUpLazyImport.update({
+  path: '/sign-up',
   getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import('./routes/_auth/sign-out.lazy').then((d) => d.Route),
-)
+} as any).lazy(() => import('./routes/_auth/sign-up.lazy').then((d) => d.Route))
 
 const AuthSignInLazyRoute = AuthSignInLazyImport.update({
   path: '/sign-in',
@@ -79,12 +87,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInLazyImport
       parentRoute: typeof AuthImport
     }
-    '/_auth/sign-out': {
-      preLoaderRoute: typeof AuthSignOutLazyImport
+    '/_auth/sign-up': {
+      preLoaderRoute: typeof AuthSignUpLazyImport
       parentRoute: typeof AuthImport
     }
     '/_authenticated/products': {
       preLoaderRoute: typeof AuthenticatedProductsLazyImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/settings': {
+      preLoaderRoute: typeof AuthenticatedSettingsLazyImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/': {
@@ -97,9 +109,10 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
-  AuthRoute.addChildren([AuthSignInLazyRoute, AuthSignOutLazyRoute]),
+  AuthRoute.addChildren([AuthSignInLazyRoute, AuthSignUpLazyRoute]),
   AuthenticatedRoute.addChildren([
     AuthenticatedProductsLazyRoute,
+    AuthenticatedSettingsLazyRoute,
     AuthenticatedIndexLazyRoute,
   ]),
 ])
