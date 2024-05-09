@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TableProduct } from '../Table/TableProduct';
 import { useState } from 'react';
 import { AddProduct } from '@/components/Products/AddProduct';
+import { getAllProducts } from '@/lib/products/reactProducts';
 
 export const Product = () => {
     const [isAddProduct, setIsAddProduct] = useState(false);
@@ -19,8 +20,8 @@ export const Product = () => {
     <Tabs defaultValue='all'>
     <div className='flex items-center'>
             <TabsList>
-                <TabsTrigger value='all'>All</TabsTrigger>
-                <TabsTrigger value='active'>Active</TabsTrigger>
+                <TabsTrigger value='all'>Todo</TabsTrigger>
+                <TabsTrigger value='active'>Activo</TabsTrigger>
                 <TabsTrigger value='draft'>Inactivo</TabsTrigger>
             </TabsList>
             <div className='ml-auto flex items-center gap-2'>
@@ -32,9 +33,9 @@ export const Product = () => {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align='end'>
-                        <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                        <DropdownMenuLabel>Filtrar por</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuCheckboxItem checked>Active</DropdownMenuCheckboxItem>
+                        <DropdownMenuCheckboxItem checked>Activo</DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem>Inactivo</DropdownMenuCheckboxItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -42,9 +43,9 @@ export const Product = () => {
                     <File className='h-3.5 w-3.5' />
                     <span className='sr-only sm:not-sr-only sm:whitespace-nowrap'>Export</span>
                 </Button>
-                <Button size='sm' className='h-8 gap-1' onClick={() => (setIsAddProduct(true))}>
+                <Button size='sm' className='h-8 gap-1' onClick={() => {const products = getAllProducts(); console.log(products); setIsAddProduct(true)}}>
                     <PlusCircle className='h-3.5 w-3.5' />
-                    <span className='sr-only sm:not-sr-only sm:whitespace-nowrap'>Add Product</span>
+                    <span className='sr-only sm:not-sr-only sm:whitespace-nowrap'>Producto</span>
                 </Button>
             </div>
         </div>

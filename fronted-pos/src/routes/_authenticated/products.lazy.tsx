@@ -6,9 +6,10 @@ export const invoices = [
 	{
 		id: '1',
 		name: 'Bag of rice',
-		description: 'Bag of long grain white rice',
-		price: 's/.165',
+		package: 'Bag',
+		price: 'S/.165',
 		stock: '200 bags',
+		status: 'ACTIVE',
 	},
 ];
 export const Route = createLazyFileRoute('/_authenticated/products')({
