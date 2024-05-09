@@ -28,6 +28,8 @@ const SignOut = () => {
 				options: {
 					data: {
 						name: data.name,
+						lastName: data.lastname,
+						role: 'MEMBER',
 					},
 					emailRedirectTo: `${window.location.origin}/sign-in`,
 				},
@@ -55,18 +57,18 @@ const SignOut = () => {
 			<CardContent>
 				<form className='grid gap-4' onSubmit={onSubmit}>
 					<div className='grid gap-2'>
-						<Label htmlFor='name'> Name</Label>
-						<Input id='name' placeholder='Max' {...register('name')} />
+						<Label htmlFor='name'>Name</Label>
+						<Input id='name' placeholder='Name' type='text' autoComplete='username' {...register('name')} />
 						{errors.name !== undefined && <span className='text-sm text-red-600'>{errors.name.message}</span>}
 					</div>
 					<div className='grid gap-2'>
-						<Label htmlFor='dni'>DNI</Label>
-						<Input id='dni' placeholder='********' {...register('dni')} />
-						{errors.dni !== undefined && <span className='text-sm text-red-600'>{errors.dni.message}</span>}
+						<Label htmlFor='lastName'>LastName</Label>
+						<Input id='lastName' placeholder='LastName' {...register('lastname')} />
+						{errors.lastname !== undefined && <span className='text-sm text-red-600'>{errors.lastname.message}</span>}
 					</div>
 					<div className='grid gap-2'>
 						<Label htmlFor='email'>Email</Label>
-						<Input id='email' type='email' placeholder='m@example.com' autoComplete='username' {...register('email')} />
+						<Input id='email' type='email' placeholder='m@example.com' autoComplete='email' {...register('email')} />
 						{errors.email !== undefined && <span className='text-sm text-red-600'>{errors.email.message}</span>}
 					</div>
 					<div className='grid gap-2'>

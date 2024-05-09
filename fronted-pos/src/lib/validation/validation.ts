@@ -5,10 +5,18 @@ export const BaseSchema = z.object({
 });
 export const SignOutSchema = BaseSchema.extend({
 	name: z.string().min(5, { message: 'El nombre debe tener al menos 5 caracteres' }),
-	dni: z.string().length(8, { message: 'El DNI debe tener 8 caracteres' }),
+	lastname: z.string().min(5, { message: 'El apellido debe tener al menos 5 caracteres' }),
 });
 export const ProfileSchema = SignOutSchema.extend({
-	status: z.enum(['ACTIVE', 'INACTIVE']),
+	status: z.enum(['ACTIVE', 'INACTIVE'], {
+		errorMap: () => ({
+			message: 'selecciona un valor valido',
+		}),
+	}),
+	confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+	message: 'Las contreseñas debe coincidir.',
+	path: ['confirmPassword'],
 });
 export type SignInSchemaValidator = z.infer<typeof BaseSchema>;
 export type ProfilechemaValidator = z.infer<typeof ProfileSchema>;

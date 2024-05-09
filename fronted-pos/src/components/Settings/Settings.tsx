@@ -8,17 +8,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 export const Settings = () => {
 	const { auth } = useAuth();
-	// console.log(auth?.user.user_metadata);
 	const form = useForm<ProfilechemaValidator>({
 		resolver: zodResolver(ProfileSchema),
 		defaultValues: {
 			name: auth?.user.user_metadata.name ?? '',
-			email: auth?.user.user_metadata.email ?? '',
+			confirmPassword: '',
+			password: '',
+			status: 'ACTIVE',
+			lastname: auth?.user.user_metadata.lastName ?? '',
 		},
 		mode: 'onChange',
 	});
-
-	const onSubmit = () => {};
+	const onSubmit = (profile: ProfilechemaValidator) => {
+		console.log(profile);
+	};
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
@@ -29,9 +32,23 @@ export const Settings = () => {
 						<FormItem>
 							<FormLabel>Name</FormLabel>
 							<FormControl>
-								<Input placeholder='shadcn' {...field} />
+								<Input autoComplete='off' placeholder='shadcn' {...field} />
 							</FormControl>
 							<FormDescription>Este es tu nombre publico. Puede ser real o un pseudonimo.</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='lastname'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>LastName</FormLabel>
+							<FormControl>
+								<Input autoComplete='username' placeholder='shadcn' {...field} />
+							</FormControl>
+							<FormDescription>Modifica tu apellido.</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
@@ -58,20 +75,7 @@ export const Settings = () => {
 						</FormItem>
 					)}
 				/>
-				<FormField
-					control={form.control}
-					name='email'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Email</FormLabel>
-							<FormControl>
-								<Input placeholder='usuario.com' {...field} />
-							</FormControl>
-							<FormDescription>Modifica tu email a otro disponible.</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+
 				<FormField
 					control={form.control}
 					name='password'
@@ -79,14 +83,26 @@ export const Settings = () => {
 						<FormItem>
 							<FormLabel>Contraseña</FormLabel>
 							<FormControl>
-								<Input placeholder='usuario.com' type='password' {...field} />
+								<Input placeholder='******' type='password' autoComplete='new-password' {...field} />
 							</FormControl>
 							<FormDescription>Modifica tu contraseña.</FormDescription>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
-
+				<FormField
+					control={form.control}
+					name='confirmPassword'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Confirma Contraseña</FormLabel>
+							<FormControl>
+								<Input placeholder='******' type='password' autoComplete='new-password' {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 				<Button type='submit'>Modificar Perfil</Button>
 			</form>
 		</Form>
