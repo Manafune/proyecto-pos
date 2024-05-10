@@ -12,6 +12,8 @@
 	"dependencies": {
 		"@hookform/resolvers": "^3.3.4",
 		"@radix-ui/react-select": "^2.0.0",
+		"@radix-ui/react-toggle": "^1.0.3",
+		"@radix-ui/react-toggle-group": "^1.0.4",
 		"@supabase/supabase-js": "^2.43.1",
 		"@tanstack/react-router": "^1.31.6",
 		"@tanstack/router-devtools": "^1.31.6",

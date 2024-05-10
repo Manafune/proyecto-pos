@@ -11,13 +11,14 @@ export const updateUserProfile = async ({ confirmPassword, lastname, name, statu
 		},
 	});
 	if (error !== null) return { message: error.message, code: error.code, name: error.name };
-	const { error: errorMember } = await supabase.rpc('update_member_and_role', {
+	const { data, error: errorMember } = await supabase.rpc('update_member_and_role', {
 		member_id: id,
 		member_lastname: lastname,
 		member_name: name,
 		member_role_app: 'MEMBER',
 		member_status: status,
 	});
+	console.log(data);
 
 	if (errorMember !== null) return { message: errorMember.message, code: errorMember.code, name: errorMember.hint };
 

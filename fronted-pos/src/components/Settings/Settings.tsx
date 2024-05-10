@@ -29,7 +29,7 @@ export const Settings = () => {
 			name: profile.name,
 			status: profile.status,
 		});
-
+		form.setValue('name', 'rata');
 		if (typeof data !== 'boolean') return toast.error(data.name, { duration: 2000, description: data.message });
 	};
 	return (
@@ -42,7 +42,7 @@ export const Settings = () => {
 						<FormItem>
 							<FormLabel>Nombres</FormLabel>
 							<FormControl>
-								<Input autoComplete='off' placeholder='shadcn' {...field} />
+								<Input autoComplete='off' placeholder='Nombres' {...field} />
 							</FormControl>
 							<FormDescription>Este es tu nombre publico. Puede ser real o un pseudonimo.</FormDescription>
 							<FormMessage />
@@ -56,7 +56,7 @@ export const Settings = () => {
 						<FormItem>
 							<FormLabel>Apellidos</FormLabel>
 							<FormControl>
-								<Input autoComplete='username' placeholder='shadcn' {...field} />
+								<Input autoComplete='username' placeholder='Apellidos' {...field} />
 							</FormControl>
 							<FormDescription>Modifica tu apellido.</FormDescription>
 							<FormMessage />

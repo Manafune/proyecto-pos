@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as AuthImport } from './routes/_auth'
+import { Route as AuthenticatedProductsAddImport } from './routes/_authenticated/products-add'
 
 // Create Virtual Routes
 
@@ -71,6 +72,11 @@ const AuthSignInLazyRoute = AuthSignInLazyImport.update({
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/sign-in.lazy').then((d) => d.Route))
 
+const AuthenticatedProductsAddRoute = AuthenticatedProductsAddImport.update({
+  path: '/products-add',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -82,6 +88,10 @@ declare module '@tanstack/react-router' {
     '/_authenticated': {
       preLoaderRoute: typeof AuthenticatedImport
       parentRoute: typeof rootRoute
+    }
+    '/_authenticated/products-add': {
+      preLoaderRoute: typeof AuthenticatedProductsAddImport
+      parentRoute: typeof AuthenticatedImport
     }
     '/_auth/sign-in': {
       preLoaderRoute: typeof AuthSignInLazyImport
@@ -111,6 +121,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   AuthRoute.addChildren([AuthSignInLazyRoute, AuthSignUpLazyRoute]),
   AuthenticatedRoute.addChildren([
+    AuthenticatedProductsAddRoute,
     AuthenticatedProductsLazyRoute,
     AuthenticatedSettingsLazyRoute,
     AuthenticatedIndexLazyRoute,

@@ -1,4 +1,4 @@
-import { Product1 } from '@/components/Products/Product1';
+import { Product } from '@/components/Products/Product';
 import { createLazyFileRoute } from '@tanstack/react-router';
 
 export const invoices = [
@@ -12,5 +12,5 @@ export const invoices = [
 	},
 ];
 export const Route = createLazyFileRoute('/_authenticated/products')({
-	component: () => <Product1></Product1>,
+	component: () => <Product></Product>,
 });
