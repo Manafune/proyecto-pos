@@ -29,7 +29,6 @@ const SignOut = () => {
 					data: {
 						name: data.name,
 						lastName: data.lastname,
-						role: 'MEMBER',
 					},
 					emailRedirectTo: `${window.location.origin}/sign-in`,
 				},
@@ -58,7 +57,7 @@ const SignOut = () => {
 				<form className='grid gap-4' onSubmit={onSubmit}>
 					<div className='grid gap-2'>
 						<Label htmlFor='name'>Name</Label>
-						<Input id='name' placeholder='Name' type='text' autoComplete='username' {...register('name')} />
+						<Input id='name' placeholder='Name' type='text' autoComplete='name' {...register('name')} />
 						{errors.name !== undefined && <span className='text-sm text-red-600'>{errors.name.message}</span>}
 					</div>
 					<div className='grid gap-2'>

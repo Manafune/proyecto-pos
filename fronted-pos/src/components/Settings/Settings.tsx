@@ -3,9 +3,11 @@ import { Form, FormControl, FormDescription, FormField, FormLabel, FormMessage, 
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
+import { updateUserProfile } from '@/lib/user/updateUser';
 import { ProfileSchema, ProfilechemaValidator } from '@/lib/validation/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 export const Settings = () => {
 	const { auth } = useAuth();
 	const form = useForm<ProfilechemaValidator>({
@@ -19,8 +21,16 @@ export const Settings = () => {
 		},
 		mode: 'onChange',
 	});
-	const onSubmit = (profile: ProfilechemaValidator) => {
-		console.log(profile);
+	const onSubmit = async (profile: ProfilechemaValidator) => {
+		const data = await updateUserProfile({
+			confirmPassword: profile.confirmPassword,
+			id: auth?.user?.id ?? '',
+			lastname: profile.lastname,
+			name: profile.name,
+			status: profile.status,
+		});
+
+		if (typeof data !== 'boolean') return toast.error(data.name, { duration: 2000, description: data.message });
 	};
 	return (
 		<Form {...form}>

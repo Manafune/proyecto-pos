@@ -7,17 +7,19 @@ export const SignOutSchema = BaseSchema.extend({
 	name: z.string().min(5, { message: 'El nombre debe tener al menos 5 caracteres' }),
 	lastname: z.string().min(5, { message: 'El apellido debe tener al menos 5 caracteres' }),
 });
-export const ProfileSchema = SignOutSchema.extend({
-	status: z.enum(['ACTIVE', 'INACTIVE'], {
-		errorMap: () => ({
-			message: 'selecciona un valor valido',
+export const ProfileSchema = SignOutSchema.omit({ email: true })
+	.extend({
+		status: z.enum(['ACTIVE', 'INACTIVE'], {
+			errorMap: () => ({
+				message: 'selecciona un valor valido',
+			}),
 		}),
-	}),
-	confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-	message: 'Las contreseñas debe coincidir.',
-	path: ['confirmPassword'],
-});
+		confirmPassword: z.string(),
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		message: 'Las contreseñas debe coincidir.',
+		path: ['confirmPassword'],
+	});
 export type SignInSchemaValidator = z.infer<typeof BaseSchema>;
 export type ProfilechemaValidator = z.infer<typeof ProfileSchema>;
 export type SignOutSchemaValidator = z.infer<typeof SignOutSchema>;
