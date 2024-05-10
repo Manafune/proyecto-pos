@@ -40,7 +40,7 @@ export const Settings = () => {
 					name='name'
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Name</FormLabel>
+							<FormLabel>Nombres</FormLabel>
 							<FormControl>
 								<Input autoComplete='off' placeholder='shadcn' {...field} />
 							</FormControl>
@@ -54,7 +54,7 @@ export const Settings = () => {
 					name='lastname'
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>LastName</FormLabel>
+							<FormLabel>Apellidos</FormLabel>
 							<FormControl>
 								<Input autoComplete='username' placeholder='shadcn' {...field} />
 							</FormControl>
