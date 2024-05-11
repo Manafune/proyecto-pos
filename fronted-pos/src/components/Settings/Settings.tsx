@@ -34,7 +34,7 @@ export const Settings = () => {
 			return toast.error(error.name, { duration: 2000, description: error.message });
 		}
 		if (response.data !== undefined) {
-			return toast.success('Cambios establecidos', { duration: 1800, description: 'los cambios fueron modificados' });
+			return toast.success('Cambios establecidos', { duration: 1800, description: 'los datos fueron modificados' });
 		}
 	};
 	return (

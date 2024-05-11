@@ -1,6 +1,6 @@
 import supabase from '@/lib/supabase';
 import { type ProfilechemaValidator } from '../validation/validation';
-import { MemberData } from '@/types/products';
+import { MemberData } from '@/types/members';
 type UserType = Omit<ProfilechemaValidator, 'password'> & { id: string };
 
 interface ApiResponse {

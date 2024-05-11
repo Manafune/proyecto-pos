@@ -1,11 +1,11 @@
 import { z } from 'zod';
 export const BaseSchema = z.object({
-	email: z.string().min(1, { message: 'Este campo no debe estar vacio.' }).email('No es un email valido.'),
-	password: z.string().min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
+	email: z.string().trim().min(1, { message: 'Este campo no debe estar vacio.' }).email('No es un email valido.'),
+	password: z.string().trim().min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
 });
 export const SignOutSchema = BaseSchema.extend({
-	name: z.string().min(5, { message: 'El nombre debe tener al menos 5 caracteres' }),
-	lastname: z.string().min(5, { message: 'El apellido debe tener al menos 5 caracteres' }),
+	name: z.string().trim().min(5, { message: 'El nombre debe tener al menos 5 caracteres' }),
+	lastname: z.string().trim().min(5, { message: 'El apellido debe tener al menos 5 caracteres' }),
 });
 export const ProfileSchema = SignOutSchema.omit({ email: true })
 	.extend({
