@@ -5,16 +5,13 @@ import { Label } from '@/components/ui/label';
 import { PlusCircle } from 'lucide-react';
 import { StockProductTable } from './Stock/StockProductTable';
 import { useState } from 'react';
-import { type Product } from '@/types/products';
+import { Container, type Product } from '@/types/products';
 import { StockStepsProducts } from './Stock/StockStepsProducts';
-import { z } from 'zod';
+import { ProductSchema } from '@/lib/validation/addProduct';
 import { MemberStatus } from '@/types/members';
-const ProductSchema = z.object({
-	name: z
-		.string()
-		.min(4, { message: 'El nombre del producto debe tener al menos 4 caracteres' })
-		.max(100, { message: 'El nombre del prod' }),
-});
+import { addProducts } from '@/lib/products/addProducts';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 export const ProductsAdd = () => {
 	const [productAdd, setProductAdd] = useState<{ productName: string; error: string } | null>(null);
@@ -26,8 +23,22 @@ export const ProductsAdd = () => {
 			const dataError = validate.error.errors[0];
 			return setProductAdd({ error: dataError.message, productName: dataNameProduct });
 		}
-		if (validate.success) {
-			return setProductAdd({ error: '', productName: dataNameProduct });
+		if (validate.success) return setProductAdd({ error: '', productName: dataNameProduct });
+	};
+	console.log(products);
+	const handleSendData = async () => {
+		if (products.length <= 0) return;
+		const response = await addProducts({ products });
+		if (response.errors !== undefined) {
+			const error = response.errors[0];
+			return toast.error(error.name, { duration: 3000, description: error.message });
+		}
+		if (response.data !== undefined) {
+			setProducts([]);
+			return toast.success('se añadio el producto', {
+				duration: 1800,
+				description: 'productos añadidos exitosamente',
+			});
 		}
 	};
 	return (
@@ -46,31 +57,37 @@ export const ProductsAdd = () => {
 										id='name'
 										type='text'
 										className='w-full'
+										autoComplete='off'
 										placeholder='Ejemplo: Leche'
 										value={productAdd?.productName ?? ''}
 										onChange={handleChangeInput}
 									/>
 									<Button
-										className='absolute inset-[auto_0.25em_auto_auto] h-5/6 z-30'
+										className={cn('absolute inset-[auto_0.25em_auto_auto] h-5/6 z-30', {
+											'bg-red-500': products.length >= 10,
+										})}
 										onClick={() => {
+											if (products.length >= 10) return;
 											if (productAdd !== null && productAdd.error === '') {
 												setProductAdd(null);
 												setProducts((products) => [
 													...products,
 													{
-														name: productAdd.productName,
-														price: 0,
+														name: productAdd.productName.trim().toUpperCase(),
+														price: 0.01,
 														status: MemberStatus.ACTIVE,
-														stock: 0,
-														container: 'Caja',
+														stock: 1,
+														container: Container.CAJA,
+														id: crypto.randomUUID(),
 													},
 												]);
 											}
 										}}
 									>
-										Añadir
+										{products.length >= 10 ? 'No Se Puede Añadir Mas Productos' : 'Añadir'}
 									</Button>
 								</div>
+								{productAdd?.error && <span className='text-red-500 text-xs'>{productAdd.error}</span>}
 							</div>
 						</CardContent>
 					</Card>
@@ -79,10 +96,10 @@ export const ProductsAdd = () => {
 							<CardTitle>Stock</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<StockProductTable products={products} />
+							<StockProductTable products={products} onChangeProducts={setProducts} />
 						</CardContent>
 						<CardFooter className='justify-center border-t p-4'>
-							<Button size='sm' variant='ghost' className='gap-1'>
+							<Button size='sm' variant='ghost' className='gap-1' onClick={handleSendData}>
 								<PlusCircle className='h-3.5 w-3.5' />
 								Guardar
 							</Button>
@@ -90,12 +107,6 @@ export const ProductsAdd = () => {
 					</Card>
 				</div>
 				<StockStepsProducts />
-			</div>
-			<div className='flex items-center justify-center gap-2 md:hidden'>
-				<Button variant='outline' size='sm'>
-					Discard
-				</Button>
-				<Button size='sm'>Save Product</Button>
 			</div>
 		</div>
 	);

@@ -1,4 +1,4 @@
-import supabase from '../supabase';
+import supabase from '@/lib/supabase';
 export interface Products {
 	id: number;
 	name: string;
@@ -14,6 +14,6 @@ export const getAllProducts = async () => {
 };
 export const getAllProductsByState = async ({ state }: { state: 'ACTIVE' | 'INACTIVE' }) => {
 	const { data: productsByState } = await supabase.from('product').select('*').eq('status', state);
-	console.log(productsByState);
+
 	return productsByState as unknown as Products[];
 };
