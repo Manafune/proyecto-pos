@@ -9,6 +9,14 @@ export const Route = createFileRoute('/_authenticated')({
 			throw redirect({
 				to: '/sign-in',
 			});
+		} else {
+			const { user } = data.session;
+			const status = user.user_metadata.status ?? 'ACTIVE';
+			if (status === 'INACTIVE') {
+				throw redirect({
+					to: '/sign-up',
+				});
+			}
 		}
 	},
 

@@ -42,7 +42,7 @@ export const Product = () => {
 					</Button>
 					<Link
 						className='h-8 gap-1 text-sm bg-black text-white flex flex-row items-center p-[0.5em] rounded-[0.5em]'
-						to='/products-add'
+						to='/products/add'
 					>
 						<PlusCircle className='h-3.5 w-3.5' />
 						<span className='sr-only leading-none sm:not-sr-only sm:whitespace-nowrap'>Producto</span>

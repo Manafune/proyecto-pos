@@ -1,17 +1,8 @@
-import { Products, getAllProducts } from '@/lib/products/getProduct';
-import { useState, useEffect } from 'react';
 import { TableContent } from '@/components/common/TableContent';
-
+import { getRouteApi } from '@tanstack/react-router';
+const routeApi = getRouteApi('/_authenticated/products');
 export const TableProduct = () => {
-	const [products, setProducts] = useState<Products[]>([]);
-
-	useEffect(() => {
-		const getTotalProducts = async () => {
-			const data = await getAllProducts();
-			if (data !== null) setProducts(data);
-		};
-		getTotalProducts();
-	}, []);
+	const products = routeApi.useLoaderData();
 
 	return <TableContent products={products} />;
 };

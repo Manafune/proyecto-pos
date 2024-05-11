@@ -11,6 +11,6 @@ export const invoices = [
 		status: 'Activo',
 	},
 ];
-export const Route = createLazyFileRoute('/_authenticated/products')({
+export const Route = createLazyFileRoute('/_authenticated/products/')({
 	component: () => <Product></Product>,
 });

@@ -31,12 +31,15 @@ const SignIn = () => {
 					},
 				});
 			}
-			const { data: supaData, error } = await supabase.auth.signInWithPassword({
+
+			const { data: user, error } = await supabase.auth.signInWithPassword({
 				email: data.email,
 				password: data.password,
 			});
 			if (error) return toast.error(error.name, { duration: 2000, description: error.message });
-
+			if (user && user.session.user.user_metadata.status === 'INACTIVE') {
+				return toast.error('Tu cuenta está inactiva. Por favor, contacta al administrador.', { duration: 2000 });
+			}
 			window.location.href = '/';
 		} catch (error) {
 			console.log(error);

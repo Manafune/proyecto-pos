@@ -5,12 +5,13 @@ import { Label } from '@/components/ui/label';
 import supabase from '@/lib/supabase';
 import { SignOutSchema, type SignOutSchemaValidator } from '@/lib/validation/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useNavigate } from '@tanstack/react-router';
+import { Link, getRouteApi, useNavigate } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-
+const routeApi = getRouteApi('/_auth/sign-up');
 const SignOut = () => {
 	const navigate = useNavigate();
+	const { confirm } = routeApi.useSearch();
 
 	const {
 		handleSubmit,
@@ -39,7 +40,7 @@ const SignOut = () => {
 			if (error) return toast.error(error.name, { duration: 2000, description: error.message });
 			return navigate({
 				search: {
-					confirm: `Verifica tu Email ${data.email} para continuar con el proceso`,
+					confirm: `${true}`,
 				},
 			});
 		} catch (error) {
@@ -75,8 +76,8 @@ const SignOut = () => {
 						<Input id='password' type='password' autoComplete='current-password' {...register('password')} />
 						{errors.password !== undefined && <span className='text-sm text-red-600'>{errors.password?.message}</span>}
 					</div>
-					<Button type='submit' className='w-full'>
-						Create an account
+					<Button type='submit' className='w-full' disabled={confirm}>
+						{confirm === true ? 'Verifica tu cuenta' : 'Crear Cuenta'}
 					</Button>
 				</form>
 				<div className='mt-4 text-center text-sm'>

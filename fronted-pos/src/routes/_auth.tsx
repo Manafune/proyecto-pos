@@ -1,14 +1,17 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 type ProductSearch = {
-	addedData?: boolean;
+	confirm: boolean;
 };
 
 export const Route = createFileRoute('/_auth')({
 	validateSearch: (search: Record<string, unknown>): ProductSearch => {
-		if (!search.addedData) return {};
+		if (!search.confirm)
+			return {
+				confirm: false,
+			};
 		return {
-			addedData: Boolean(search.addedData),
+			confirm: Boolean(search.confirm),
 		};
 	},
-	component: () => <Outlet />
+	component: () => <Outlet />,
 });

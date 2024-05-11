@@ -16,21 +16,26 @@ export const Settings = () => {
 			name: auth?.user.user_metadata.name ?? '',
 			confirmPassword: '',
 			password: '',
-			status: 'ACTIVE',
+			status: auth?.user.user_metadata.status ?? 'ACTIVE',
 			lastname: auth?.user.user_metadata.lastName ?? '',
 		},
 		mode: 'onChange',
 	});
 	const onSubmit = async (profile: ProfilechemaValidator) => {
-		const data = await updateUserProfile({
+		const response = await updateUserProfile({
 			confirmPassword: profile.confirmPassword,
 			id: auth?.user?.id ?? '',
 			lastname: profile.lastname,
 			name: profile.name,
 			status: profile.status,
 		});
-		form.setValue('name', 'rata');
-		if (typeof data !== 'boolean') return toast.error(data.name, { duration: 2000, description: data.message });
+		if (response.errors !== undefined) {
+			const error = response.errors[0];
+			return toast.error(error.name, { duration: 2000, description: error.message });
+		}
+		if (response.data !== undefined) {
+			return toast.success('Cambios establecidos', { duration: 1800, description: 'los cambios fueron modificados' });
+		}
 	};
 	return (
 		<Form {...form}>

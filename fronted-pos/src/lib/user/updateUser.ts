@@ -1,26 +1,50 @@
 import supabase from '@/lib/supabase';
 import { type ProfilechemaValidator } from '../validation/validation';
+import { MemberData } from '@/types/products';
 type UserType = Omit<ProfilechemaValidator, 'password'> & { id: string };
-export const updateUserProfile = async ({ confirmPassword, lastname, name, status, id }: UserType) => {
-	const { error } = await supabase.auth.updateUser({
-		password: confirmPassword,
-		data: {
-			name: name,
-			lastName: lastname,
-			status: status,
-		},
-	});
-	if (error !== null) return { message: error.message, code: error.code, name: error.name };
-	const { data, error: errorMember } = await supabase.rpc('update_member_and_role', {
-		member_id: id,
-		member_lastname: lastname,
-		member_name: name,
-		member_role_app: 'MEMBER',
-		member_status: status,
-	});
-	console.log(data);
 
-	if (errorMember !== null) return { message: errorMember.message, code: errorMember.code, name: errorMember.hint };
+interface ApiResponse {
+	data?: MemberData;
+	errors?: { message: string; code: string; name: string }[];
+}
 
-	return true;
+export const updateUserProfile = async ({
+	confirmPassword,
+	lastname,
+	name,
+	status,
+	id,
+}: UserType): Promise<ApiResponse> => {
+	try {
+		// Actualizar el usuario
+		const { error: authError } = await supabase.auth.updateUser({
+			password: confirmPassword,
+			data: {
+				name,
+				lastName: lastname,
+				status,
+			},
+		});
+
+		if (authError !== null) {
+			return { errors: [{ message: authError.message, code: authError.code ?? '', name: authError.name }] };
+		}
+
+		// Actualizar el miembro y el rol
+		const { data, error: memberError } = await supabase.rpc('update_member_and_role', {
+			member_id: id,
+			member_lastname: lastname,
+			member_name: name,
+			member_role_app: 'MEMBER',
+			member_status: status,
+		});
+
+		if (memberError !== null) {
+			return { errors: [{ message: memberError.message, code: memberError.code, name: memberError.hint }] };
+		}
+		const dataMember: MemberData = data;
+		return { data: dataMember };
+	} catch (error) {
+		return { errors: [{ message: 'Internal server error', code: '500', name: 'InternalError' }] };
+	}
 };

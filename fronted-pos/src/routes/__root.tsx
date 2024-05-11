@@ -6,7 +6,7 @@ const RootComponent = () => {
 	return (
 		<div className='min-h-screen w-full  relative flex-col bg-slate-50                                    '>
 			<Outlet />
-			<Toaster />
+			<Toaster richColors />
 			<div className='fixed '>
 				<TanStackRouterDevtools position='bottom-right' />
 			</div>
