@@ -26,9 +26,8 @@ export const updateUserProfile = async ({
 			},
 		});
 
-		if (authError !== null) {
+		if (authError !== null)
 			return { errors: [{ message: authError.message, code: authError.code ?? '', name: authError.name }] };
-		}
 
 		// Actualizar el miembro y el rol
 		const { data, error: memberError } = await supabase.rpc('update_member_and_role', {
@@ -39,9 +38,9 @@ export const updateUserProfile = async ({
 			member_status: status,
 		});
 
-		if (memberError !== null) {
+		if (memberError !== null)
 			return { errors: [{ message: memberError.message, code: memberError.code, name: memberError.hint }] };
-		}
+
 		const dataMember: MemberData = data;
 		return { data: dataMember };
 	} catch (error) {

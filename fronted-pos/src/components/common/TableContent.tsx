@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { type Products } from '@/lib/products/getProduct';
+import { Link } from '@tanstack/react-router';
 interface TypeTableContent {
 	products: Products[];
 }
@@ -29,14 +30,14 @@ export const TableContent = ({ products }: TypeTableContent) => {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{products?.map((invoice) => (
-					<TableRow key={invoice.id}>
-						<TableCell className='hidden md:table-cell'>{invoice.name}</TableCell>
-						<TableCell className='hidden md:table-cell'>{invoice.container}</TableCell>
-						<TableCell className='hidden md:table-cell'>{invoice.price}</TableCell>
-						<TableCell className='hidden md:table-cell'>{invoice.stock}</TableCell>
+				{products?.map((product) => (
+					<TableRow key={product.id}>
+						<TableCell className='hidden md:table-cell'>{product.name}</TableCell>
+						<TableCell className='hidden md:table-cell'>{product.container}</TableCell>
+						<TableCell className='hidden md:table-cell'>{product.price}</TableCell>
+						<TableCell className='hidden md:table-cell'>{product.stock}</TableCell>
 						<TableCell>
-							<Badge variant={invoice.status === 'Active' ? 'outline' : 'secondary'}>{invoice.status}</Badge>
+							<Badge variant={product.status === 'Active' ? 'outline' : 'secondary'}>{product.status}</Badge>
 						</TableCell>
 						<TableCell>
 							<DropdownMenu>
@@ -48,7 +49,9 @@ export const TableContent = ({ products }: TypeTableContent) => {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align='end'>
 									<DropdownMenuLabel>Actions</DropdownMenuLabel>
-									<DropdownMenuItem>Edit</DropdownMenuItem>
+									<Link to='/products/$id' params={{ id: product.id.toString() }}>
+										<DropdownMenuItem>Edit</DropdownMenuItem>
+									</Link>
 									<DropdownMenuItem>Delete</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>

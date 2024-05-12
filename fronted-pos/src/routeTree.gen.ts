@@ -31,6 +31,9 @@ const AuthenticatedProductsIndexLazyImport = createFileRoute(
 const AuthenticatedProductsAddLazyImport = createFileRoute(
   '/_authenticated/products/add',
 )()
+const AuthenticatedProductsIdLazyImport = createFileRoute(
+  '/_authenticated/products/$id',
+)()
 
 // Create/Update Routes
 
@@ -89,6 +92,14 @@ const AuthenticatedProductsAddLazyRoute =
     import('./routes/_authenticated/products.add.lazy').then((d) => d.Route),
   )
 
+const AuthenticatedProductsIdLazyRoute =
+  AuthenticatedProductsIdLazyImport.update({
+    path: '/$id',
+    getParentRoute: () => AuthenticatedProductsRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/products.$id.lazy').then((d) => d.Route),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -121,6 +132,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexLazyImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/products/$id': {
+      preLoaderRoute: typeof AuthenticatedProductsIdLazyImport
+      parentRoute: typeof AuthenticatedProductsImport
+    }
     '/_authenticated/products/add': {
       preLoaderRoute: typeof AuthenticatedProductsAddLazyImport
       parentRoute: typeof AuthenticatedProductsImport
@@ -138,6 +153,7 @@ export const routeTree = rootRoute.addChildren([
   AuthRoute.addChildren([AuthSignInLazyRoute, AuthSignUpLazyRoute]),
   AuthenticatedRoute.addChildren([
     AuthenticatedProductsRoute.addChildren([
+      AuthenticatedProductsIdLazyRoute,
       AuthenticatedProductsAddLazyRoute,
       AuthenticatedProductsIndexLazyRoute,
     ]),
