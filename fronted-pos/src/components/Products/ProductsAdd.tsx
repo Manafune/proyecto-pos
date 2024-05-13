@@ -25,7 +25,11 @@ export const ProductsAdd = () => {
 		}
 		if (validate.success) return setProductAdd({ error: '', productName: dataNameProduct });
 	};
-	console.log(products);
+	const updateProduct = (id: string | number, updatedProps: Partial<Product>) => {
+		setProducts((prevProducts) =>
+			prevProducts.map((prevProduct) => (prevProduct.id === id ? { ...prevProduct, ...updatedProps } : prevProduct))
+		);
+	};
 	const handleSendData = async () => {
 		if (products.length <= 0) return;
 		const response = await addProducts({ products });
@@ -96,7 +100,7 @@ export const ProductsAdd = () => {
 							<CardTitle>Stock</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<StockProductTable products={products} onChangeProducts={setProducts} />
+							<StockProductTable products={products} updateProduct={updateProduct} />
 						</CardContent>
 						<CardFooter className='justify-center border-t p-4'>
 							<Button size='sm' variant='ghost' className='gap-1' onClick={handleSendData}>

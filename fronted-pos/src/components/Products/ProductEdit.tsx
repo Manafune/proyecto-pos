@@ -9,13 +9,13 @@ import { Link, getRouteApi } from '@tanstack/react-router';
 import { ChevronLeft } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
-import { Products, getProductById } from '@/lib/products/getProduct';
+import { ProductData, getProductById } from '@/lib/products/getProduct';
+import { StockProductTable } from './Stock/StockProductTable';
 
 const route = getRouteApi('/_authenticated/products/$id');
 export const ProductEdit = () => {
 	const loaderData = route.useParams();
-	const [product, setProduct] = useState<Products | null>(null);
-
+	const [product, setProduct] = useState<ProductData | null>(null);
 	useEffect(() => {
 		const getProduct = async () => {
 			const product = await getProductById({ id: loaderData.id });
@@ -23,7 +23,12 @@ export const ProductEdit = () => {
 		};
 		getProduct();
 	}, [loaderData.id]);
-
+	const handleUpdateProduct = (id: number, updatedProps: Partial<ProductData>) => {
+		setProduct((prevProduct) => {
+			if (prevProduct !== null) return { ...prevProduct, ...updatedProps };
+			return null;
+		});
+	};
 	return (
 		<div className='grid max-w-screen-xl flex-1 auto-rows-max gap-4'>
 			<div className='grid  flex-1 auto-rows-max gap-4'>
@@ -65,7 +70,9 @@ export const ProductEdit = () => {
 						<CardHeader>
 							<CardTitle>Stock</CardTitle>
 						</CardHeader>
-						<CardContent>{/* <StockProductTable products={products} onChangeProducts={setProducts} /> */}</CardContent>
+						<CardContent>
+							<StockProductTable products={product === null ? [] : [product]} updateProduct={handleUpdateProduct} />
+						</CardContent>
 					</Card>
 				</div>
 				<div className='grid auto-rows-max items-start gap-4 lg:gap-8'>
@@ -76,7 +83,7 @@ export const ProductEdit = () => {
 						<CardContent>
 							<div className='grid gap-6'>
 								<div className='grid gap-3'>
-									<Select>
+									<Select defaultValue={product?.container.toUpperCase()}>
 										<SelectTrigger id='status' aria-label='Seleccionar estado'>
 											<SelectValue placeholder='Seleccionar estado' />
 										</SelectTrigger>

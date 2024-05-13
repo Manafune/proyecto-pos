@@ -3,11 +3,13 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Product } from '@/types/products';
+import { ProductData } from '@/lib/products/getProduct';
 type StockProductTableType = {
-	products: Product[];
-	onChangeProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+	products: Product[] | ProductData[];
+	updateProduct: (id: string | number, updatedProps: Partial<Product | ProductData>) => void;
 };
-export const StockProductTable = ({ products, onChangeProducts }: StockProductTableType) => {
+
+export const StockProductTable = ({ products, updateProduct }: StockProductTableType) => {
 	return (
 		<Table>
 			<TableHeader>
@@ -35,16 +37,7 @@ export const StockProductTable = ({ products, onChangeProducts }: StockProductTa
 								max={10000}
 								defaultValue={product.stock}
 								onChange={(e) => {
-									onChangeProducts((prevProducts) =>
-										prevProducts.map((prevProduct) => {
-											return prevProduct.id === product.id
-												? {
-														...prevProduct,
-														stock: Number(e.currentTarget.value),
-													}
-												: { ...prevProduct };
-										})
-									);
+									updateProduct(product.id, { stock: Number(e.currentTarget.value) });
 								}}
 							/>
 						</TableCell>
@@ -60,31 +53,16 @@ export const StockProductTable = ({ products, onChangeProducts }: StockProductTa
 								inputMode='decimal'
 								defaultValue={product.price}
 								onChange={(e) => {
-									onChangeProducts((prevProducts) =>
-										prevProducts.map((prevProduct) => {
-											return prevProduct.id === product.id
-												? {
-														...prevProduct,
-														price: Number(e.currentTarget.value),
-													}
-												: { ...prevProduct };
-										})
-									);
+									updateProduct(product.id, { price: Number(e.currentTarget.value) });
 								}}
 							/>
 						</TableCell>
 						<TableCell>
 							<Select
-								defaultValue={product.container.toLowerCase() ?? 'BOLSA'}
-								onValueChange={(selectedContainer) =>
-									onChangeProducts((prevProducts) =>
-										prevProducts.map((prevProduct) =>
-											prevProduct.id === product.id
-												? { ...prevProduct, container: selectedContainer }
-												: { ...prevProduct }
-										)
-									)
-								}
+								defaultValue={product.container.toUpperCase() ?? 'BOLSA'}
+								onValueChange={(selectedContainer) => {
+									updateProduct(product.id, { container: selectedContainer });
+								}}
 							>
 								<SelectTrigger className='w-[180px]'>
 									<SelectValue placeholder='Elige un contenedor' />
