@@ -21,7 +21,13 @@ export const addProducts = async ({ products }: { products: Product[] }): Promis
 			.select();
 
 		if (error !== null) {
-			const messageResponse = error.code === '23505' ? 'El nombre del producto no puede ser duplicado' : error.message;
+			const messageResponse =
+				error.code === '23505'
+					? 'El nombre del producto no puede ser duplicado'
+					: error.code === '23514'
+						? 'El precio debe ser mayor a cero'
+						: '';
+			console.log(error.code);
 
 			const response: ApiResponse = {
 				errors: [

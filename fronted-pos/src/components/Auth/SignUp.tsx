@@ -31,7 +31,7 @@ const SignOut = () => {
 						name: data.name,
 						lastName: data.lastname,
 					},
-					emailRedirectTo: `${window.location.origin}/sign-in`,
+					emailRedirectTo: `${window.location.origin}/`,
 				},
 			});
 			if (supaData.user && supaData.user.identities && supaData.user.identities.length === 0)
@@ -68,7 +68,7 @@ const SignOut = () => {
 					</div>
 					<div className='grid gap-2'>
 						<Label htmlFor='email'>Email</Label>
-						<Input id='email' type='email' placeholder='m@example.com' autoComplete='email' {...register('email')} />
+						<Input id='email' placeholder='m@example.com' autoComplete='email' {...register('email')} />
 						{errors.email !== undefined && <span className='text-sm text-red-600'>{errors.email.message}</span>}
 					</div>
 					<div className='grid gap-2'>

@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import supabase from '@/lib/supabase';
 const MobileNav = () => {
 	return (
 		<div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>
@@ -109,8 +110,16 @@ const MobileNav = () => {
 						</DropdownMenuItem>
 						<DropdownMenuItem>Support</DropdownMenuItem>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>Logout</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={async () => {
+								const { error } = await supabase.auth.signOut();
+								if (!error) window.location.href = '/sign-in';
+							}}
+						>
+							Logout
+						</DropdownMenuItem>
 					</DropdownMenuContent>
+					
 				</DropdownMenu>
 			</header>
 		</div>

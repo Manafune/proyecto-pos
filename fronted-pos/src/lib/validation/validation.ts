@@ -4,6 +4,7 @@ export const BaseSchema = z.object({
 	password: z.string().trim().min(8, { message: 'La contraseña debe tener al menos 8 caracteres' }),
 });
 export const SignOutSchema = BaseSchema.extend({
+	
 	name: z.string().trim().min(5, { message: 'El nombre debe tener al menos 5 caracteres' }),
 	lastname: z.string().trim().min(5, { message: 'El apellido debe tener al menos 5 caracteres' }),
 });
