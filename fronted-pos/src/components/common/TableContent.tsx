@@ -49,11 +49,11 @@ export const TableContent = ({ products }: TypeTableContent) => {
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align='end'>
-									<DropdownMenuLabel>Actions</DropdownMenuLabel>
+									<DropdownMenuLabel>Acciónes</DropdownMenuLabel>
 									<Link to='/products/$id' params={{ id: product.id.toString() }}>
-										<DropdownMenuItem>Edit</DropdownMenuItem>
+										<DropdownMenuItem>Editar</DropdownMenuItem>
 									</Link>
-									<DropdownMenuItem>Delete</DropdownMenuItem>
+									<DropdownMenuItem>Cambiar Estado</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</TableCell>

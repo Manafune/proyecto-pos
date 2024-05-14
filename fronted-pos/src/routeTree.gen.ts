@@ -105,42 +105,72 @@ const AuthenticatedProductsIdLazyRoute =
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
     '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof AuthenticatedImport
       parentRoute: typeof rootRoute
     }
     '/_authenticated/products': {
+      id: '/_authenticated/products'
+      path: '/products'
+      fullPath: '/products'
       preLoaderRoute: typeof AuthenticatedProductsImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_auth/sign-in': {
+      id: '/_auth/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
       preLoaderRoute: typeof AuthSignInLazyImport
       parentRoute: typeof AuthImport
     }
     '/_auth/sign-up': {
+      id: '/_auth/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
       preLoaderRoute: typeof AuthSignUpLazyImport
       parentRoute: typeof AuthImport
     }
     '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsLazyImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexLazyImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/products/$id': {
+      id: '/_authenticated/products/$id'
+      path: '/$id'
+      fullPath: '/products/$id'
       preLoaderRoute: typeof AuthenticatedProductsIdLazyImport
       parentRoute: typeof AuthenticatedProductsImport
     }
     '/_authenticated/products/add': {
+      id: '/_authenticated/products/add'
+      path: '/add'
+      fullPath: '/products/add'
       preLoaderRoute: typeof AuthenticatedProductsAddLazyImport
       parentRoute: typeof AuthenticatedProductsImport
     }
     '/_authenticated/products/': {
+      id: '/_authenticated/products/'
+      path: '/'
+      fullPath: '/products/'
       preLoaderRoute: typeof AuthenticatedProductsIndexLazyImport
       parentRoute: typeof AuthenticatedProductsImport
     }
@@ -149,17 +179,20 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([
-  AuthRoute.addChildren([AuthSignInLazyRoute, AuthSignUpLazyRoute]),
-  AuthenticatedRoute.addChildren([
-    AuthenticatedProductsRoute.addChildren([
+export const routeTree = rootRoute.addChildren({
+  AuthRoute: AuthRoute.addChildren({
+    AuthSignInLazyRoute,
+    AuthSignUpLazyRoute,
+  }),
+  AuthenticatedRoute: AuthenticatedRoute.addChildren({
+    AuthenticatedProductsRoute: AuthenticatedProductsRoute.addChildren({
       AuthenticatedProductsIdLazyRoute,
       AuthenticatedProductsAddLazyRoute,
       AuthenticatedProductsIndexLazyRoute,
-    ]),
+    }),
     AuthenticatedSettingsLazyRoute,
     AuthenticatedIndexLazyRoute,
-  ]),
-])
+  }),
+})
 
 /* prettier-ignore-end */

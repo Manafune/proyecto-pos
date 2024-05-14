@@ -91,9 +91,9 @@ export const TableContent = () => {
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align='end'>
-									<DropdownMenuLabel>Actions</DropdownMenuLabel>
-									<DropdownMenuItem>Edit</DropdownMenuItem>
-									<DropdownMenuItem>Delete</DropdownMenuItem>
+									<DropdownMenuLabel>Acción</DropdownMenuLabel>
+									<DropdownMenuItem>Editar</DropdownMenuItem>
+									<DropdownMenuItem>Cambiar Estado</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</TableCell>

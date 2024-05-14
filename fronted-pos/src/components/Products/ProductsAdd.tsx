@@ -98,7 +98,7 @@ export const ProductsAdd = () => {
 					</Card>
 					<Card x-chunk='dashboard-07-chunk-1'>
 						<CardHeader>
-							<CardTitle>Stock</CardTitle>
+							<CardTitle>Lista de Productos a Añadir</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<StockProductTable products={products} updateProduct={updateProduct} />

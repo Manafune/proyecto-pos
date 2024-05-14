@@ -50,11 +50,11 @@ const MobileNav = () => {
 							</Link>
 							<Link href='#' className='flex items-center gap-4 px-2.5 text-foreground'>
 								<Package className='h-5 w-5' />
-								Products
+								Productos
 							</Link>
 							<Link href='#' className='flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground'>
 								<Users2 className='h-5 w-5' />
-								Customers
+								Clientes
 							</Link>
 							<Link href='#' className='flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground'>
 								<LineChart className='h-5 w-5' />
@@ -103,10 +103,10 @@ const MobileNav = () => {
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align='end'>
-						<DropdownMenuLabel>My Account</DropdownMenuLabel>
+						<DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem>
-							<Link to='/settings'>Settingss</Link>
+							<Link to='/settings'>Configuración</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem>Support</DropdownMenuItem>
 						<DropdownMenuSeparator />
@@ -116,7 +116,7 @@ const MobileNav = () => {
 								if (!error) window.location.href = '/sign-in';
 							}}
 						>
-							Logout
+							Salir
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 					
