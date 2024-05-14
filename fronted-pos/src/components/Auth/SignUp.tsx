@@ -35,7 +35,7 @@ const SignOut = () => {
 				},
 			});
 			if (supaData.user && supaData.user.identities && supaData.user.identities.length === 0)
-				return toast.error('AuthApiError', { duration: 2000, description: 'User already exists' });
+				return toast.error('AuthApiError', { duration: 2000, description: 'El usuario ya existe' });
 
 			if (error) return toast.error(error.name, { duration: 2000, description: error.message });
 			return navigate({
@@ -51,29 +51,35 @@ const SignOut = () => {
 	return (
 		<Card className='w-full absolute inset-1/2 [translate:-50%_-50%] max-w-md h-fit'>
 			<CardHeader>
-				<CardTitle className='text-xl'>Sign Up</CardTitle>
-				<CardDescription>Enter your information to create an account</CardDescription>
+				<CardTitle className='text-2xl'>Registro de Usuario</CardTitle>
+				<CardDescription>Ingresa tu información para crear una cuenta</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<form className='grid gap-4' onSubmit={onSubmit}>
 					<div className='grid gap-2'>
-						<Label htmlFor='name'>Name</Label>
-						<Input id='name' placeholder='Name' type='text' autoComplete='name' {...register('name')} />
+						<Label htmlFor='name'>Nombre</Label>
+						<Input id='name' placeholder='Nombre' type='text' autoComplete='name' {...register('name')} />
 						{errors.name !== undefined && <span className='text-sm text-red-600'>{errors.name.message}</span>}
 					</div>
 					<div className='grid gap-2'>
-						<Label htmlFor='lastName'>LastName</Label>
-						<Input id='lastName' placeholder='LastName' {...register('lastname')} />
+						<Label htmlFor='lastName'>Apellido</Label>
+						<Input id='lastName' placeholder='Apellido' {...register('lastname')} />
 						{errors.lastname !== undefined && <span className='text-sm text-red-600'>{errors.lastname.message}</span>}
 					</div>
 					<div className='grid gap-2'>
 						<Label htmlFor='email'>Email</Label>
-						<Input id='email' placeholder='m@example.com' autoComplete='email' {...register('email')} />
+						<Input id='email' placeholder='ejemplo@gmail.com' autoComplete='email' {...register('email')} />
 						{errors.email !== undefined && <span className='text-sm text-red-600'>{errors.email.message}</span>}
 					</div>
 					<div className='grid gap-2'>
-						<Label htmlFor='password'>Password</Label>
-						<Input id='password' type='password' autoComplete='current-password' {...register('password')} />
+						<Label htmlFor='password'>Contraseña</Label>
+						<Input
+							id='password'
+							type='password'
+							autoComplete='current-password'
+							placeholder='***-***-**'
+							{...register('password')}
+						/>
 						{errors.password !== undefined && <span className='text-sm text-red-600'>{errors.password?.message}</span>}
 					</div>
 					<Button type='submit' className='w-full' disabled={confirm}>
@@ -81,9 +87,9 @@ const SignOut = () => {
 					</Button>
 				</form>
 				<div className='mt-4 text-center text-sm'>
-					Do you already have an account?
+					¿Ya tienes una cuenta?
 					<Link to='/sign-in' className='underline'>
-						Sign In
+						Inicia Sesion
 					</Link>
 				</div>
 			</CardContent>

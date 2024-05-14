@@ -12,6 +12,7 @@ import { MemberStatus } from '@/types/members';
 import { addProducts } from '@/lib/products/addProducts';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { TableRowBodyType } from '../common/TableRowBody';
 
 export const ProductsAdd = () => {
 	const [productAdd, setProductAdd] = useState<{ productName: string; error: string } | null>(null);
@@ -25,7 +26,7 @@ export const ProductsAdd = () => {
 		}
 		if (validate.success) return setProductAdd({ error: '', productName: dataNameProduct });
 	};
-	const updateProduct = (id: string | number, updatedProps: Partial<Product>) => {
+	const updateProduct: TableRowBodyType<Product>['updateProduct'] = (id, updatedProps) => {
 		setProducts((prevProducts) =>
 			prevProducts.map((prevProduct) => (prevProduct.id === id ? { ...prevProduct, ...updatedProps } : prevProduct))
 		);

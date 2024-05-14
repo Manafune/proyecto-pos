@@ -4,7 +4,6 @@ export interface ProductData extends Omit<Product, 'id'> {
 	id: number;
 }
 
-// no
 export const getAllProducts = async () => {
 	const { data: product } = await supabase.from('product').select('*');
 	return product as unknown as ProductData[];

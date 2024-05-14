@@ -10,8 +10,8 @@ import { ChevronLeft } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { ProductData, getProductById } from '@/lib/products/getProduct';
-import { StockProductTable } from './Stock/StockProductTable';
-
+import { Table, TableBody, TableHeader, TableHead, TableRow } from '@/components/ui/table';
+import { TableRowBody, TableRowBodyType } from '@/components/common/TableRowBody';
 const route = getRouteApi('/_authenticated/products/$id');
 export const ProductEdit = () => {
 	const loaderData = route.useParams();
@@ -23,12 +23,15 @@ export const ProductEdit = () => {
 		};
 		getProduct();
 	}, [loaderData.id]);
-	const handleUpdateProduct = (id: number, updatedProps: Partial<ProductData>) => {
+	const handleUpdateProduct: TableRowBodyType<ProductData>['updateProduct'] = (id, updatedProps) => {
 		setProduct((prevProduct) => {
-			if (prevProduct !== null) return { ...prevProduct, ...updatedProps };
+			if (prevProduct !== null && typeof updatedProps.id === 'number') {
+				return { ...prevProduct, ...updatedProps };
+			}
 			return null;
 		});
 	};
+
 	return (
 		<div className='grid max-w-screen-xl flex-1 auto-rows-max gap-4'>
 			<div className='grid  flex-1 auto-rows-max gap-4'>
@@ -71,7 +74,19 @@ export const ProductEdit = () => {
 							<CardTitle>Stock</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<StockProductTable products={product === null ? [] : [product]} updateProduct={handleUpdateProduct} />
+							<Table>
+								<TableHeader>
+									<TableRow>
+										<TableHead className='w-[100px]'>Nombre</TableHead>
+										<TableHead>Stock</TableHead>
+										<TableHead>Precio</TableHead>
+										<TableHead className='w-[100px]'>Envase</TableHead>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									{product && <TableRowBody product={product} updateProduct={handleUpdateProduct} />}
+								</TableBody>
+							</Table>
 						</CardContent>
 					</Card>
 				</div>

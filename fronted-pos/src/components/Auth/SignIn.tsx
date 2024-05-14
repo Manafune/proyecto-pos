@@ -25,9 +25,7 @@ const SignIn = () => {
 				return toast('Usuario ya registrado', {
 					action: {
 						label: 'Regresa a Home',
-						onClick: () => {
-							navigate({ to: '/' });
-						},
+						onClick: () => navigate({ to: '/' }),
 					},
 				});
 			}
@@ -36,7 +34,11 @@ const SignIn = () => {
 				email: data.email,
 				password: data.password,
 			});
-			if (error) return toast.error(error.name, { duration: 2000, description: error.message });
+			if (error)
+				return toast.error('Error en autenticacion', {
+					duration: 2000,
+					description: 'Credenciales de inicio de sesión inválidas',
+				});
 			if (user && user.session.user.user_metadata.status === 'INACTIVE') {
 				return toast.error('Tu cuenta está inactiva. Por favor, contacta al administrador.', { duration: 2000 });
 			}
@@ -48,30 +50,43 @@ const SignIn = () => {
 	return (
 		<Card className='w-full absolute inset-1/2 [translate:-50%_-50%] max-w-md h-fit'>
 			<CardHeader>
-				<CardTitle className='text-2xl'>Login</CardTitle>
-				<CardDescription>Enter your email below to login to your account</CardDescription>
+				<CardTitle className='text-2xl'>Iniciar sesión</CardTitle>
+				<CardDescription>Ingresa tu correo electrónico a continuación para iniciar sesión en tu cuenta</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<form className='grid gap-4' onSubmit={onSubmit}>
 					<div className='grid gap-2'>
-						<Label htmlFor='email'>Email</Label>
-						<Input id='email' type='email' placeholder='m@example.com' autoComplete='username' {...register('email')} />
+						<Label htmlFor='email'>Correo electrónico</Label>
+						<Input
+							id='email'
+							type='text'
+							placeholder='ejemplo@correo.com'
+							autoComplete='username'
+							{...register('email')}
+						/>
+						{errors.email !== undefined && <span className='text-sm text-red-600'>{errors.email?.message}</span>}
 					</div>
 					<div className='grid gap-2'>
 						<div className='flex items-center'>
-							<Label htmlFor='password'>Password</Label>
+							<Label htmlFor='password'>Contraseña</Label>
 						</div>
-						<Input id='password' type='password' autoComplete='current-password' {...register('password')} />
+						<Input
+							id='password'
+							type='password'
+							autoComplete='current-password'
+							placeholder='***-***-**'
+							{...register('password')}
+						/>
 						{errors.password !== undefined && <span className='text-sm text-red-600'>{errors.password?.message}</span>}
 					</div>
 					<Button type='submit' className='w-full'>
-						Login
+						Iniciar sesión
 					</Button>
 				</form>
 				<div className='mt-4 text-center text-sm'>
-					Don&apos;t have an account?
+					¿No tienes una cuenta?
 					<Link to='/sign-up' className='underline'>
-						Sign up
+						Regístrate
 					</Link>
 				</div>
 			</CardContent>

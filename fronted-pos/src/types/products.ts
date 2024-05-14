@@ -11,5 +11,5 @@ export interface Product {
 	stock: number;
 	status: MemberStatus;
 	container: string;
-	id: `${string}-${string}-${string}-${string}-${string}`;
+	id: string;
 }

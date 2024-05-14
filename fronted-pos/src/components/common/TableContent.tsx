@@ -9,10 +9,11 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { type Products } from '@/lib/products/getProduct';
 import { Link } from '@tanstack/react-router';
+import { ProductData } from '@/lib/products/getProduct';
+import { MemberStatus } from '@/types/members';
 interface TypeTableContent {
-	products: Products[];
+	products: ProductData[];
 }
 export const TableContent = ({ products }: TypeTableContent) => {
 	return (
@@ -37,7 +38,7 @@ export const TableContent = ({ products }: TypeTableContent) => {
 						<TableCell className='hidden md:table-cell'>{product.price}</TableCell>
 						<TableCell className='hidden md:table-cell'>{product.stock}</TableCell>
 						<TableCell>
-							<Badge variant={product.status === 'Active' ? 'outline' : 'secondary'}>{product.status}</Badge>
+							<Badge variant={product.status === MemberStatus.ACTIVE ? 'outline' : 'secondary'}>{product.status}</Badge>
 						</TableCell>
 						<TableCell>
 							<DropdownMenu>
