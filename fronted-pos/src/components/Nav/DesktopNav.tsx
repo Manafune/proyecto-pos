@@ -6,7 +6,7 @@ const navItems = [
 	{ icon: Package2, label: 'Dashboard', path: '/dashboard' },
 	{ icon: ShoppingCart, label: 'Orders', path: '/orders' },
 	{ icon: Package, label: 'Products', path: '/products' },
-	{ icon: Users2, label: 'Customers', path: '/customers' },
+	{ icon: Users2, label: 'Customers', path: '/clients' },
 	{ icon: LineChart, label: 'Analytics', path: '/analytics' },
 ];
 

@@ -12,15 +12,15 @@ const steps = [
 	},
 	{
 		title: 'Paso 2',
-		description: 'Seleccionar el estado del producto',
+		description: 'Digitar el stock del producto',
 	},
 	{
 		title: 'Paso 3',
-		description: 'Seleccionar el stock del producto',
+		description: 'Digitar el precio del producto',
 	},
 	{
 		title: 'Paso 4',
-		description: 'Seleccionar el precio y envase del producto',
+		description: 'Seleccionar el envase del producto',
 	},
 ];
 

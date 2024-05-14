@@ -25,7 +25,7 @@ export const addProducts = async ({ products }: { products: Product[] }): Promis
 				error.code === '23505'
 					? 'El nombre del producto no puede ser duplicado'
 					: error.code === '23514'
-						? 'El precio debe ser mayor a cero'
+						? 'El Stock y el Precio debe ser mayor a cero'
 						: '';
 			console.log(error.code);
 
@@ -44,6 +44,6 @@ export const addProducts = async ({ products }: { products: Product[] }): Promis
 		const response: ApiResponse = { data };
 		return response;
 	} catch (error) {
-		throw new Error('An unexpected error occurred while adding the product.');
+		throw new Error('Un error inesperado ocurrio al añadir producto.');
 	}
 };
