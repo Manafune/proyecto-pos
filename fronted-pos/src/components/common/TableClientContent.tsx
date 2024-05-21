@@ -10,21 +10,21 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
-import { ProductData } from '@/lib/products/getProduct';
+import { ClientData } from '@/lib/clients/getClients';
 import { MemberStatus } from '@/types/members';
 interface TypeTableContent {
-	products: ProductData[];
+	clients: ClientData[];
 }
 
-export const TableClientContent = () => {
+export const TableClientContent = ({ clients }: TypeTableContent) => {
   return (
     <Table>
 			<TableHeader>
 				<TableRow>
 					<TableHead>Nombre</TableHead>
-					<TableHead>Envase</TableHead>
-					<TableHead className='hidden md:table-cell'>Precio</TableHead>
-					<TableHead className='hidden md:table-cell'>Stock</TableHead>
+					<TableHead>Apellido</TableHead>
+					<TableHead className='hidden md:table-cell'>Dni</TableHead>
+					<TableHead className='hidden md:table-cell'>Fecha de Nacimiento</TableHead>
 					<TableHead className='hidden md:table-cell'>Estado</TableHead>
 					<TableHead>
 						<span className='sr-only'>Actions</span>
@@ -32,14 +32,14 @@ export const TableClientContent = () => {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{products?.map((product) => (
-					<TableRow key={product.id}>
-						<TableCell className='hidden md:table-cell'>{product.name}</TableCell>
-						<TableCell className='hidden md:table-cell'>{product.container}</TableCell>
-						<TableCell className='hidden md:table-cell'>{product.price}</TableCell>
-						<TableCell className='hidden md:table-cell'>{product.stock}</TableCell>
+				{clients?.map((client) => (
+					<TableRow key={client.id}>
+						<TableCell className='hidden md:table-cell'>{client.name}</TableCell>
+						<TableCell className='hidden md:table-cell'>{client.container}</TableCell>
+						<TableCell className='hidden md:table-cell'>{client.price}</TableCell>
+						<TableCell className='hidden md:table-cell'>{client.stock}</TableCell>
 						<TableCell>
-							<Badge variant={product.status === MemberStatus.ACTIVE ? 'outline' : 'secondary'}>{product.status}</Badge>
+							<Badge variant={client.status === MemberStatus.ACTIVE ? 'outline' : 'secondary'}>{client.status}</Badge>
 						</TableCell>
 						<TableCell>
 							<DropdownMenu>
@@ -51,7 +51,7 @@ export const TableClientContent = () => {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align='end'>
 									<DropdownMenuLabel>Acciónes</DropdownMenuLabel>
-									<Link to='/products/$id' params={{ id: product.id.toString() }}>
+									<Link to='/clients/$id' params={{ id: client.id.toString() }}>
 										<DropdownMenuItem>Editar</DropdownMenuItem>
 									</Link>
 									<DropdownMenuItem>Cambiar Estado</DropdownMenuItem>

@@ -4,10 +4,10 @@ import { Settings, Package2, Package, ShoppingCart, Users2, LineChart } from 'lu
 import { Link } from '@tanstack/react-router';
 const navItems = [
 	{ icon: Package2, label: 'Dashboard', path: '/dashboard' },
-	{ icon: ShoppingCart, label: 'Orders', path: '/orders' },
-	{ icon: Package, label: 'Products', path: '/products' },
-	{ icon: Users2, label: 'Customers', path: '/clients' },
-	{ icon: LineChart, label: 'Analytics', path: '/analytics' },
+	{ icon: ShoppingCart, label: 'Ventas', path: '/orders' },
+	{ icon: Package, label: 'Productos', path: '/products' },
+	{ icon: Users2, label: 'Clientes', path: '/clients' },
+	{ icon: LineChart, label: 'Analiticas', path: '/analytics' },
 ];
 
 export const DesktopNav = () => {

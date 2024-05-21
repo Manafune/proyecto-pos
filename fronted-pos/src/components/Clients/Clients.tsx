@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { File, ListFilter, PlusCircle } from 'lucide-react';
+import { File, PlusCircle } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TableClient} from '@/components/Table/TableClient';
+import { TableClient } from '@/components/Table/TableClient';
 import { Link } from '@tanstack/react-router';
 
 export const Clients = () => {
-  return (
-    <Tabs defaultValue='all'>
+	return (
+		<Tabs defaultValue='all'>
 			<div className='flex items-center'>
 				<TabsList>
 					<TabsTrigger value='all'>Todo</TabsTrigger>
@@ -30,13 +30,9 @@ export const Clients = () => {
 			<TabsContent value='all'>
 				<TableClient />
 			</TabsContent>
-			<TabsContent value='active'>
-				
-			</TabsContent>
+			<TabsContent value='active'></TabsContent>
 
-			<TabsContent value='inactive'>
-				
-			</TabsContent>
+			<TabsContent value='inactive'></TabsContent>
 		</Tabs>
-  )
-}
+	);
+};

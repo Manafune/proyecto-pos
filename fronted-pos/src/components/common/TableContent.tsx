@@ -16,6 +16,10 @@ interface TypeTableContent {
 	products: ProductData[];
 }
 export const TableContent = ({ products }: TypeTableContent) => {
+	const formatPrice = (number: number) => {
+		const data = new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(number);
+		return data;
+	};
 	return (
 		<Table>
 			<TableHeader>
@@ -35,7 +39,7 @@ export const TableContent = ({ products }: TypeTableContent) => {
 					<TableRow key={product.id}>
 						<TableCell className='hidden md:table-cell'>{product.name}</TableCell>
 						<TableCell className='hidden md:table-cell'>{product.container}</TableCell>
-						<TableCell className='hidden md:table-cell'>{product.price}</TableCell>
+						<TableCell className='hidden md:table-cell'>{formatPrice(product.price)}</TableCell>
 						<TableCell className='hidden md:table-cell'>{product.stock}</TableCell>
 						<TableCell>
 							<Badge variant={product.status === MemberStatus.ACTIVE ? 'outline' : 'secondary'}>{product.status}</Badge>

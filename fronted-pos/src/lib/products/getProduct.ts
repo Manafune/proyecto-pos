@@ -5,7 +5,7 @@ export interface ProductData extends Omit<Product, 'id'> {
 }
 
 export const getAllProducts = async () => {
-	const { data: product } = await supabase.from('product').select('*');
+	const { data: product } = await supabase.from('product').select('*').order('created_at', { ascending: false });
 	return product as unknown as ProductData[];
 };
 export const getAllProductsByState = async ({ state }: { state: 'ACTIVE' | 'INACTIVE' }) => {
