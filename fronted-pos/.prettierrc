@@ -5,5 +5,8 @@
     "semi": true,
     "endOfLine": "lf",
     "useTabs": true,
+    "bracketSpacing": true,
+    "printWidth": 160
+
     
 }

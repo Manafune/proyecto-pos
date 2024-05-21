@@ -1,10 +1,4 @@
-import {
-	CardHeader,
-	Card,
-	CardFooter,
-	CardContent,
-	CardTitle
-} from '@/components/ui/card';
+import { CardHeader, Card, CardFooter, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { StockProductTable } from '@/components/Products/Stock/StockProductTable';
@@ -13,8 +7,8 @@ import { addProducts } from '@/lib/products/addProducts';
 import { toast } from 'sonner';
 
 export const CardAddProduct = () => {
-	const { products, updateProductFieldToTotal, cleanTotalProducts } =
-		useAddProducts();
+	const { products, updateProductFieldToTotal, cleanTotalProducts } = useAddProducts();
+
 	const handleSubmitProducts = async () => {
 		if (products.length <= 0) return;
 		const response = await addProducts({ products });
@@ -39,18 +33,10 @@ export const CardAddProduct = () => {
 				<CardTitle>Lista de Productos a Añadir</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<StockProductTable
-					products={products}
-					updateProduct={updateProductFieldToTotal}
-				/>
+				<StockProductTable products={products} updateProduct={updateProductFieldToTotal} />
 			</CardContent>
 			<CardFooter className="justify-center border-t p-4">
-				<Button
-					size="sm"
-					variant="ghost"
-					className="gap-1 text-white bg-[#10b981] hover:bg-[#34d399] hover:text-white"
-					onClick={handleSubmitProducts}
-				>
+				<Button size="sm" variant="ghost" className="gap-1 text-white bg-[#10b981] hover:bg-[#34d399] hover:text-white" onClick={handleSubmitProducts}>
 					<PlusCircle className="h-3.5 w-3.5 text-white" />
 					Guardar
 				</Button>

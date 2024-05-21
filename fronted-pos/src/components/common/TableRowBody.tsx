@@ -1,13 +1,7 @@
 import { TableRow, TableCell } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Product } from '@/types/products';
 import { type ProductData } from '@/lib/products/getProduct';
 import { X } from 'lucide-react';
@@ -18,17 +12,10 @@ export interface TableRowBodyType<T> {
 	isTooltip?: boolean;
 }
 
-export const TableRowBody = <T extends Product | ProductData>({
-	product,
-	updateProduct,
-	deleteProduct,
-	isTooltip = true
-}: TableRowBodyType<T>) => {
+export const TableRowBody = <T extends Product | ProductData>({ product, updateProduct, deleteProduct, isTooltip = true }: TableRowBodyType<T>) => {
 	return (
 		<TableRow key={`${product.name}-${product.id}`} className="relative group">
-			<TableCell className="font-semibold whitespace-nowrap overflow-hidden capitalize">
-				{product.name.toLowerCase()}
-			</TableCell>
+			<TableCell className="font-semibold whitespace-nowrap overflow-hidden capitalize">{product.name.toLowerCase()}</TableCell>
 			<TableCell>
 				<Label htmlFor={`stock-${product.id}`} className="sr-only">
 					Stock
@@ -38,7 +25,7 @@ export const TableRowBody = <T extends Product | ProductData>({
 					type="number"
 					min={1}
 					max={10000}
-					defaultValue={product.stock}
+					value={product.stock}
 					onChange={(e) => {
 						const newStockValue = Number(e.currentTarget.value);
 						updateProduct(product.id, {

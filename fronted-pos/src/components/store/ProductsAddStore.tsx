@@ -22,15 +22,15 @@ export const ProductsContext = createContext<ProductsContextType | null>(null);
 
 // Create a provider component
 export const ProductsAddStore = ({ children }: { children: ReactNode }) => {
-	const [productSelect, setProductSelect] = useState<
-		ProductsContextType['productSelect']
-	>({
+	const [productSelect, setProductSelect] = useState<ProductsContextType['productSelect']>({
 		productName: '',
 		error: ''
 	});
 	const [products, setProducts] = useState<Product[]>([]);
 	const changeProductSelection = (value: string) => {
-		const validate = ProductSchema.safeParse({ name: value });
+		const validate = ProductSchema.safeParse({
+			name: value
+		});
 		if (validate.error !== undefined) {
 			const dataError = validate.error.errors[0];
 			return setProductSelect({
@@ -38,17 +38,39 @@ export const ProductsAddStore = ({ children }: { children: ReactNode }) => {
 				productName: value
 			});
 		}
-		if (validate.success)
-			return setProductSelect({ error: '', productName: value });
+		if (validate.success) return cleanProductSeletion();
 	};
+	const cleanProductSeletion = () =>
+		setProductSelect(() => ({
+			productName: '',
+			error: ''
+		}));
+
 	const addProductSelectionToTotal = () => {
-		if (products.length >= MAX_VALUE) return;
-		if (productSelect.error === '') {
-			setProductSelect(() => ({ productName: '', error: '' }));
-			setProducts((products) => [
+		if (!productSelect.productName || products.length >= MAX_VALUE) return;
+		const name = productSelect.productName.trim().toUpperCase();
+		const productFound = products.find((product) => product.name === name);
+		if (productFound !== undefined) {
+			cleanProductSeletion();
+			return setProducts((products) =>
+				products.map((product) => {
+					if (product.name === name)
+						return {
+							...product,
+							stock: product.stock + 1
+						};
+					return {
+						...product
+					};
+				})
+			);
+		}
+		if (!productSelect.error) {
+			cleanProductSeletion();
+			return setProducts((products) => [
 				...products,
 				{
-					name: productSelect.productName.trim().toUpperCase(),
+					name,
 					price: 0.01,
 					status: MemberStatus.ACTIVE,
 					stock: 1,
@@ -58,15 +80,18 @@ export const ProductsAddStore = ({ children }: { children: ReactNode }) => {
 			]);
 		}
 	};
-	const updateProductFieldToTotal: TableRowBodyType<Product>['updateProduct'] =
-		(id, updatedProps) => {
-			setProducts((prevProducts) =>
-				prevProducts.map((product) => {
-					if (product.id === id) return { ...product, ...updatedProps };
-					return product;
-				})
-			);
-		};
+	const updateProductFieldToTotal: TableRowBodyType<Product>['updateProduct'] = (id, updatedProps) => {
+		setProducts((prevProducts) =>
+			prevProducts.map((product) => {
+				if (product.id === id)
+					return {
+						...product,
+						...updatedProps
+					};
+				return product;
+			})
+		);
+	};
 	const cleanTotalProducts = () => setProducts([]);
 	const deleteProductFromTotal = (id: string) => {
 		const productsFilter = products.filter((product) => product.id !== id);

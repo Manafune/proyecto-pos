@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { TableContent } from '@/components/common/TableContent';
-import { getAllProductsByState, type Products } from '@/lib/products/getProduct';
+import { getAllProductsByState, type ProductData } from '@/lib/products/getProduct';
 
 export const TableProductActive = () => {
-	const [products, setProducts] = useState<Products[]>([]);
+	const [products, setProducts] = useState<ProductData[]>([]);
 
 	useEffect(() => {
 		const getTotalProducts = async () => {

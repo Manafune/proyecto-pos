@@ -5,12 +5,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useAddProducts } from '@/hooks/productsAdd';
 export const SelectedAddProduct = () => {
-	const {
-		products,
-		productSelect,
-		addProductSelectionToTotal,
-		changeProductSelection
-	} = useAddProducts();
+	const { products, productSelect, addProductSelectionToTotal, changeProductSelection } = useAddProducts();
 	return (
 		<Card x-chunk="dashboard-07-chunk-0">
 			<CardHeader>
@@ -30,22 +25,15 @@ export const SelectedAddProduct = () => {
 							onChange={(e) => changeProductSelection(e.target.value)}
 						/>
 						<Button
-							className={cn(
-								'absolute bg-[#10b981] hover:bg-[#34d399] inset-[auto_0.25em_auto_auto] h-5/6 z-30',
-								{
-									'bg-red-500 hover:bg-red-400': products.length >= 10
-								}
-							)}
+							className={cn('absolute bg-[#10b981] hover:bg-[#34d399] inset-[auto_0.25em_auto_auto] h-5/6 z-30', {
+								'bg-red-500 hover:bg-red-400': products.length >= 10
+							})}
 							onClick={addProductSelectionToTotal}
 						>
-							{products.length >= 10
-								? 'No Se Puede Añadir Mas Productos'
-								: 'Añadir'}
+							{products.length >= 10 ? 'No Se Puede Añadir Mas Productos' : 'Añadir'}
 						</Button>
 					</div>
-					{productSelect?.error && (
-						<span className="text-red-500 text-xs">{productSelect.error}</span>
-					)}
+					{productSelect?.error && <span className="text-red-500 text-xs">{productSelect.error}</span>}
 				</div>
 			</CardContent>
 		</Card>

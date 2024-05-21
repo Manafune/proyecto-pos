@@ -6,5 +6,5 @@ export const Route = createFileRoute('/_authenticated/(products)/products')({
 		const data = await getAllProducts();
 		return data;
 	},
-	component: () => <Outlet />,
+	component: () => <Outlet />
 });
