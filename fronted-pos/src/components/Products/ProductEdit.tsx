@@ -94,6 +94,7 @@ export const ProductEdit = () => {
 										className="w-full"
 										autoComplete="off"
 										placeholder="Ejemplo: Leche"
+										value={product?.name}
 									/>
 								</div>
 							</div>
