@@ -8,6 +8,14 @@ export const getAllProducts = async () => {
 	const { data: product } = await supabase.from('product').select('*').order('created_at', { ascending: false }).range(0,6)
 	return product as unknown as ProductData[];
 };
+export const getCountProducts = async () => {
+	
+const { data, error } = await supabase.rpc('product_count')
+if (error) console.error(error)
+
+return data
+
+};
 export const getAllProductsByState = async ({ state }: { state: 'ACTIVE' | 'INACTIVE' }) => {
 	const { data: productsByState } = await supabase.from('product').select('*').eq('status', state);
 

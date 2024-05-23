@@ -15,7 +15,7 @@ export interface TableRowBodyType<T> {
 export const TableRowBody = <T extends Product | ProductData>({ product, updateProduct, deleteProduct, isTooltip = true }: TableRowBodyType<T>) => {
 	return (
 		<TableRow key={`${product.name}-${product.id}`} className="relative group">
-			<TableCell className="font-semibold whitespace-nowrap overflow-hidden capitalize">{product.name.toLowerCase()}</TableCell>
+			<TableCell className="font-semibold whitespace-nowrap overflow-hidden ">{product.name.toLowerCase()}</TableCell>
 			<TableCell>
 				<Label htmlFor={`stock-${product.id}`} className="sr-only">
 					Stock

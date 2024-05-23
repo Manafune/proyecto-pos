@@ -27,6 +27,12 @@ export const ProductsAddStore = ({ children }: { children: ReactNode }) => {
 		error: ''
 	});
 	const [products, setProducts] = useState<Product[]>([]);
+	const cleanProductSeletion = () =>
+		setProductSelect(() => ({
+			productName: '',
+			error: ''
+		}));
+
 	const changeProductSelection = (value: string) => {
 		const validate = ProductSchema.safeParse({
 			name: value
@@ -38,13 +44,11 @@ export const ProductsAddStore = ({ children }: { children: ReactNode }) => {
 				productName: value
 			});
 		}
-		if (validate.success) return cleanProductSeletion();
-	};
-	const cleanProductSeletion = () =>
-		setProductSelect(() => ({
-			productName: '',
+		return setProductSelect({
+			productName: value,
 			error: ''
-		}));
+		});
+	};
 
 	const addProductSelectionToTotal = () => {
 		if (!productSelect.productName || products.length >= MAX_VALUE) return;
