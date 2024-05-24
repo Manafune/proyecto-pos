@@ -8,26 +8,20 @@ interface ApiResponse {
 	errors?: { message: string; code: string; name: string }[];
 }
 
-export const updateUserProfile = async ({
-	confirmPassword,
-	lastname,
-	name,
-	status,
-	id,
-}: UserType): Promise<ApiResponse> => {
+export const updateUserProfile = async ({ confirmPassword, lastname, name, status, id }: UserType): Promise<ApiResponse> => {
 	try {
-		// Actualizar el usuario
 		const { error: authError } = await supabase.auth.updateUser({
 			password: confirmPassword,
 			data: {
 				name,
 				lastName: lastname,
-				status,
-			},
+				status
+			}
 		});
-
-		if (authError !== null)
-			return { errors: [{ message: authError.message, code: authError.code ?? '', name: authError.name }] };
+		if (authError !== null) {
+			const errorMessage = authError.name === 'AuthApiError' ? 'La nueva contraseña debe ser diferente a la anterior' : 'error al actualizar el usuario';
+			return { errors: [{ message: errorMessage, code: authError.code ?? '', name: 'Error de autenticacion' }] };
+		}
 
 		// Actualizar el miembro y el rol
 		const { data, error: memberError } = await supabase.rpc('update_member_and_role', {
@@ -35,11 +29,10 @@ export const updateUserProfile = async ({
 			member_lastname: lastname,
 			member_name: name,
 			member_role_app: 'MEMBER',
-			member_status: status,
+			member_status: status
 		});
 
-		if (memberError !== null)
-			return { errors: [{ message: memberError.message, code: memberError.code, name: memberError.hint }] };
+		if (memberError !== null) return { errors: [{ message: memberError.message, code: memberError.code, name: memberError.hint }] };
 
 		const dataMember: MemberData = data;
 		return { data: dataMember };

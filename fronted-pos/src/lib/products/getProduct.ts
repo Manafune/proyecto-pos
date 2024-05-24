@@ -4,8 +4,10 @@ export interface ProductData extends Omit<Product, 'id'> {
 	id: number;
 }
 
-export const getAllProducts = async () => {
-	const { data: product } = await supabase.from('product').select('*').order('created_at', { ascending: false }).range(0,6)
+export const getAllProducts = async ({current,pageSize}:{current:number;pageSize:number}) => {
+	const pageCurrent=(current-1) *pageSize
+	const offset=pageCurrent+pageSize
+	const { data: product } = await supabase.from('product').select('*').order('created_at', { ascending: false }).range(pageCurrent,offset)
 	return product as unknown as ProductData[];
 };
 export const getCountProducts = async () => {

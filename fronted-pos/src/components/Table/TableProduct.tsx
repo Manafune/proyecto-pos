@@ -1,7 +1,14 @@
 import { TableContent } from '@/components/common/TableContent';
 import { getRouteApi } from '@tanstack/react-router';
+import React from 'react';
+import { BasePagination } from '../common/Pagination/Pagination';
 const routeApi = getRouteApi('/_authenticated/products');
 export const TableProduct = () => {
-	const products = routeApi.useLoaderData();
-	return <TableContent products={products} />;
+	const { products, totalProducts } = routeApi.useLoaderData();
+	return (
+		<React.Fragment>
+			<TableContent products={products} totalProducts={totalProducts} />;
+			<BasePagination total={totalProducts} />
+		</React.Fragment>
+	);
 };

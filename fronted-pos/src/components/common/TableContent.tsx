@@ -1,19 +1,15 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { MoreHorizontal } from 'lucide-react';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
 import { ProductData } from '@/lib/products/getProduct';
 import { MemberStatus } from '@/types/members';
+import { ProductsPagination } from '@/routes/_authenticated/(products)/products';
 interface TypeTableContent {
 	products: ProductData[];
+	totalProducts: number;
 }
 export const TableContent = ({ products }: TypeTableContent) => {
 	const formatPrice = (number: number) => {
@@ -54,7 +50,14 @@ export const TableContent = ({ products }: TypeTableContent) => {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align='end'>
 									<DropdownMenuLabel>Acciónes</DropdownMenuLabel>
-									<Link to='/products/$id' params={{ id: product.id.toString() }}>
+									<Link
+										to='/products/$id'
+										params={{ id: product.id.toString() }}
+										search={(prev) => {
+											const data = prev as ProductsPagination;
+											return { ...data };
+										}}
+									>
 										<DropdownMenuItem>Editar</DropdownMenuItem>
 									</Link>
 									<DropdownMenuItem>Cambiar Estado</DropdownMenuItem>
