@@ -17,6 +17,8 @@ export const Route = createFileRoute('/_authenticated/(products)/products')({
 			totalProducts: count
 		};
 	},
+
+	staleTime: 60_000,
 	loaderDeps: ({ search: { pageSize, current, filter } }) => ({ pageSize, current, filter }),
 	validateSearch: (search: Partial<ProductsPagination>) => {
 		const validatedSearch: ProductsPagination = {

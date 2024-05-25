@@ -3,8 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { SelectTrigger, SelectValue, SelectItem, SelectContent, Select } from '@/components/ui/select';
-import { MemberStatus } from '@/types/members';
 import { Link, getRouteApi } from '@tanstack/react-router';
 import { ChevronLeft } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
@@ -13,6 +11,21 @@ import { ProductData, getProductById } from '@/lib/products/getProduct';
 import { Table, TableBody, TableHeader, TableHead, TableRow } from '@/components/ui/table';
 import { TableRowBody, TableRowBodyType } from '@/components/common/TableRowBody';
 import type { ProductsPagination } from '@/routes/_authenticated/(products)/products';
+import { StockStepsProducts } from './Stock/StockStepsProducts';
+const steps = [
+	{
+		title: 'Paso 1',
+		description: 'Elige los datos que quieres cambiar'
+	},
+	{
+		title: 'Paso 2',
+		description: 'Asegurate de que los nuevos datos sean correctos'
+	},
+	{
+		title: 'Paso 3',
+		description: 'Guarda o descarta los cambios realizados'
+	}
+];
 const route = getRouteApi('/_authenticated/products/$id');
 export const ProductEdit = () => {
 	const loaderData = route.useParams();
@@ -111,26 +124,7 @@ export const ProductEdit = () => {
 					</Card>
 				</div>
 				<div className='grid auto-rows-max items-start gap-4 lg:gap-8'>
-					<Card x-chunk='dashboard-07-chunk-3'>
-						<CardHeader>
-							<CardTitle>Estado del Producto</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<div className='grid gap-6'>
-								<div className='grid gap-3'>
-									<Select defaultValue={product?.container.toUpperCase()}>
-										<SelectTrigger id='status' aria-label='Seleccionar estado'>
-											<SelectValue placeholder='Seleccionar estado' />
-										</SelectTrigger>
-										<SelectContent>
-											<SelectItem value={MemberStatus.ACTIVE}>Activo</SelectItem>
-											<SelectItem value={MemberStatus.INACTIVE}>Inactivo</SelectItem>
-										</SelectContent>
-									</Select>
-								</div>
-							</div>
-						</CardContent>
-					</Card>
+					<StockStepsProducts steps={steps} title='¿Cómo Actualizar Productos?' />
 				</div>
 			</div>
 		</div>

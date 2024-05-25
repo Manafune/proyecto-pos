@@ -3,13 +3,13 @@ export const enum Container {
 	CAJA = 'CAJA',
 	BOLSA = 'BOLSA',
 	LATA = 'LATA',
-	BOTELLA = 'BOTELLA',
+	BOTELLA = 'BOTELLA'
 }
 export interface Product {
 	name: string;
 	price: number;
 	stock: number;
 	status: MemberStatus;
-	container: string;
+	container: Container;
 	id: string;
 }

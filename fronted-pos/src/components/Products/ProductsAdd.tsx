@@ -2,7 +2,24 @@ import { StockStepsProducts } from '@/components/Products/Stock/StockStepsProduc
 import { SelectedAddProduct } from '@/components/Products/add/SelectedAddProduct';
 import { CardAddProduct } from '@/components/Card/CardAddProduct';
 import { ProductsAddStore } from '@/components/store/ProductsAddStore';
-
+const steps = [
+	{
+		title: 'Paso 1',
+		description: 'Escribir el nombre del producto'
+	},
+	{
+		title: 'Paso 2',
+		description: 'Digitar el stock del producto'
+	},
+	{
+		title: 'Paso 3',
+		description: 'Digitar el precio del producto'
+	},
+	{
+		title: 'Paso 4',
+		description: 'Seleccionar el envase del producto'
+	}
+];
 export const ProductsAdd = () => {
 	return (
 		<ProductsAddStore>
@@ -12,7 +29,7 @@ export const ProductsAdd = () => {
 						<SelectedAddProduct />
 						<CardAddProduct />
 					</div>
-					<StockStepsProducts />
+					<StockStepsProducts steps={steps} title={'¿Cómo Añadir Productos?'} />
 				</div>
 			</div>
 		</ProductsAddStore>

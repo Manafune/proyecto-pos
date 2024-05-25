@@ -3,15 +3,18 @@ import { Badge } from '@/components/ui/badge';
 import { MoreHorizontal } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Link } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import { ProductData } from '@/lib/products/getProduct';
 import { MemberStatus } from '@/types/members';
 import { ProductsPagination } from '@/routes/_authenticated/(products)/products';
+import { putProducts } from '@/lib/products/putProducts';
 interface TypeTableContent {
 	products: ProductData[];
 	totalProducts: number;
 }
+
 export const TableContent = ({ products }: TypeTableContent) => {
+	const route = useRouter();
 	const formatPrice = (number: number) => {
 		const data = new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(number);
 		return data;
@@ -55,7 +58,7 @@ export const TableContent = ({ products }: TypeTableContent) => {
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align='end'>
-									<DropdownMenuLabel>Acciónes</DropdownMenuLabel>
+									<DropdownMenuLabel>Acciones</DropdownMenuLabel>
 									<Link
 										to='/products/$id'
 										params={{ id: product.id.toString() }}
@@ -66,7 +69,17 @@ export const TableContent = ({ products }: TypeTableContent) => {
 									>
 										<DropdownMenuItem>Editar</DropdownMenuItem>
 									</Link>
-									<DropdownMenuItem>Cambiar Estado</DropdownMenuItem>
+									<DropdownMenuItem
+										onClick={async () => {
+											const data = await putProducts({
+												status: product.status === MemberStatus.ACTIVE ? MemberStatus.INACTIVE : MemberStatus.ACTIVE,
+												idProduct: product.id
+											});
+											if (data !== undefined) route.invalidate();
+										}}
+									>
+										Cambiar Estado
+									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</TableCell>

@@ -28,16 +28,16 @@ export const CardAddProduct = () => {
 		}
 	};
 	return (
-		<Card x-chunk="dashboard-07-chunk-1">
+		<Card x-chunk='dashboard-07-chunk-1'>
 			<CardHeader>
 				<CardTitle>Lista de Productos a Añadir</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<StockProductTable products={products} updateProduct={updateProductFieldToTotal} />
 			</CardContent>
-			<CardFooter className="justify-center border-t p-4">
-				<Button size="sm" variant="ghost" className="gap-1 text-white bg-[#10b981] hover:bg-[#34d399] hover:text-white" onClick={handleSubmitProducts}>
-					<PlusCircle className="h-3.5 w-3.5 text-white" />
+			<CardFooter className='justify-center border-t p-4'>
+				<Button size='sm' variant='ghost' className='gap-1 text-white bg-[#10b981] hover:bg-[#34d399] hover:text-white' onClick={handleSubmitProducts}>
+					<PlusCircle className='h-3.5 w-3.5 text-white' />
 					Guardar
 				</Button>
 			</CardFooter>
