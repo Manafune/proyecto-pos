@@ -3,11 +3,11 @@ import { Settings, Package2, Package, ShoppingCart, Users2, LineChart } from 'lu
 
 import { Link } from '@tanstack/react-router';
 const navItems = [
-	{ icon: Package2, label: 'Dashboard', path: '/dashboard' },
+	{ icon: Package2, label: 'Panel', path: '/dashboard' },
 	{ icon: ShoppingCart, label: 'Ventas', path: '/orders' },
 	{ icon: Package, label: 'Productos', path: '/products' },
 	{ icon: Users2, label: 'Clientes', path: '/clients' },
-	{ icon: LineChart, label: 'Analiticas', path: '/analytics' },
+	{ icon: LineChart, label: 'Analiticas', path: '/analytics' }
 ];
 
 export const DesktopNav = () => {

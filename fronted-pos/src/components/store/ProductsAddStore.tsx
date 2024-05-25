@@ -11,7 +11,7 @@ interface ProductsContextType {
 		error: string;
 	};
 	changeProductSelection: (value: string) => void;
-	deleteProductFromTotal: (id: string) => void;
+	deleteProductFromTotal: (id: string | number) => void;
 	addProductSelectionToTotal: () => void;
 	cleanTotalProducts: () => void;
 	updateProductFieldToTotal: TableRowBodyType<Product>['updateProduct'];
@@ -97,7 +97,7 @@ export const ProductsAddStore = ({ children }: { children: ReactNode }) => {
 		);
 	};
 	const cleanTotalProducts = () => setProducts([]);
-	const deleteProductFromTotal = (id: string) => {
+	const deleteProductFromTotal = (id: string | number) => {
 		const productsFilter = products.filter((product) => product.id !== id);
 		setProducts(productsFilter);
 	};

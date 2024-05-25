@@ -35,7 +35,7 @@ const MobileNav = () => {
 							</Link>
 							<Link href='#' className='flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground'>
 								<Home className='h-5 w-5' />
-								Dashboard
+								Panel
 							</Link>
 							<Link href='#' className='flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground'>
 								<ShoppingCart className='h-5 w-5' />
@@ -51,7 +51,7 @@ const MobileNav = () => {
 							</Link>
 							<Link href='#' className='flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground'>
 								<LineChart className='h-5 w-5' />
-								Settings
+								Ajustes
 							</Link>
 						</nav>
 					</SheetContent>
@@ -60,18 +60,18 @@ const MobileNav = () => {
 					<BreadcrumbList>
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Link href='#'>Dashboard</Link>
+								<Link href='#'>Panel</Link>
 							</BreadcrumbLink>
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Link href='#'>Products</Link>
+								<Link href='#'>Productos</Link>
 							</BreadcrumbLink>
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>
-							<BreadcrumbPage>All Productsx</BreadcrumbPage>
+							<BreadcrumbPage>Todos los Productos</BreadcrumbPage>
 						</BreadcrumbItem>
 					</BreadcrumbList>
 				</Breadcrumb>
@@ -91,7 +91,7 @@ const MobileNav = () => {
 						<DropdownMenuItem>
 							<Link to='/settings'>Configuración</Link>
 						</DropdownMenuItem>
-						<DropdownMenuItem>Support</DropdownMenuItem>
+						<DropdownMenuItem>Apoyo</DropdownMenuItem>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
 							onClick={async () => {

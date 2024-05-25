@@ -8,11 +8,14 @@ interface BasePagination {
 const route = getRouteApi('/_authenticated/products');
 export const BasePagination = ({ total }: BasePagination) => {
 	const { pageSize, current } = route.useSearch();
-	const numberPages = Math.ceil(total / pageSize);
-	const prevPage = current - 1;
-	const nextPage = current + 1;
-	const isDisabledNextPage = prevPage >= 1;
-	const isDisabledPrevPage = nextPage <= numberPages;
+	const { prevPage, nextPage, totalPages } = {
+		prevPage: current - 1,
+		nextPage: current + 1,
+		totalPages: Math.ceil(total / pageSize)
+	};
+
+	const isDisabledPrevPage = prevPage < 1;
+	const isDisabledNextPage = nextPage > totalPages;
 	const messageTitle = 'Fuera de Rango';
 	return (
 		<Pagination>
@@ -32,10 +35,10 @@ export const BasePagination = ({ total }: BasePagination) => {
 					</Link>
 				</PaginationItem>
 
-				{Array(numberPages)
+				{Array(totalPages)
 					.fill('')
 					.map((_, id) => (
-						<PaginationItem className='cursor-pointer' key={id}>
+						<PaginationItem className='cursor-pointer  rounded-md' key={id}>
 							<Link
 								to='/products'
 								search={(prev) => {
@@ -44,7 +47,7 @@ export const BasePagination = ({ total }: BasePagination) => {
 								}}
 								disabled={id + 1 === current}
 							>
-								<PaginationLink>{id + 1}</PaginationLink>
+								<PaginationLink className='bg-gray-200 hover:bg-gray-300/65'>{id + 1}</PaginationLink>
 							</Link>
 						</PaginationItem>
 					))}

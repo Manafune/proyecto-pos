@@ -16,6 +16,10 @@ export const TableContent = ({ products }: TypeTableContent) => {
 		const data = new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(number);
 		return data;
 	};
+
+	const getStatusText = (status: MemberStatus) => {
+		return status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo'; // Aquí puedes ajustar el texto según tu lógica
+	};
 	return (
 		<Table>
 			<TableHeader>
@@ -31,14 +35,16 @@ export const TableContent = ({ products }: TypeTableContent) => {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{products?.map((product) => (
-					<TableRow key={product.id}>
+				{products?.map((product, index) => (
+					<TableRow key={product.id} className={index % 2 === 0 ? '' : 'bg-slate-200/70 hover:bg-slate-200/70'}>
 						<TableCell className='hidden md:table-cell'>{product.name}</TableCell>
 						<TableCell className='hidden md:table-cell'>{product.container}</TableCell>
 						<TableCell className='hidden md:table-cell'>{formatPrice(product.price)}</TableCell>
 						<TableCell className='hidden md:table-cell'>{product.stock}</TableCell>
 						<TableCell>
-							<Badge variant={product.status === MemberStatus.ACTIVE ? 'outline' : 'secondary'}>{product.status}</Badge>
+							<Badge variant={product.status === MemberStatus.ACTIVE ? 'outline' : 'secondary'} className='border-none bg-blue-200'>
+								{getStatusText(product.status)}
+							</Badge>
 						</TableCell>
 						<TableCell>
 							<DropdownMenu>

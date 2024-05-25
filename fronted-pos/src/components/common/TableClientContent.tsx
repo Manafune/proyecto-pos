@@ -1,15 +1,8 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { MoreHorizontal } from 'lucide-react';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Link } from '@tanstack/react-router';
 import { ClientData } from '@/lib/clients/getClients';
 import { MemberStatus } from '@/types/members';
 interface TypeTableContent {
@@ -17,8 +10,8 @@ interface TypeTableContent {
 }
 
 export const TableClientContent = ({ clients }: TypeTableContent) => {
-  return (
-    <Table>
+	return (
+		<Table>
 			<TableHeader>
 				<TableRow>
 					<TableHead>Nombre</TableHead>
@@ -35,9 +28,10 @@ export const TableClientContent = ({ clients }: TypeTableContent) => {
 				{clients?.map((client) => (
 					<TableRow key={client.id}>
 						<TableCell className='hidden md:table-cell'>{client.name}</TableCell>
-						<TableCell className='hidden md:table-cell'>{client.container}</TableCell>
-						<TableCell className='hidden md:table-cell'>{client.price}</TableCell>
-						<TableCell className='hidden md:table-cell'>{client.stock}</TableCell>
+						<TableCell className='hidden md:table-cell'>{client.lastname}</TableCell>
+						<TableCell className='hidden md:table-cell'>{client.dni}</TableCell>
+						<TableCell className='hidden md:table-cell'>{client.dateofbirth.toString()}</TableCell>
+						<TableCell className='hidden md:table-cell'>{client.status}</TableCell>
 						<TableCell>
 							<Badge variant={client.status === MemberStatus.ACTIVE ? 'outline' : 'secondary'}>{client.status}</Badge>
 						</TableCell>
@@ -50,10 +44,8 @@ export const TableClientContent = ({ clients }: TypeTableContent) => {
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align='end'>
-									<DropdownMenuLabel>Acciónes</DropdownMenuLabel>
-									<Link to='/clients/$id' params={{ id: client.id.toString() }}>
-										<DropdownMenuItem>Editar</DropdownMenuItem>
-									</Link>
+									<DropdownMenuLabel>Acciones</DropdownMenuLabel>
+									<DropdownMenuItem>Editar</DropdownMenuItem>
 									<DropdownMenuItem>Cambiar Estado</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
@@ -62,5 +54,5 @@ export const TableClientContent = ({ clients }: TypeTableContent) => {
 				))}
 			</TableBody>
 		</Table>
-  )
-}
+	);
+};

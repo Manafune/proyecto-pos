@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { ProductData, getProductById } from '@/lib/products/getProduct';
 import { Table, TableBody, TableHeader, TableHead, TableRow } from '@/components/ui/table';
 import { TableRowBody, TableRowBodyType } from '@/components/common/TableRowBody';
+import type { ProductsPagination } from '@/routes/_authenticated/(products)/products';
 const route = getRouteApi('/_authenticated/products/$id');
 export const ProductEdit = () => {
 	const loaderData = route.useParams();
@@ -25,7 +26,7 @@ export const ProductEdit = () => {
 		};
 		getProduct();
 	}, [loaderData.id]);
-	const handleUpdateProduct: TableRowBodyType<ProductData>['updateProduct'] = (id, updatedProps) => {
+	const handleUpdateProduct: TableRowBodyType<ProductData>['updateProduct'] = (_id, updatedProps) => {
 		setProduct((prevProduct) => {
 			if (prevProduct !== null && typeof updatedProps.id === 'number') {
 				return {
@@ -46,6 +47,10 @@ export const ProductEdit = () => {
 						className={buttonVariants({
 							variant: 'outline'
 						})}
+						search={(searchParams) => {
+							const prevSearchParams = searchParams as ProductsPagination;
+							return { ...prevSearchParams };
+						}}
 					>
 						<ChevronLeft className='h-4 w-4' />
 						<span className='sr-only'>Volver</span>
@@ -60,6 +65,10 @@ export const ProductEdit = () => {
 							className={buttonVariants({
 								variant: 'outline'
 							})}
+							search={(searchParams) => {
+								const prevSearchParams = searchParams as ProductsPagination;
+								return { ...prevSearchParams };
+							}}
 						>
 							Descartar
 						</Link>

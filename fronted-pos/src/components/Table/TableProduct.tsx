@@ -7,7 +7,7 @@ export const TableProduct = () => {
 	const { products, totalProducts } = routeApi.useLoaderData();
 	return (
 		<React.Fragment>
-			<TableContent products={products} totalProducts={totalProducts} />;
+			<TableContent products={products} totalProducts={totalProducts} />
 			<BasePagination total={totalProducts} />
 		</React.Fragment>
 	);
