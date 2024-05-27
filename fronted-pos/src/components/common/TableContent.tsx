@@ -7,7 +7,7 @@ import { Link, useRouter } from '@tanstack/react-router';
 import { ProductData } from '@/lib/products/getProduct';
 import { MemberStatus } from '@/types/members';
 import { ProductsPagination } from '@/routes/_authenticated/(products)/products';
-import { putProducts } from '@/lib/products/putProducts';
+import { putProductsByState } from '@/lib/products/putProducts';
 interface TypeTableContent {
 	products: ProductData[];
 	totalProducts: number;
@@ -71,7 +71,7 @@ export const TableContent = ({ products }: TypeTableContent) => {
 									</Link>
 									<DropdownMenuItem
 										onClick={async () => {
-											const data = await putProducts({
+											const data = await putProductsByState({
 												status: product.status === MemberStatus.ACTIVE ? MemberStatus.INACTIVE : MemberStatus.ACTIVE,
 												idProduct: product.id
 											});
