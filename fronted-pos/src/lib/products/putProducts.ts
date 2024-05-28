@@ -1,4 +1,5 @@
 import supabase from '@/lib/supabase';
+import { Container } from '@/types/products';
 
 export const putProductsByState = async ({ status, idProduct }: { status: 'ACTIVE' | 'INACTIVE'; idProduct: number }) => {
 	const { data } = await supabase.from('product').update({ status }).eq('id', idProduct).select();
@@ -6,23 +7,19 @@ export const putProductsByState = async ({ status, idProduct }: { status: 'ACTIV
 };
 
 export const updateProductDetails = async ({
-	idProduct,
+	id,
 	name,
 	container,
 	price,
 	stock
 }: {
-	idProduct: number,
-	name: string,
-	container?: 'BOLSA' | 'CAJA' | 'LATA' | 'BOTELLA',
-	price: number,
-	stock: number
+	id: number;
+	name: string;
+	container?: Container;
+	price: number;
+	stock: number;
 }) => {
-	const { data, error } = await supabase
-		.from('product')
-		.update({ name, container, price, stock })
-		.eq('id', idProduct)
-		.select();
+	const { data, error } = await supabase.from('product').update({ name, container, price, stock }).eq('id', id).select();
 
 	if (error) {
 		console.error('Error updating product details:', error);

@@ -16,9 +16,9 @@ const SignOut = () => {
 	const {
 		handleSubmit,
 		register,
-		formState: { errors },
+		formState: { errors }
 	} = useForm<SignOutSchemaValidator>({
-		resolver: zodResolver(SignOutSchema),
+		resolver: zodResolver(SignOutSchema)
 	});
 
 	const onSubmit = handleSubmit(async (data) => {
@@ -29,10 +29,10 @@ const SignOut = () => {
 				options: {
 					data: {
 						name: data.name,
-						lastName: data.lastname,
+						lastName: data.lastname
 					},
-					emailRedirectTo: `${window.location.origin}/`,
-				},
+					emailRedirectTo: `${window.location.origin}/`
+				}
 			});
 			if (supaData.user && supaData.user.identities && supaData.user.identities.length === 0)
 				return toast.error('AuthApiError', { duration: 2000, description: 'El usuario ya existe' });
@@ -40,8 +40,8 @@ const SignOut = () => {
 			if (error) return toast.error(error.name, { duration: 2000, description: error.message });
 			return navigate({
 				search: {
-					confirm: `${true}`,
-				},
+					confirm: `${true}`
+				}
 			});
 		} catch (error) {
 			console.log(error);
@@ -67,19 +67,13 @@ const SignOut = () => {
 						{errors.lastname !== undefined && <span className='text-sm text-red-600'>{errors.lastname.message}</span>}
 					</div>
 					<div className='grid gap-2'>
-						<Label htmlFor='email'>Email</Label>
+						<Label htmlFor='email'>Correo Electrónico</Label>
 						<Input id='email' placeholder='ejemplo@gmail.com' autoComplete='email' {...register('email')} />
 						{errors.email !== undefined && <span className='text-sm text-red-600'>{errors.email.message}</span>}
 					</div>
 					<div className='grid gap-2'>
 						<Label htmlFor='password'>Contraseña</Label>
-						<Input
-							id='password'
-							type='password'
-							autoComplete='current-password'
-							placeholder='***-***-**'
-							{...register('password')}
-						/>
+						<Input id='password' type='password' autoComplete='current-password' placeholder='***-***-**' {...register('password')} />
 						{errors.password !== undefined && <span className='text-sm text-red-600'>{errors.password?.message}</span>}
 					</div>
 					<Button type='submit' className='w-full' disabled={confirm}>
