@@ -7,6 +7,8 @@ export const enum MemberStatus {
 export const enum MemberRole {
 	MEMBER = 'MEMBER',
 	OTRO_ROL = 'ADMIN',
+	SELLER = 'SELLER',
+	STOREKEEPER = 'STOREKEEPER',
 }
 export type MemberData = {
 	member_id: string;
