@@ -7,14 +7,14 @@ export const Route = createFileRoute('/_authenticated')({
 		const { data } = await supabase.auth.getSession();
 		if (data.session === null) {
 			throw redirect({
-				to: '/sign-in',
+				to: '/sign-in'
 			});
 		} else {
 			const { user } = data.session;
 			const status = user.user_metadata.status ?? 'ACTIVE';
 			if (status === 'INACTIVE') {
 				throw redirect({
-					to: '/sign-up',
+					to: '/sign-up'
 				});
 			}
 		}
@@ -24,11 +24,11 @@ export const Route = createFileRoute('/_authenticated')({
 		<>
 			<DesktopNav />
 			<MobileNav></MobileNav>
-			<main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
-				<div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>
+			<main className='grid flex-1 items-start overflow-x-hidden gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
+				<div className='flex  overflow-x-scroll flex-col sm:gap-4 sm:pt-4 sm:pl-14'>
 					<Outlet />
 				</div>
 			</main>
 		</>
-	),
+	)
 });

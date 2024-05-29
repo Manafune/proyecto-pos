@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Link, getRouteApi } from '@tanstack/react-router';
+import { Link, getRouteApi, useNavigate } from '@tanstack/react-router';
 import { ChevronLeft } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
@@ -33,6 +33,7 @@ const route = getRouteApi('/_authenticated/products/$id');
 
 export const ProductEdit = () => {
 	const loaderData = route.useParams();
+	const navigate = useNavigate({ from: '/products' });
 	const [product, setProduct] = useState<ProductData | null>(null);
 	useEffect(() => {
 		const getProduct = async () => {
@@ -52,17 +53,24 @@ export const ProductEdit = () => {
 		try {
 			if (product === null) return;
 			await updateProductDetails(product);
-			return toast.success('El producto se ha modificado con éxito');
+			toast.success('El producto se ha modificado con éxito');
+			return navigate({
+				to: '/products',
+				viewTransition: true,
+				search: (searchParams) => {
+					const prevSearchParams = searchParams as ProductsPagination;
+					return { ...prevSearchParams };
+				}
+			});
 		} catch (error) {
 			console.log(error);
-			return toast.error('la cagaste we');
 		}
 	};
 
 	return (
-		<div className='grid max-w-screen-xl flex-1 auto-rows-max gap-4'>
-			<div className='grid flex-1 auto-rows-max gap-4'>
-				<div className='flex items-center gap-4'>
+		<div className='grid flex-1 auto-rows-max gap-4'>
+			<div className='grid grid-flow-col'>
+				<div className='flex flex-row'>
 					<Link
 						to='/products'
 						className={buttonVariants({
@@ -76,30 +84,30 @@ export const ProductEdit = () => {
 						<ChevronLeft className='h-4 w-4' />
 						<span className='sr-only'>Volver</span>
 					</Link>
-					<h1 className='flex-1 shrink-0 whitespace-nowrap text-4xl font-semibold tracking-tight sm:grow-0'>{product?.name}</h1>
+					<h1 className='flex-1 shrink-0 whitespace-nowrap text-4xl grow font-semibold tracking-tight sm:grow-0'>{product?.name}</h1>
 					<Badge variant='outline' className='ml-auto sm:ml-0'>
 						Disponible
 					</Badge>
-					<div className='hidden items-center gap-2 md:ml-auto md:flex'>
-						<Link
-							to='/products'
-							className={buttonVariants({
-								variant: 'outline'
-							})}
-							search={(searchParams) => {
-								const prevSearchParams = searchParams as ProductsPagination;
-								return { ...prevSearchParams };
-							}}
-						>
-							Descartar
-						</Link>
-						<Button size='sm' onClick={onSubmitData}>
-							Guardar Producto
-						</Button>
-					</div>
+				</div>
+				<div className='hidden items-center gap-2 md:ml-auto md:flex'>
+					<Link
+						to='/products'
+						className={buttonVariants({
+							variant: 'outline'
+						})}
+						search={(searchParams) => {
+							const prevSearchParams = searchParams as ProductsPagination;
+							return { ...prevSearchParams };
+						}}
+					>
+						Descartar
+					</Link>
+					<Button size='sm' onClick={onSubmitData}>
+						Guardar Producto
+					</Button>
 				</div>
 			</div>
-			<div className='grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-6'>
+			<div className='grid gap-4 md:grid-cols-[1fr_auto] lg:grid-cols-3 lg:gap-6'>
 				<div className='grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-6'>
 					<Card x-chunk='dashboard-07-chunk-0'>
 						<CardHeader>
@@ -140,9 +148,7 @@ export const ProductEdit = () => {
 						</CardContent>
 					</Card>
 				</div>
-				<div className='grid auto-rows-max items-start gap-4 lg:gap-8'>
-					<StockStepsProducts steps={steps} title='¿Cómo Actualizar Productos?' />
-				</div>
+				<StockStepsProducts steps={steps} title='¿Cómo Actualizar Productos?' className='w-full' />
 			</div>
 		</div>
 	);
