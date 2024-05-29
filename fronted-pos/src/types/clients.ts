@@ -5,7 +5,10 @@ export interface Client {
 	lastname: string;
 	dni: string;
 	dateofbirth: Date;
-	phone: string;
+	address: {street: String
+		, city: String
+		, state: String
+	};
 	status: MemberStatus;
 	id: string;
 }

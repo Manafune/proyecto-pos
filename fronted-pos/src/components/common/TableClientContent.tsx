@@ -18,6 +18,7 @@ export const TableClientContent = ({ clients }: TypeTableContent) => {
 					<TableHead>Apellido</TableHead>
 					<TableHead className='hidden md:table-cell'>Dni</TableHead>
 					<TableHead className='hidden md:table-cell'>Fecha de Nacimiento</TableHead>
+					<TableHead className='hidden md:table-cell'>Dirección</TableHead>
 					<TableHead className='hidden md:table-cell'>Estado</TableHead>
 					<TableHead>
 						<span className='sr-only'>Actions</span>
@@ -31,6 +32,7 @@ export const TableClientContent = ({ clients }: TypeTableContent) => {
 						<TableCell className='hidden md:table-cell'>{client.lastname}</TableCell>
 						<TableCell className='hidden md:table-cell'>{client.dni}</TableCell>
 						<TableCell className='hidden md:table-cell'>{client.dateofbirth.toString()}</TableCell>
+						<TableCell className='hidden md:table-cell'>{client.address.street}</TableCell>
 						<TableCell className='hidden md:table-cell'>{client.status}</TableCell>
 						<TableCell>
 							<Badge variant={client.status === MemberStatus.ACTIVE ? 'outline' : 'secondary'}>{client.status}</Badge>
