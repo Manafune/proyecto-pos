@@ -1,8 +1,9 @@
 import supabase from '@/lib/supabase';
-import { Session } from '@supabase/supabase-js';
+import { UserToken } from '@/types/auth';
+import { jwtDecode } from 'jwt-decode';
 import { useState, createContext, useEffect } from 'react';
 export interface CustomSession {
-	auth: Session | null;
+	auth: UserToken | null;
 }
 
 export const SessionContext = createContext<CustomSession>({ auth: null });
@@ -12,13 +13,14 @@ export const AuthStore = ({ children }: { children: React.ReactNode }) => {
 
 	useEffect(() => {
 		const {
-			data: { subscription },
+			data: { subscription }
 		} = supabase.auth.onAuthStateChange(async (event, session) => {
 			if (event === 'SIGNED_OUT') {
 				setSessionData({ auth: null });
 			}
 			if (event === 'SIGNED_IN') {
-				session !== null && setSessionData({ auth: session });
+				const user = jwtDecode(session?.access_token ?? '') as UserToken;
+				session !== null && setSessionData({ auth: user });
 			}
 		});
 

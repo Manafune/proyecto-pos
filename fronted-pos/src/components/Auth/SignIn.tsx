@@ -14,34 +14,34 @@ const SignIn = () => {
 	const {
 		handleSubmit,
 		register,
-		formState: { errors },
+		formState: { errors }
 	} = useForm<SignInSchemaValidator>({
-		resolver: zodResolver(BaseSchema),
+		resolver: zodResolver(BaseSchema)
 	});
 	const navigate = useNavigate();
 	const onSubmit = handleSubmit(async (data) => {
 		try {
+			if (auth !== null && auth.user_status === 'INACTIVE')
+				return toast.error('Tu cuenta está inactiva. Por favor, contacta al administrador.', { duration: 2000 });
+
 			if (auth !== null) {
 				return toast('Usuario ya registrado', {
 					action: {
 						label: 'Regresa a Home',
-						onClick: () => navigate({ to: '/' }),
-					},
+						onClick: () => navigate({ to: '/' })
+					}
 				});
 			}
 
-			const { data: user, error } = await supabase.auth.signInWithPassword({
+			const { error } = await supabase.auth.signInWithPassword({
 				email: data.email,
-				password: data.password,
+				password: data.password
 			});
 			if (error)
 				return toast.error('Error en autenticacion', {
 					duration: 2000,
-					description: 'Credenciales de inicio de sesión inválidas',
+					description: 'Credenciales de inicio de sesión inválidas'
 				});
-			if (user && user.session.user.user_metadata.status === 'INACTIVE') {
-				return toast.error('Tu cuenta está inactiva. Por favor, contacta al administrador.', { duration: 2000 });
-			}
 			window.location.href = '/';
 		} catch (error) {
 			console.log(error);
@@ -57,26 +57,14 @@ const SignIn = () => {
 				<form className='grid gap-4' onSubmit={onSubmit}>
 					<div className='grid gap-2'>
 						<Label htmlFor='email'>Correo electrónico</Label>
-						<Input
-							id='email'
-							type='text'
-							placeholder='ejemplo@correo.com'
-							autoComplete='username'
-							{...register('email')}
-						/>
+						<Input id='email' type='text' placeholder='ejemplo@correo.com' autoComplete='username' {...register('email')} />
 						{errors.email !== undefined && <span className='text-sm text-red-600'>{errors.email?.message}</span>}
 					</div>
 					<div className='grid gap-2'>
 						<div className='flex items-center'>
 							<Label htmlFor='password'>Contraseña</Label>
 						</div>
-						<Input
-							id='password'
-							type='password'
-							autoComplete='current-password'
-							placeholder='***-***-**'
-							{...register('password')}
-						/>
+						<Input id='password' type='password' autoComplete='current-password' placeholder='***-***-**' {...register('password')} />
 						{errors.password !== undefined && <span className='text-sm text-red-600'>{errors.password?.message}</span>}
 					</div>
 					<Button type='submit' className='w-full'>

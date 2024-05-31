@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as AuthenticatedproductsProductsImport } from './routes/_authenticated/(products)/products'
+import { Route as AuthenticatedclientsClientsImport } from './routes/_authenticated/(clients)/clients'
 
 // Create Virtual Routes
 
@@ -83,6 +84,12 @@ const AuthenticatedproductsProductsRoute =
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
+const AuthenticatedclientsClientsRoute =
+  AuthenticatedclientsClientsImport.update({
+    path: '/clients',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
 const AuthenticatedusersUsersIndexLazyRoute =
   AuthenticatedusersUsersIndexLazyImport.update({
     path: '/users/',
@@ -105,8 +112,8 @@ const AuthenticatedproductsProductsIndexLazyRoute =
 
 const AuthenticatedclientsClientsIndexLazyRoute =
   AuthenticatedclientsClientsIndexLazyImport.update({
-    path: '/clients/',
-    getParentRoute: () => AuthenticatedRoute,
+    path: '/',
+    getParentRoute: () => AuthenticatedclientsClientsRoute,
   } as any).lazy(() =>
     import('./routes/_authenticated/(clients)/clients.index.lazy').then(
       (d) => d.Route,
@@ -179,6 +186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexLazyImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/(clients)/clients': {
+      id: '/_authenticated/clients'
+      path: '/clients'
+      fullPath: '/clients'
+      preLoaderRoute: typeof AuthenticatedclientsClientsImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/(products)/products': {
       id: '/_authenticated/products'
       path: '/products'
@@ -202,10 +216,10 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/(clients)/clients/': {
       id: '/_authenticated/clients/'
-      path: '/clients/'
+      path: '/'
       fullPath: '/clients/'
       preLoaderRoute: typeof AuthenticatedclientsClientsIndexLazyImport
-      parentRoute: typeof AuthenticatedImport
+      parentRoute: typeof AuthenticatedclientsClientsImport
     }
     '/_authenticated/(products)/products/': {
       id: '/_authenticated/products/'
@@ -234,13 +248,16 @@ export const routeTree = rootRoute.addChildren({
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
     AuthenticatedSettingsLazyRoute,
     AuthenticatedIndexLazyRoute,
+    AuthenticatedclientsClientsRoute:
+      AuthenticatedclientsClientsRoute.addChildren({
+        AuthenticatedclientsClientsIndexLazyRoute,
+      }),
     AuthenticatedproductsProductsRoute:
       AuthenticatedproductsProductsRoute.addChildren({
         AuthenticatedproductsProductsIdLazyRoute,
         AuthenticatedproductsProductsAddLazyRoute,
         AuthenticatedproductsProductsIndexLazyRoute,
       }),
-    AuthenticatedclientsClientsIndexLazyRoute,
     AuthenticatedusersUsersIndexLazyRoute,
   }),
 })

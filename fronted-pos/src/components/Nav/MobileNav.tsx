@@ -1,5 +1,5 @@
-import { Package2, Package, Home, ShoppingCart, Users2, LineChart, PanelLeft, Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { Package2, Package, Home, ShoppingCart, Users2, LineChart, PanelLeft } from 'lucide-react';
+// import { Input } from '@/components/ui/input';
 import { Link } from '@tanstack/react-router';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import {
@@ -76,8 +76,8 @@ const MobileNav = () => {
 					</BreadcrumbList>
 				</Breadcrumb>
 				<div className='relative ml-auto flex-1 md:grow-0'>
-					<Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-					<Input type='search' placeholder='Buscar...' className='w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]' />
+					{/* <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
+					<Input type='search' placeholder='search...' className='w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]' /> */}
 				</div>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
@@ -91,7 +91,7 @@ const MobileNav = () => {
 						<DropdownMenuItem>
 							<Link to='/settings'>Configuración</Link>
 						</DropdownMenuItem>
-						<DropdownMenuItem>Apoyo</DropdownMenuItem>
+
 						<DropdownMenuSeparator />
 						<DropdownMenuItem
 							onClick={async () => {

@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormLabel, FormMessage, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
 import { updateUserProfile } from '@/lib/user/updateUser';
 import { ProfileSchema, ProfilechemaValidator } from '@/lib/validation/validation';
@@ -13,21 +12,19 @@ export const Settings = () => {
 	const form = useForm<ProfilechemaValidator>({
 		resolver: zodResolver(ProfileSchema),
 		defaultValues: {
-			name: auth?.user.user_metadata.name ?? '',
+			name: auth?.user_metadata?.name ?? 'Anónimo',
 			confirmPassword: '',
 			password: '',
-			status: auth?.user.user_metadata.status ?? 'ACTIVE',
-			lastname: auth?.user.user_metadata.lastName ?? '',
+			lastname: auth?.user_metadata?.lastname ?? 'Sin Apellidos'
 		},
-		mode: 'onChange',
+		mode: 'onChange'
 	});
 	const onSubmit = async (profile: ProfilechemaValidator) => {
 		const response = await updateUserProfile({
 			confirmPassword: profile.confirmPassword,
-			id: auth?.user?.id ?? '',
+			id: auth?.sub ?? '',
 			lastname: profile.lastname,
-			name: profile.name,
-			status: profile.status,
+			name: profile.name
 		});
 		if (response.errors !== undefined) {
 			const error = response.errors[0];
@@ -64,28 +61,6 @@ export const Settings = () => {
 								<Input autoComplete='username' placeholder='Apellidos' {...field} />
 							</FormControl>
 							<FormDescription>Modifica tu apellido.</FormDescription>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={form.control}
-					name='status'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Estado</FormLabel>
-							<Select onValueChange={field.onChange} defaultValue={field.value}>
-								<FormControl>
-									<SelectTrigger>
-										<SelectValue placeholder='Selecciona el estado de tu cuenta' />
-									</SelectTrigger>
-								</FormControl>
-								<SelectContent>
-									<SelectItem value='ACTIVE'>Activo</SelectItem>
-									<SelectItem value='INACTIVE'>Inactivo</SelectItem>
-								</SelectContent>
-							</Select>
 							<FormMessage />
 						</FormItem>
 					)}
