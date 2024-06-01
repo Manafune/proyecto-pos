@@ -1,15 +1,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal } from 'lucide-react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { ClientData } from '@/lib/clients/getClients';
-import { MemberStatus } from '@/types/members';
+
+import type { AddressCustomer } from '@/types/clients';
+import React from 'react';
 interface TypeTableContent {
-	clients: ClientData[];
+	addressClients: AddressCustomer[];
 }
 
-export const TableClientContent = ({ clients }: TypeTableContent) => {
+export const TableClientContent = ({ addressClients }: TypeTableContent) => {
 	return (
 		<Table>
 			<TableHeader>
@@ -18,40 +15,28 @@ export const TableClientContent = ({ clients }: TypeTableContent) => {
 					<TableHead>Apellido</TableHead>
 					<TableHead className='hidden md:table-cell'>Dni</TableHead>
 					<TableHead className='hidden md:table-cell'>Fecha de Nacimiento</TableHead>
-					<TableHead className='hidden md:table-cell'>Dirección</TableHead>
-					<TableHead className='hidden md:table-cell'>Estado</TableHead>
+					<TableHead className='hidden md:table-cell'>Ciudad</TableHead>
+					<TableHead className='hidden md:table-cell'>Departamento</TableHead>
+					<TableHead className='hidden md:table-cell'>Calle</TableHead>
 					<TableHead>
 						<span className='sr-only'>Actions</span>
 					</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{clients?.map((client) => (
-					<TableRow key={client.id}>
-						<TableCell className='hidden md:table-cell'>{client.name}</TableCell>
-						<TableCell className='hidden md:table-cell'>{client.lastname}</TableCell>
-						<TableCell className='hidden md:table-cell'>{client.dni}</TableCell>
-						<TableCell className='hidden md:table-cell'>{client.dateofbirth.toString()}</TableCell>
-						<TableCell className='hidden md:table-cell'>{client.address.street}</TableCell>
-						<TableCell className='hidden md:table-cell'>{client.status}</TableCell>
-						<TableCell>
-							<Badge variant={client.status === MemberStatus.ACTIVE ? 'outline' : 'secondary'}>{client.status}</Badge>
-						</TableCell>
-						<TableCell>
-							<DropdownMenu>
-								<DropdownMenuTrigger asChild>
-									<Button aria-haspopup='true' size='icon' variant='ghost'>
-										<MoreHorizontal className='h-4 w-4' />
-										<span className='sr-only'>Toggle menu</span>
-									</Button>
-								</DropdownMenuTrigger>
-								<DropdownMenuContent align='end'>
-									<DropdownMenuLabel>Acciones</DropdownMenuLabel>
-									<DropdownMenuItem>Editar</DropdownMenuItem>
-									<DropdownMenuItem>Cambiar Estado</DropdownMenuItem>
-								</DropdownMenuContent>
-							</DropdownMenu>
-						</TableCell>
+				{addressClients?.map(({ customer, city, id, state, street }) => (
+					<TableRow key={id}>
+						{customer?.map((client) => (
+							<React.Fragment key={client.id.toString()}>
+								<TableCell>{client.first_name}</TableCell>
+								<TableCell>{client.last_name}</TableCell>
+								<TableCell>{client.dni}</TableCell>
+								<TableCell>{client.birth_date}</TableCell>
+							</React.Fragment>
+						))}
+						<TableCell>{city}</TableCell>
+						<TableCell>{state}</TableCell>
+						<TableCell>{street}</TableCell>
 					</TableRow>
 				))}
 			</TableBody>

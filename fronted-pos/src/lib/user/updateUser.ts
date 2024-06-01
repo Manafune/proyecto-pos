@@ -8,7 +8,7 @@ interface ApiResponse {
 	errors?: { message: string; code: string; name: string }[];
 }
 
-export const updateUserProfile = async ({ confirmPassword, lastname, name, status, id }: UserType): Promise<ApiResponse> => {
+export const updateUserProfile = async ({ confirmPassword, lastname, name, id }: UserType): Promise<ApiResponse> => {
 	try {
 		const { error: authError } = await supabase.auth.updateUser({
 			password: confirmPassword,
@@ -23,13 +23,10 @@ export const updateUserProfile = async ({ confirmPassword, lastname, name, statu
 			return { errors: [{ message: errorMessage, code: authError.code ?? '', name: 'Error de autenticacion' }] };
 		}
 
-		// Actualizar el miembro y el rol
-		const { data, error: memberError } = await supabase.rpc('update_member_and_role', {
+		const { data, error: memberError } = await supabase.rpc('update_member', {
 			member_id: id,
 			member_lastname: lastname,
-			member_name: name,
-			member_role_app: 'MEMBER',
-			member_status: status
+			member_name: name
 		});
 
 		if (memberError !== null) return { errors: [{ message: memberError.message, code: memberError.code, name: memberError.hint }] };

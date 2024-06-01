@@ -15,7 +15,7 @@ export const Settings = () => {
 			name: auth?.user_metadata?.name ?? 'Anónimo',
 			confirmPassword: '',
 			password: '',
-			lastname: auth?.user_metadata?.lastname ?? 'Sin Apellidos'
+			lastname: auth?.user_metadata?.lastName ?? 'Sin Apellidos'
 		},
 		mode: 'onChange'
 	});

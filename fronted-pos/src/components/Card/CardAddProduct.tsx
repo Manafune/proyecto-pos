@@ -1,10 +1,12 @@
 import { CardHeader, Card, CardFooter, CardContent, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { StockProductTable } from '@/components/Products/Stock/StockProductTable';
 import { useAddProducts } from '@/hooks/productsAdd';
 import { addProducts } from '@/lib/products/addProducts';
 import { toast } from 'sonner';
+import { Link } from '@tanstack/react-router';
+import { ProductsPagination } from '@/routes/_authenticated/(products)/products';
 
 export const CardAddProduct = () => {
 	const { products, updateProductFieldToTotal, cleanTotalProducts } = useAddProducts();
@@ -40,6 +42,18 @@ export const CardAddProduct = () => {
 					<PlusCircle className='h-3.5 w-3.5 text-white' />
 					Guardar
 				</Button>
+				<Link
+					to='/products'
+					className={buttonVariants({
+						variant: 'default'
+					})}
+					search={(searchParams) => {
+						const prevSearchParams = searchParams as ProductsPagination;
+						return { ...prevSearchParams };
+					}}
+				>
+					Descartar
+				</Link>
 			</CardFooter>
 		</Card>
 	);

@@ -8,8 +8,8 @@ const router = createRouter({
 	routeTree,
 	defaultPreload: 'intent',
 	context: {
-		auth: undefined!,
-	},
+		auth: undefined!
+	}
 });
 
 declare module '@tanstack/react-router' {

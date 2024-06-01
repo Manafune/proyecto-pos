@@ -26,5 +26,5 @@ export interface AppMetadata {
 }
 export interface UserMetadata {
 	name?: string;
-	lastname?: string;
+	lastName?: string;
 }
