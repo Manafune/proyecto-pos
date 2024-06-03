@@ -17,3 +17,11 @@ export const getAllClients = async ({ current, pageSize }: { current: number; pa
 		return [];
 	}
 };
+export const getClientById = async ({ id, timeout }: { id: string; timeout: (milliseconds: number) => AbortSignal }) => {
+	const { data: client } = await supabase
+		.from('address')
+		.select(`id,street,city,state,customer(id,first_name,last_name,dni,birth_date)`)
+		.eq('id', id)
+		.abortSignal(timeout(3000));
+	return client as unknown as AddressCustomer;
+};

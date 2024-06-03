@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { File, PlusCircle } from 'lucide-react';
-import { Tabs, TabsContent } from '@/components/ui/tabs';
+import { Tabs } from '@/components/ui/tabs';
 import { TableClient } from '@/components/Table/TableClient';
 import { Link } from '@tanstack/react-router';
 import { type ProductsPagination } from '@/routes/_authenticated/(products)/products';
@@ -53,12 +53,7 @@ export const Clients = () => {
 					</Link>
 				</div>
 			</div>
-			<TabsContent value='all'>
-				<TableClient />
-			</TabsContent>
-			<TabsContent value='active'></TabsContent>
-
-			<TabsContent value='inactive'></TabsContent>
+			<TableClient />
 		</Tabs>
 	);
 };

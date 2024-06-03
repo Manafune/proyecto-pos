@@ -11,9 +11,10 @@ import { ProductData, getProductById } from '@/lib/products/getProduct';
 import { Table, TableBody, TableHeader, TableHead, TableRow } from '@/components/ui/table';
 import { TableRowBody, TableRowBodyType } from '@/components/common/TableRowBody';
 import type { ProductsPagination } from '@/routes/_authenticated/(products)/products';
-import { StockStepsProducts } from './Stock/StockStepsProducts';
+
 import { updateProductDetails } from '@/lib/products/putProducts';
 import { toast } from 'sonner';
+import { CardSteps } from '../common/CardSteps';
 const steps = [
 	{
 		title: 'Paso 1',
@@ -148,7 +149,7 @@ export const ProductEdit = () => {
 						</CardContent>
 					</Card>
 				</div>
-				<StockStepsProducts steps={steps} title='¿Cómo Actualizar Productos?' className='w-full' />
+				<CardSteps steps={steps} title='¿Cómo Actualizar Productos?' className='w-full' />
 			</div>
 		</div>
 	);

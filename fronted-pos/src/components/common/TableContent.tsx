@@ -33,7 +33,7 @@ export const TableContent = ({ products }: TypeTableContent) => {
 					<TableHead className='hidden md:table-cell'>Stock</TableHead>
 					<TableHead className='hidden md:table-cell'>Estado</TableHead>
 					<TableHead>
-						<span className='sr-only'>Actions</span>
+						<span className='sr-only'>Acciones</span>
 					</TableHead>
 				</TableRow>
 			</TableHeader>

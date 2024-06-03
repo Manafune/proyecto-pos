@@ -1,7 +1,7 @@
-import { StockStepsProducts } from '@/components/Products/Stock/StockStepsProducts';
 import { SelectedAddProduct } from '@/components/Products/add/SelectedAddProduct';
 import { CardAddProduct } from '@/components/Card/CardAddProduct';
 import { ProductsAddStore } from '@/components/store/ProductsAddStore';
+import { CardSteps } from '../common/CardSteps';
 const steps = [
 	{
 		title: 'Paso 1',
@@ -29,7 +29,7 @@ export const ProductsAdd = () => {
 						<SelectedAddProduct />
 						<CardAddProduct />
 					</div>
-					<StockStepsProducts steps={steps} title={'¿Cómo Añadir Productos?'} />
+					<CardSteps steps={steps} title={'¿Cómo Añadir Productos?'} />
 				</div>
 			</div>
 		</ProductsAddStore>

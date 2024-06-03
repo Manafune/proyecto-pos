@@ -2,7 +2,7 @@ import { SIZE_PAGINATION } from '@/config';
 import { getAllClients } from '@/lib/clients/getClient';
 import { Outlet } from '@tanstack/react-router';
 import { createFileRoute } from '@tanstack/react-router';
-interface ClientsPagination {
+export interface ClientsPagination {
 	pageSize: number;
 	current: number;
 }
