@@ -1,6 +1,9 @@
 import { SIZE_PAGINATION } from '@/config';
+import supabase from '@/lib/supabase';
 import { getAllUsers } from '@/lib/user/getUser';
-import { Outlet, createFileRoute } from '@tanstack/react-router';
+import { UserToken } from '@/types/auth';
+import { Outlet, createFileRoute, redirect } from '@tanstack/react-router';
+import { jwtDecode } from 'jwt-decode';
 
 export interface UsersPagination {
 	pageSize: number;
@@ -8,6 +11,15 @@ export interface UsersPagination {
 }
 
 export const Route = createFileRoute('/_authenticated/(users)/users')({
+	beforeLoad: async () => {
+		const { data } = await supabase.auth.getSession();
+		console.log(data);
+		const user: UserToken = jwtDecode(data.session?.access_token ?? '');
+		console.log(user);
+		if(user.user_role!=='ADMIN'){
+			throw redirect({to:'/'});
+		}
+	},
 	loader: async ({ deps }) => {
 		const { pageSize, current } = deps as UsersPagination;
 		const users = await getAllUsers({ current, pageSize });
