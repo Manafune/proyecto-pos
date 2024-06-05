@@ -1,7 +1,7 @@
 import { SelectedAddProduct } from '@/components/Products/add/SelectedAddProduct';
 import { CardAddProduct } from '@/components/Card/CardAddProduct';
 import { ProductsAddStore } from '@/components/store/ProductsAddStore';
-import { CardSteps } from '../common/CardSteps';
+import { CardSteps } from '../Card/CardSteps';
 const steps = [
 	{
 		title: 'Paso 1',

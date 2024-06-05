@@ -9,12 +9,12 @@ import { buttonVariants } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { ProductData, getProductById } from '@/lib/products/getProduct';
 import { Table, TableBody, TableHeader, TableHead, TableRow } from '@/components/ui/table';
-import { TableRowBody, TableRowBodyType } from '@/components/common/TableRowBody';
+import { TableRowBody, TableRowBodyType } from '@/components/Products/TableRowBody';
 import type { ProductsPagination } from '@/routes/_authenticated/(products)/products';
 
 import { updateProductDetails } from '@/lib/products/putProducts';
 import { toast } from 'sonner';
-import { CardSteps } from '../common/CardSteps';
+import { CardSteps } from '../Card/CardSteps';
 const steps = [
 	{
 		title: 'Paso 1',

@@ -2,8 +2,8 @@ export const tableHeaders = [
 	{ label: 'Nombre' },
 	{ label: 'Apellido' },
 	{ label: 'Dni' },
-	{ label: 'Fecha de Nacimiento' },
+	{ label: 'Fecha de Nac.' },
 	{ label: 'Ciudad' },
-	{ label: 'Departamento' },
+	{ label: 'Depto.' },
 	{ label: 'Calle' }
 ];

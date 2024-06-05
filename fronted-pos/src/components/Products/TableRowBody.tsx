@@ -10,11 +10,20 @@ export interface TableRowBodyType<T> {
 	updateProduct: (id: string | number, updatedProps: Partial<T>) => void;
 	deleteProduct?: (id: string | number) => void;
 	isTooltip?: boolean;
+	isName?: boolean;
 }
 
-export const TableRowBody = <T extends Product | ProductData>({ product, updateProduct, deleteProduct, isTooltip = true }: TableRowBodyType<T>) => {
+export const TableRowBody = <T extends Product | ProductData>({
+	product,
+	updateProduct,
+	deleteProduct,
+	isName = false,
+	isTooltip = true
+}: TableRowBodyType<T>) => {
+	console.log(product);
 	return (
 		<TableRow key={`${product.name}-${product.id}`} className='relative group'>
+			{isName && <TableCell>{product.name}</TableCell>}
 			<TableCell>
 				<Label htmlFor={`stock-${product.id}`} className='sr-only'>
 					Stock
