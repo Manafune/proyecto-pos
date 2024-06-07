@@ -1,5 +1,5 @@
 import supabase from '@/lib/supabase';
-import { AddressCustomer } from '@/types/clients';
+import { AddressByCustomer, AddressCustomer } from '@/types/clients';
 export const getAllClients = async ({ current, pageSize }: { current: number; pageSize: number }) => {
 	try {
 		const pageCurrent = (current - 1) * pageSize;
@@ -23,6 +23,8 @@ export const getClientById = async ({ id, timeout }: { id: string; timeout: (mil
 		.select(`id,street,city,state,customer(id,first_name,last_name,dni,birth_date)`)
 		.eq('id', id)
 		.abortSignal(timeout(3000));
-	const addedClient = client?.[0];
-	return addedClient as AddressCustomer;
+	const address = client?.[0];
+	const customer = address?.customer[0];
+	const addressCustomer = { ...address, customer: { ...customer } };
+	return addressCustomer as AddressByCustomer;
 };

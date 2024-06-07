@@ -10,7 +10,7 @@ export const Clients = () => {
 			<div className='flex items-center'>
 				<div className='flex gap-1'>
 					<Link
-						to='/products'
+						to='/clients'
 						search={(searchParams) => {
 							const prevSearchParams = searchParams as ProductsPagination;
 							return { ...prevSearchParams };
@@ -20,7 +20,7 @@ export const Clients = () => {
 						Todos
 					</Link>
 					<Link
-						to='/products'
+						to='/clients'
 						search={(searchParams) => {
 							const prevSearchParams = searchParams as ProductsPagination;
 							return { ...prevSearchParams };
@@ -30,7 +30,7 @@ export const Clients = () => {
 						Activo
 					</Link>
 					<Link
-						to='/products'
+						to='/clients'
 						search={(searchParams) => {
 							const prevSearchParams = searchParams as ProductsPagination;
 							return { ...prevSearchParams };

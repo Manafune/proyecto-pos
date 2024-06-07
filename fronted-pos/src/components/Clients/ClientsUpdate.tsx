@@ -1,5 +1,5 @@
 import { getClientById } from '@/lib/clients/getClient';
-import { AddressCustomer } from '@/types/clients';
+import { AddressByCustomer } from '@/types/clients';
 import { getRouteApi } from '@tanstack/react-router';
 import { CardSteps } from '@/components/Card/CardSteps';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +12,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { ClientsPagination } from '@/routes/_authenticated/(clients)/clients';
 import { Link } from '@tanstack/react-router';
 import { useQuery } from '@/hooks/useQuery';
+import { updateAddresDetails } from '@/lib/clients/putClients';
 
 const route = getRouteApi('/_authenticated/clients/$id');
 const steps = [
@@ -31,15 +32,27 @@ const steps = [
 
 export const ClientsUpdate = () => {
 	const loaderData = route.useParams();
-	const { data: client, onUpdateData } = useQuery<AddressCustomer>({
+	const { data: client, onUpdateData } = useQuery<AddressByCustomer>({
 		fetchFunction: getClientById,
 		params: { id: loaderData.id }
 	});
-	// const [client, setClient] = useState<AddressCustomer | undefined>(customer?.[0] ?? undefined);
-	// console.log(client);
-	// const onUpdateClient = (client: Partial<AddressCustomer>) => {
-	// setClient((prevClient) => (prevClient !== undefined ? { ...prevClient, ...client } : prevClient));
-	// };
+	const handleSubmit = () => {
+		const customer = client?.customer;
+		client &&
+			customer &&
+			updateAddresDetails({
+				address_id: client?.id,
+				address_state: client?.state,
+				address_city: client?.city,
+				address_street: client?.state,
+				customer_dni: customer?.dni,
+				customer_first_name: customer?.first_name,
+				customer_birth_date: customer?.birth_date,
+				customer_id: customer?.id,
+				customer_last_name: customer?.last_name
+			});
+	};
+
 	return (
 		<div className='grid flex-1 auto-rows-max gap-4'>
 			<div className='grid grid-flow-col'>
@@ -58,7 +71,7 @@ export const ClientsUpdate = () => {
 						<ChevronLeft className='h-4 w-4' />
 						<span className='sr-only'>Volver</span>
 					</Link>
-					<h1 className='flex-1 shrink-0 whitespace-nowrap text-4xl grow font-semibold tracking-tight sm:grow-0'>{client?.customer?.[0]?.first_name ?? ''}</h1>
+					<h1 className='flex-1 shrink-0 whitespace-nowrap text-4xl grow font-semibold tracking-tight sm:grow-0'>{client?.customer?.first_name ?? ''}</h1>
 				</div>
 				<div className='hidden items-center gap-2 md:ml-auto md:flex'>
 					<Link
@@ -73,7 +86,9 @@ export const ClientsUpdate = () => {
 					>
 						Descartar
 					</Link>
-					<Button size='sm'>Guardar Producto</Button>
+					<Button size='sm' onClick={handleSubmit}>
+						Guardar Producto
+					</Button>
 				</div>
 			</div>
 			<div className='grid gap-4 md:grid-cols-[1fr_auto] lg:grid-cols-3 lg:gap-6'>
@@ -91,7 +106,10 @@ export const ClientsUpdate = () => {
 										className='w-full'
 										autoComplete='off'
 										placeholder='Ejemplo: Marcos'
-										defaultValue={client?.customer?.[0]?.first_name ?? ''}
+										onChange={(e) => {
+											client?.customer !== undefined && onUpdateData({ ...client, customer: { ...client.customer, first_name: e.target.value } });
+										}}
+										defaultValue={client?.customer?.first_name ?? ''}
 									/>
 								</div>
 							</div>
@@ -102,19 +120,19 @@ export const ClientsUpdate = () => {
 							<CardTitle>Información Personal</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<Table>
+							<Table className='h-full grid grid-cols-[auto_1fr] grid-rows-[23rem]'>
 								<TableHeader>
-									<TableRow>
+									<TableRow className='flex flex-col h-full justify-between'>
 										{tableHeaders
 											.filter((tableHeader) => tableHeader.label !== 'Nombre')
 											.map((head) => (
-												<TableHead className='hidden md:table-cell' key={head.label}>
+												<TableHead className='hidden md:flex md:items-center' key={head.label}>
 													{head.label}
 												</TableHead>
 											))}
 									</TableRow>
 								</TableHeader>
-								<TableBody>{client !== null && <ClientsRowBody customer={client} onUpdateCustomer={onUpdateData} />}</TableBody>
+								<TableBody className='h-full '>{client !== null && <ClientsRowBody customer={client} onUpdateCustomer={onUpdateData} />}</TableBody>
 							</Table>
 						</CardContent>
 					</Card>

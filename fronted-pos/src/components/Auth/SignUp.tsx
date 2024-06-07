@@ -1,17 +1,16 @@
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import supabase from '@/lib/supabase';
 import { SignOutSchema, type SignOutSchemaValidator } from '@/lib/validation/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, getRouteApi, useNavigate } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-const routeApi = getRouteApi('/_auth/sign-up');
+import { Button } from '@/components/ui/button';
+import { useNavigate } from '@tanstack/react-router';
 const SignOut = () => {
-	const navigate = useNavigate();
-	const { confirm } = routeApi.useSearch();
+	const navigate = useNavigate({ from: '/sign-in' });
 
 	const {
 		handleSubmit,
@@ -38,11 +37,7 @@ const SignOut = () => {
 				return toast.error('AuthApiError', { duration: 2000, description: 'El usuario ya existe' });
 
 			if (error) return toast.error(error.name, { duration: 2000, description: error.message });
-			return navigate({
-				search: {
-					confirm: `${true}`
-				}
-			});
+			return navigate({ to: '/sign-in' });
 		} catch (error) {
 			console.log(error);
 		}
@@ -76,8 +71,8 @@ const SignOut = () => {
 						<Input id='password' type='password' autoComplete='current-password' placeholder='***-***-**' {...register('password')} />
 						{errors.password !== undefined && <span className='text-sm text-red-600'>{errors.password?.message}</span>}
 					</div>
-					<Button type='submit' className='w-full' disabled={confirm}>
-						{confirm === true ? 'Verifica tu cuenta' : 'Crear Cuenta'}
+					<Button type='submit' className='w-full'>
+						{'Crear Cuenta'}
 					</Button>
 				</form>
 				<div className='mt-4 text-center text-sm'>
