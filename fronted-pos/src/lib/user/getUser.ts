@@ -1,5 +1,5 @@
 import supabase from '@/lib/supabase';
-import { MemberData, MemberStatus, MemberRole } from '@/types/members';
+import { MemberData } from '@/types/members';
 
 
 export const getAllUsers = async ({ current, pageSize }: { current: number; pageSize: number }): Promise<MemberData[]> => {

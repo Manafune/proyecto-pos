@@ -5,17 +5,19 @@ import { Link } from '@tanstack/react-router';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 const navItems = [
-	{ icon: UserRoundCog, label: 'Usuarios', path: '/users' },
-	{ icon: ShoppingCart, label: 'Ventas', path: '/orders' },
-	{ icon: Package, label: 'Productos', path: '/products' },
-	{ icon: Users2, label: 'Clientes', path: '/clients' },
-	{ icon: LineChart, label: 'Analiticas', path: '/analytics' }
+	{ icon: UserRoundCog, label: 'Usuarios', path: '/users', roles: ['ADMIN'] },
+	{ icon: ShoppingCart, label: 'Ventas', path: '/orders', roles: ['ADMIN', 'SELLER'] },
+	{ icon: Package, label: 'Productos', path: '/products', roles: ['ADMIN', 'STOREKEEPER','MEMBER'] },
+	{ icon: Users2, label: 'Clientes', path: '/clients', roles: ['ADMIN', 'SELLER'] },
+	{ icon: LineChart, label: 'Analiticas', path: '/analytics', roles: ['ADMIN'] }
 ];
 
 export const DesktopNav = () => {
 
 	const {auth} = useAuth();
-	console.log(auth?.user_role);
+	const userRole = auth?.user_role;
+
+	const filteredNavItems = userRole ? navItems.filter(item => item.roles.includes(userRole)) : [];
 
 	return (
 		<aside className=' fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex'>
@@ -27,7 +29,8 @@ export const DesktopNav = () => {
 					<Store className='h-4 w-4 transition-all group-hover:scale-110' />
 					<span className='sr-only'>Acme Inc</span>
 				</Link>
-				{navItems.map((item, index) => (
+				{filteredNavItems
+				.map((item, index) => (
 					<TooltipProvider key={index}>
 						<Tooltip>
 							<TooltipTrigger asChild>
