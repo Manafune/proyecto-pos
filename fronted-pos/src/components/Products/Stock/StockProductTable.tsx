@@ -2,7 +2,7 @@ import { Table, TableBody, TableHeader, TableHead, TableRow } from '@/components
 import { Product } from '@/types/products';
 
 import { useAddProducts } from '@/hooks/productsAdd';
-import { TableRowBody, TableRowBodyType } from '@/components/common/TableRowBody';
+import { TableRowBody, TableRowBodyType } from '@/components/Products/TableRowBody';
 
 export type StockProductTableProps = {
 	products: Product[];
@@ -23,7 +23,7 @@ export const StockProductTable: React.FC<StockProductTableProps> = ({ products, 
 			</TableHeader>
 			<TableBody>
 				{products.map((product) => (
-					<TableRowBody key={product.id} product={product} updateProduct={updateProduct} deleteProduct={deleteProductFromTotal} />
+					<TableRowBody key={product.id} product={product} updateProduct={updateProduct} deleteProduct={deleteProductFromTotal} isName={true} />
 				))}
 			</TableBody>
 		</Table>

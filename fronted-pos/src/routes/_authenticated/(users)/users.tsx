@@ -13,11 +13,9 @@ export interface UsersPagination {
 export const Route = createFileRoute('/_authenticated/(users)/users')({
 	beforeLoad: async () => {
 		const { data } = await supabase.auth.getSession();
-		console.log(data);
 		const user: UserToken = jwtDecode(data.session?.access_token ?? '');
-		console.log(user);
-		if(user.user_role!=='ADMIN'){
-			throw redirect({to:'/'});
+		if (user.user_role !== 'ADMIN') {
+			throw redirect({ to: '/' });
 		}
 	},
 	loader: async ({ deps }) => {

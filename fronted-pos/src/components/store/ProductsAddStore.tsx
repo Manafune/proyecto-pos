@@ -2,7 +2,7 @@ import { createContext, useState, ReactNode } from 'react';
 import { Container, Product } from '@/types/products';
 import { ProductSchema } from '@/lib/validation/addProduct';
 import { MemberStatus } from '@/types/members';
-import { TableRowBodyType } from '../common/TableRowBody';
+import { TableRowBodyType } from '@/components/Products/TableRowBody';
 
 interface ProductsContextType {
 	products: Product[];

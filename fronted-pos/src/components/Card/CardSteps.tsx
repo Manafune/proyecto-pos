@@ -10,7 +10,7 @@ interface StepType {
 type StepTypes = StepType[];
 
 type CardProps = React.ComponentProps<typeof Card> & { steps: StepTypes; title: string };
-export const StockStepsProducts = ({ className, steps, title, ...props }: CardProps) => {
+export const CardSteps = ({ className, steps, title, ...props }: CardProps) => {
 	return (
 		<Card className={cn('w-[380px] h-fit ', className)} {...props}>
 			<CardHeader>

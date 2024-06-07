@@ -9,11 +9,12 @@ import { buttonVariants } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { ProductData, getProductById } from '@/lib/products/getProduct';
 import { Table, TableBody, TableHeader, TableHead, TableRow } from '@/components/ui/table';
-import { TableRowBody, TableRowBodyType } from '@/components/common/TableRowBody';
+import { TableRowBody, TableRowBodyType } from '@/components/Products/TableRowBody';
 import type { ProductsPagination } from '@/routes/_authenticated/(products)/products';
-import { StockStepsProducts } from './Stock/StockStepsProducts';
+
 import { updateProductDetails } from '@/lib/products/putProducts';
 import { toast } from 'sonner';
+import { CardSteps } from '../Card/CardSteps';
 const steps = [
 	{
 		title: 'Paso 1',
@@ -56,7 +57,6 @@ export const ProductEdit = () => {
 			toast.success('El producto se ha modificado con éxito');
 			return navigate({
 				to: '/products',
-				viewTransition: true,
 				search: (searchParams) => {
 					const prevSearchParams = searchParams as ProductsPagination;
 					return { ...prevSearchParams };
@@ -148,7 +148,7 @@ export const ProductEdit = () => {
 						</CardContent>
 					</Card>
 				</div>
-				<StockStepsProducts steps={steps} title='¿Cómo Actualizar Productos?' className='w-full' />
+				<CardSteps steps={steps} title='¿Cómo Actualizar Productos?' className='w-full' />
 			</div>
 		</div>
 	);

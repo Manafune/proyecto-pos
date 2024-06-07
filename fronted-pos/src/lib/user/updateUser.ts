@@ -1,5 +1,5 @@
 import supabase from '@/lib/supabase';
-import { type ProfilechemaValidator } from '../validation/validation';
+import { type ProfilechemaValidator } from '@/lib/validation/validation';
 import { MemberData } from '@/types/members';
 type UserType = Omit<ProfilechemaValidator, 'password'> & { id: string };
 
