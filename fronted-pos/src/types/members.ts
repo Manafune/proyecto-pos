@@ -17,3 +17,12 @@ export type MemberData = {
 	member_status: MemberStatus;
 	member_role_app: MemberRole;
 };
+
+
+export type User = {
+	email: string;
+    name: string;
+	lastname: string;
+    role_app: MemberRole;
+	status: MemberStatus;
+}
