@@ -23,5 +23,6 @@ export const getClientById = async ({ id, timeout }: { id: string; timeout: (mil
 		.select(`id,street,city,state,customer(id,first_name,last_name,dni,birth_date)`)
 		.eq('id', id)
 		.abortSignal(timeout(3000));
-	return client as unknown as AddressCustomer[];
+	const addedClient = client?.[0];
+	return addedClient as AddressCustomer;
 };

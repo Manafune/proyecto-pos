@@ -1,23 +1,31 @@
 import { AddressCustomer } from '@/types/clients';
-import { TableCell, TableRow } from '../ui/table';
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
+import { TableCell, TableRow } from '@/components/ui/table';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 interface ClientsRowBody {
 	customer: AddressCustomer;
+	onUpdateCustomer: (params: AddressCustomer) => void;
 }
 export const ClientsRowBody = ({ customer }: ClientsRowBody) => {
 	const { city, state, street, customer: customerNew, id } = customer;
 	const client = customerNew?.[0];
-	console.log(client);
-
+	// clg;
 	return (
-		<TableRow key={id}>
+		<TableRow>
 			<TableCell>
 				<Label className='sr-only' htmlFor={`${'lastName-'}${id}`}>
 					Apellido
 				</Label>
-				<Input type='text' defaultValue={client?.last_name ?? ''} id={`${'lastName-'}${id}`}></Input>
+				<Input
+					type='text'
+					defaultValue={client?.last_name ?? ''}
+					// onChange={(e) => {
+					// onUpdateCustomer((prevCustomer: any) => ({ ...prevCustomer }));
+					// onUpdateCustomer(customer=>({...customer,}))
+					// }}
+					id={`${'lastName-'}${id}`}
+				></Input>
 			</TableCell>
 			<TableCell>
 				<Label className='sr-only' htmlFor={`${'dni-'}${id}`}>

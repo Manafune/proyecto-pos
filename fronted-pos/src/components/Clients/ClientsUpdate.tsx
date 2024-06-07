@@ -1,17 +1,17 @@
 import { getClientById } from '@/lib/clients/getClient';
 import { AddressCustomer } from '@/types/clients';
 import { getRouteApi } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
 import { CardSteps } from '@/components/Card/CardSteps';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '../ui/table';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { tableHeaders } from '@/data/users/table';
 import { ClientsRowBody } from './ClientsRowBody';
 import { ChevronLeft } from 'lucide-react';
-import { Button, buttonVariants } from '../ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { ClientsPagination } from '@/routes/_authenticated/(clients)/clients';
 import { Link } from '@tanstack/react-router';
+import { useQuery } from '@/hooks/useQuery';
 
 const route = getRouteApi('/_authenticated/clients/$id');
 const steps = [
@@ -31,29 +31,15 @@ const steps = [
 
 export const ClientsUpdate = () => {
 	const loaderData = route.useParams();
-	const [customer, setCustomer] = useState<AddressCustomer[] | null>(null);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [error, setError] = useState<Error | null>(null);
-	const client = customer?.[0];
-	useEffect(() => {
-		const { abort, timeout } = AbortSignal;
-		const getDatas = async () => {
-			setIsLoading(true);
-			setError(null);
-			try {
-				const customer = await getClientById({ id: loaderData.id, timeout });
-				setCustomer(customer);
-			} catch (error) {
-				if (error instanceof Error && error.name === 'AbortError') setError({ message: 'Error al abortar la carga', name: 'Error en carga' });
-			} finally {
-				setIsLoading(false);
-			}
-		};
-		getDatas();
-		() => {
-			abort();
-		};
-	}, [loaderData.id]);
+	const { data: client, onUpdateData } = useQuery<AddressCustomer>({
+		fetchFunction: getClientById,
+		params: { id: loaderData.id }
+	});
+	// const [client, setClient] = useState<AddressCustomer | undefined>(customer?.[0] ?? undefined);
+	// console.log(client);
+	// const onUpdateClient = (client: Partial<AddressCustomer>) => {
+	// setClient((prevClient) => (prevClient !== undefined ? { ...prevClient, ...client } : prevClient));
+	// };
 	return (
 		<div className='grid flex-1 auto-rows-max gap-4'>
 			<div className='grid grid-flow-col'>
@@ -122,11 +108,13 @@ export const ClientsUpdate = () => {
 										{tableHeaders
 											.filter((tableHeader) => tableHeader.label !== 'Nombre')
 											.map((head) => (
-												<TableHead className='hidden md:table-cell'>{head.label}</TableHead>
+												<TableHead className='hidden md:table-cell' key={head.label}>
+													{head.label}
+												</TableHead>
 											))}
 									</TableRow>
 								</TableHeader>
-								<TableBody>{client !== undefined && <ClientsRowBody customer={client} />}</TableBody>
+								<TableBody>{client !== null && <ClientsRowBody customer={client} onUpdateCustomer={onUpdateData} />}</TableBody>
 							</Table>
 						</CardContent>
 					</Card>

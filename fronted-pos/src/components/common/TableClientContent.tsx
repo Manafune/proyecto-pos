@@ -2,9 +2,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 import type { AddressCustomer } from '@/types/clients';
 import React from 'react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
 import { ClientsPagination } from '@/routes/_authenticated/(clients)/clients';
 import { tableHeaders } from '@/data/users/table';
@@ -13,12 +13,15 @@ interface TypeTableContent {
 }
 
 export const TableClientContent = ({ addressClients }: TypeTableContent) => {
+	console.log(addressClients);
 	return (
 		<Table>
 			<TableHeader>
 				<TableRow>
 					{tableHeaders.map((head) => (
-						<TableHead className='hidden md:table-cell'>{head.label}</TableHead>
+						<TableHead className='hidden md:table-cell' key={head.label}>
+							{head.label}
+						</TableHead>
 					))}
 					<TableHead>
 						<span className='sr-only'>Actions</span>

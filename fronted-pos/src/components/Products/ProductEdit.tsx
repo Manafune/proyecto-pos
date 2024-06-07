@@ -57,7 +57,6 @@ export const ProductEdit = () => {
 			toast.success('El producto se ha modificado con éxito');
 			return navigate({
 				to: '/products',
-				viewTransition: true,
 				search: (searchParams) => {
 					const prevSearchParams = searchParams as ProductsPagination;
 					return { ...prevSearchParams };

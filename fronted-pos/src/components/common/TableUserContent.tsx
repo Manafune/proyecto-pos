@@ -1,35 +1,74 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import type { MemberData } from '@/types/members';
-import React from 'react';
-
+import { Badge } from '@/components/ui/badge';
+import { MoreHorizontal } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { UserData } from '@/lib/user/getUser';
+import { MemberStatus, MemberRole } from '@/types/members';
 interface TypeTableContent {
-  users: MemberData[];
+	user: UserData[];
 }
 
-export const TableUserContent = ({ users }: TypeTableContent) => {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Nombre</TableHead>
-          <TableHead>Apellido</TableHead>
-          <TableHead>Rol</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>
-            <span className='sr-only'>Actions</span>
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {users?.map(({ member_id, member_lastname, member_name, member_role_app, member_status }) => (
-          <TableRow key={member_id}>
-            <TableCell>{member_name}</TableCell>
-            <TableCell>{member_lastname}</TableCell>
-            <TableCell>{member_role_app}</TableCell>
-            <TableCell>{member_status}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
+export const TableUserContent = ({ user }: TypeTableContent) => {
+	const getRoleText = (role_app: MemberRole) => {
+		return role_app === MemberRole.MEMBER
+			? 'Miembro'
+			: role_app === MemberRole.OTRO_ROL
+				? 'Adminitrador'
+				: role_app === MemberRole.SELLER
+					? 'Vendedor '
+					: 'Almacenero'; // Aquí puedes ajustar el texto según tu lógica
+	};
+	const getStatusText = (status: MemberStatus) => {
+		return status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo'; // Aquí puedes ajustar el texto según tu lógica
+	};
+	return (
+		<Table>
+			<TableHeader>
+				<TableRow>
+					<TableHead>Nombre</TableHead>
+					<TableHead>Apellido</TableHead>
+					<TableHead className='hidden md:table-cell'>Rol</TableHead>
+					<TableHead className='hidden md:table-cell'>Estado</TableHead>
+					<TableHead>
+						<span className='sr-only'>Acciones</span>
+					</TableHead>
+				</TableRow>
+			</TableHeader>
+			<TableBody>
+				{user?.map((user) => (
+					<TableRow key={user.id.toString()}>
+						<TableCell className='hidden md:table-cell'>{user.name}</TableCell>
+						<TableCell className='hidden md:table-cell'>{user.lastname}</TableCell>
+						<TableCell className='hidden md:table-cell'>{user.role_app}</TableCell>
+						<TableCell className='hidden md:table-cell'>{user.status}</TableCell>
+						<TableCell>
+							<Badge variant={user.role_app === MemberRole.MEMBER ? 'outline' : 'secondary'}>{user.role_app}</Badge>
+							{getRoleText(user.role_app)}
+						</TableCell>
+						<TableCell>
+							<Badge variant={user.status === MemberStatus.ACTIVE ? 'outline' : 'secondary'}>{user.status}</Badge>
+							{getStatusText(user.status)}
+						</TableCell>
+						<TableCell>
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button aria-haspopup='true' size='icon' variant='ghost'>
+										<MoreHorizontal className='h-4 w-4' />
+										<span className='sr-only'>Toggle menu</span>
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align='end'>
+									<DropdownMenuLabel>Acciones</DropdownMenuLabel>
+									<DropdownMenuItem>Editar</DropdownMenuItem>
+									<DropdownMenuItem>Cambiar Rol</DropdownMenuItem>
+									<DropdownMenuItem>Cambiar Estado</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
+						</TableCell>
+					</TableRow>
+				))}
+			</TableBody>
+		</Table>
+	);
 };

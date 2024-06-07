@@ -13,9 +13,7 @@ const navItems = [
 ];
 
 export const DesktopNav = () => {
-
-	const {auth} = useAuth();
-	console.log(auth?.user_role);
+	const { auth } = useAuth();
 
 	return (
 		<aside className=' fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex'>
@@ -33,7 +31,10 @@ export const DesktopNav = () => {
 							<TooltipTrigger asChild>
 								<Link
 									to={item.path}
-									className={cn('flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',{'bg-red-100':auth?.user_role=='MEMBER'})}
+									className={cn(
+										'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
+										{ 'bg-red-100': auth?.user_role == 'MEMBER' }
+									)}
 								>
 									<item.icon className='h-5 w-5' />
 									<span className='sr-only'>{item.label}</span>
