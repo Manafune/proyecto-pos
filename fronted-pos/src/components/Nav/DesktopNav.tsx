@@ -5,11 +5,11 @@ import { Link } from '@tanstack/react-router';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 const navItems = [
-	{ icon: UserRoundCog, label: 'Usuarios', path: '/users', roles: ['ADMIN'] },
-	{ icon: ShoppingCart, label: 'Ventas', path: '/orders', roles: ['ADMIN', 'SELLER'] },
+	{ icon: UserRoundCog, label: 'Usuarios', path: '/users', roles: ['ADMIN','MEMBER'] },
+	{ icon: ShoppingCart, label: 'Ventas', path: '/orders', roles: ['ADMIN', 'SELLER','MEMBER'] },
 	{ icon: Package, label: 'Productos', path: '/products', roles: ['ADMIN', 'STOREKEEPER','MEMBER'] },
-	{ icon: Users2, label: 'Clientes', path: '/clients', roles: ['ADMIN', 'SELLER'] },
-	{ icon: LineChart, label: 'Analiticas', path: '/analytics', roles: ['ADMIN'] }
+	{ icon: Users2, label: 'Clientes', path: '/clients', roles: ['ADMIN', 'SELLER','MEMBER']},
+	{ icon: LineChart, label: 'Analiticas', path: '/analytics', roles: ['ADMIN','MEMBER']}
 ];
 
 export const DesktopNav = () => {
