@@ -42,6 +42,9 @@ const AuthenticatedproductsProductsAddLazyImport = createFileRoute(
 const AuthenticatedproductsProductsIdLazyImport = createFileRoute(
   '/_authenticated/(products)/products/$id',
 )()
+const AuthenticatedclientsClientsAddLazyImport = createFileRoute(
+  '/_authenticated/(clients)/clients/add',
+)()
 const AuthenticatedclientsClientsIdLazyImport = createFileRoute(
   '/_authenticated/(clients)/clients/$id',
 )()
@@ -149,6 +152,16 @@ const AuthenticatedproductsProductsIdLazyRoute =
     ),
   )
 
+const AuthenticatedclientsClientsAddLazyRoute =
+  AuthenticatedclientsClientsAddLazyImport.update({
+    path: '/add',
+    getParentRoute: () => AuthenticatedclientsClientsRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/(clients)/clients.add.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const AuthenticatedclientsClientsIdLazyRoute =
   AuthenticatedclientsClientsIdLazyImport.update({
     path: '/$id',
@@ -233,6 +246,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedclientsClientsIdLazyImport
       parentRoute: typeof AuthenticatedclientsClientsImport
     }
+    '/_authenticated/(clients)/clients/add': {
+      id: '/_authenticated/clients/add'
+      path: '/add'
+      fullPath: '/clients/add'
+      preLoaderRoute: typeof AuthenticatedclientsClientsAddLazyImport
+      parentRoute: typeof AuthenticatedclientsClientsImport
+    }
     '/_authenticated/(products)/products/$id': {
       id: '/_authenticated/products/$id'
       path: '/$id'
@@ -284,6 +304,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedclientsClientsRoute:
       AuthenticatedclientsClientsRoute.addChildren({
         AuthenticatedclientsClientsIdLazyRoute,
+        AuthenticatedclientsClientsAddLazyRoute,
         AuthenticatedclientsClientsIndexLazyRoute,
       }),
     AuthenticatedproductsProductsRoute:

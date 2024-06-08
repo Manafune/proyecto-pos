@@ -2,7 +2,7 @@ import { PlusCircle } from 'lucide-react';
 import { Tabs } from '@/components/ui/tabs';
 import { TableClient } from '@/components/Table/TableClient';
 import { Link } from '@tanstack/react-router';
-import { type ProductsPagination } from '@/routes/_authenticated/(products)/products';
+import { type ClientsPagination } from '@/routes/_authenticated/(clients)/clients';
 
 export const Clients = () => {
 	return (
@@ -12,7 +12,7 @@ export const Clients = () => {
 					<Link
 						to='/clients'
 						search={(searchParams) => {
-							const prevSearchParams = searchParams as ProductsPagination;
+							const prevSearchParams = searchParams as ClientsPagination;
 							return { ...prevSearchParams };
 						}}
 						className='inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#a8a29e]'
@@ -22,7 +22,7 @@ export const Clients = () => {
 					<Link
 						to='/clients'
 						search={(searchParams) => {
-							const prevSearchParams = searchParams as ProductsPagination;
+							const prevSearchParams = searchParams as ClientsPagination;
 							return { ...prevSearchParams };
 						}}
 						className='inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#a8a29e]'
@@ -32,7 +32,7 @@ export const Clients = () => {
 					<Link
 						to='/clients'
 						search={(searchParams) => {
-							const prevSearchParams = searchParams as ProductsPagination;
+							const prevSearchParams = searchParams as ClientsPagination;
 							return { ...prevSearchParams };
 						}}
 						className='inline-flex items-center justify-center 
@@ -42,7 +42,14 @@ export const Clients = () => {
 					</Link>
 				</div>
 				<div className='ml-auto flex items-center gap-2'>
-					<Link className='h-8 gap-1 text-sm bg-[#10b981] hover:bg-[#34d399] text-white flex flex-row items-center p-[0.5em] rounded-[0.5em]'>
+					<Link
+						className='h-8 gap-1 text-sm bg-[#10b981] hover:bg-[#34d399] text-white flex flex-row items-center p-[0.5em] rounded-[0.5em]'
+						to='/clients/add'
+						search={(prev) => {
+							const data = prev as ClientsPagination;
+							return { ...data };
+						}}
+					>
 						<PlusCircle className='h-3.5 w-3.5' />
 						<span className='sr-only leading-none sm:not-sr-only sm:whitespace-nowrap'>Cliente</span>
 					</Link>
