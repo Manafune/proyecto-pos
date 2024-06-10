@@ -13,7 +13,6 @@ import { ClientsPagination } from '@/routes/_authenticated/(clients)/clients';
 import { Link } from '@tanstack/react-router';
 import { useQuery } from '@/hooks/useQuery';
 import { updateAddresDetails } from '@/lib/clients/putClients';
-
 const route = getRouteApi('/_authenticated/clients/$id');
 const steps = [
 	{

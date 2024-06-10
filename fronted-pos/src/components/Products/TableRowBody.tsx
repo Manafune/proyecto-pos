@@ -5,22 +5,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Product } from '@/types/products';
 import { type ProductData } from '@/lib/products/getProduct';
 import { X } from 'lucide-react';
-export interface TableRowBodyType<T> {
-	product: T;
-	updateProduct: (id: string | number, updatedProps: Partial<T>) => void;
+export interface TableRowBodyType<TypeProduct> {
+	product: TypeProduct;
+	updateProduct: (id: string | number, updatedProps: Partial<TypeProduct>) => void;
 	deleteProduct?: (id: string | number) => void;
 	isTooltip?: boolean;
 	isName?: boolean;
 }
 
-export const TableRowBody = <T extends Product | ProductData>({
+export const TableRowBody = <TypeProduct extends Product | ProductData>({
 	product,
 	updateProduct,
 	deleteProduct,
 	isName = false,
 	isTooltip = true
-}: TableRowBodyType<T>) => {
-	console.log(product);
+}: TableRowBodyType<TypeProduct>) => {
 	return (
 		<TableRow key={`${product.name}-${product.id}`} className='relative group'>
 			{isName && <TableCell>{product.name}</TableCell>}
@@ -37,7 +36,7 @@ export const TableRowBody = <T extends Product | ProductData>({
 					onChange={(e) => {
 						const newStockValue = Number(e.currentTarget.value);
 						updateProduct(product.id, {
-							...(product as Partial<T>),
+							...(product as Partial<TypeProduct>),
 							stock: newStockValue
 						});
 					}}
@@ -57,7 +56,7 @@ export const TableRowBody = <T extends Product | ProductData>({
 					onChange={(e) => {
 						const newPriceValue = Number(e.currentTarget.value);
 						updateProduct(product.id, {
-							...(product as Partial<T>),
+							...(product as Partial<TypeProduct>),
 							price: newPriceValue
 						});
 					}}
@@ -68,7 +67,7 @@ export const TableRowBody = <T extends Product | ProductData>({
 					defaultValue={product.container.toUpperCase() ?? 'BOLSA'}
 					onValueChange={(selectedContainer) => {
 						updateProduct(product.id, {
-							...(product as Partial<T>),
+							...(product as Partial<TypeProduct>),
 							container: selectedContainer
 						});
 					}}

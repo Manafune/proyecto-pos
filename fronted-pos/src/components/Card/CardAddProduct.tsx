@@ -2,18 +2,18 @@ import { CardHeader, Card, CardFooter, CardContent, CardTitle } from '@/componen
 import { Button, buttonVariants } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { StockProductTable } from '@/components/Products/Stock/StockProductTable';
-import { useAddProducts } from '@/hooks/productsAdd';
-import { addProducts } from '@/lib/products/addProducts';
 import { toast } from 'sonner';
 import { Link } from '@tanstack/react-router';
 import { ProductsPagination } from '@/routes/_authenticated/(products)/products';
+import { useAddProductsStore } from '@/hooks/productsAdd';
+import { addProducts } from '@/lib/products/addProducts';
 
 export const CardAddProduct = () => {
-	const { products, updateProductFieldToTotal, cleanTotalProducts } = useAddProducts();
-
+	const { storeAddProducts, onCleanTotalProducts } = useAddProductsStore();
+	console.log(storeAddProducts);
 	const handleSubmitProducts = async () => {
-		if (products.length <= 0) return;
-		const response = await addProducts({ products });
+		if (storeAddProducts.products.length <= 0) return;
+		const response = await addProducts({ products: storeAddProducts.products });
 		if (response.errors !== undefined) {
 			const error = response.errors[0];
 			return toast.error(error.name, {
@@ -22,7 +22,7 @@ export const CardAddProduct = () => {
 			});
 		}
 		if (response.data !== undefined) {
-			cleanTotalProducts();
+			onCleanTotalProducts();
 			return toast.success('Se añadio el producto', {
 				duration: 1800,
 				description: 'productos añadidos exitosamente'
@@ -35,7 +35,7 @@ export const CardAddProduct = () => {
 				<CardTitle>Lista de Productos a Añadir</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<StockProductTable products={products} updateProduct={updateProductFieldToTotal} />
+				<StockProductTable />
 			</CardContent>
 			<CardFooter className='justify-center border-t p-4'>
 				<Button size='sm' variant='ghost' className='gap-1 text-white bg-[#10b981] hover:bg-[#34d399] hover:text-white' onClick={handleSubmitProducts}>

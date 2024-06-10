@@ -28,11 +28,9 @@ export const useQuery = <Data>({ fetchFunction, params }: UseQueryParams<Data>):
 				const result = await fetchFunction({ ...newParams, timeout });
 				setData(result);
 			} catch (error) {
-				if (error instanceof Error && error.name === 'AbortError') {
-					setError({ message: 'Error al abortar la carga', name: 'Error en carga' });
-				} else {
-					setError(error as Error);
-				}
+				error instanceof Error && error.name === 'AbortError'
+					? setError({ message: 'Error al abortar la carga', name: 'Error en carga' })
+					: setError(error as Error);
 			} finally {
 				setIsLoading(false);
 			}

@@ -1,16 +1,10 @@
 import { Table, TableBody, TableHeader, TableHead, TableRow } from '@/components/ui/table';
-import { Product } from '@/types/products';
+import { TableRowBody } from '@/components/Products/TableRowBody';
+import { useAddProductsStore } from '@/hooks/productsAdd';
 
-import { useAddProducts } from '@/hooks/productsAdd';
-import { TableRowBody, TableRowBodyType } from '@/components/Products/TableRowBody';
+export const StockProductTable = () => {
+	const { onDeleteProductFromTotal, storeAddProducts, onUpdateProductFromTotal } = useAddProductsStore();
 
-export type StockProductTableProps = {
-	products: Product[];
-	updateProduct: TableRowBodyType<Product>['updateProduct'];
-};
-
-export const StockProductTable: React.FC<StockProductTableProps> = ({ products, updateProduct }) => {
-	const { deleteProductFromTotal } = useAddProducts();
 	return (
 		<Table>
 			<TableHeader>
@@ -22,8 +16,8 @@ export const StockProductTable: React.FC<StockProductTableProps> = ({ products, 
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{products.map((product) => (
-					<TableRowBody key={product.id} product={product} updateProduct={updateProduct} deleteProduct={deleteProductFromTotal} isName={true} />
+				{storeAddProducts.products.map((product) => (
+					<TableRowBody key={product.id} product={product} updateProduct={onUpdateProductFromTotal} deleteProduct={onDeleteProductFromTotal} isName={true} />
 				))}
 			</TableBody>
 		</Table>
