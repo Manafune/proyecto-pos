@@ -5,7 +5,7 @@ export type AddPrefix<OriginalKeys, Prefix extends string> = {
 	[Key in keyof OriginalKeys as `${Prefix}${Key & string}`]: OriginalKeys[Key];
 };
 export interface AddressCustomer {
-	id: number;
+	id?: number;
 	street: string;
 	city: string;
 	state: string;
@@ -15,8 +15,9 @@ export interface AddressCustomer {
 export type AddressByCustomer = Omit<AddressCustomer, 'customer'> & {
 	customer?: Customer;
 };
+
 export interface Customer {
-	id: number;
+	id?: number;
 	dni: string;
 	last_name: string;
 	birth_date: string;

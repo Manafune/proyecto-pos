@@ -20,6 +20,8 @@ const formatBirthDate = (dateString: string) => {
 
 export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) => {
 	const { city, state, street, customer: client, id } = customer;
+	// console.log(client.)
+	//
 	return (
 		<TableRow className='grid items-center h-full px-2'>
 			<TableCell className='p-0'>
