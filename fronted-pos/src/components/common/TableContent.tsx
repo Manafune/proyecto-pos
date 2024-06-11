@@ -20,9 +20,8 @@ export const TableContent = ({ products }: TypeTableContent) => {
 		return data;
 	};
 
-	const getStatusText = (status: MemberStatus) => {
-		return status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo'; // Aquí puedes ajustar el texto según tu lógica
-	};
+	const getStatusText = (status: MemberStatus) => (status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo');
+
 	return (
 		<Table>
 			<TableHeader>

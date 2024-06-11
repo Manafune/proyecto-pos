@@ -1,15 +1,15 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal } from 'lucide-react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { UserData } from '@/lib/user/getUser';
+// import { Badge } from '@/components/ui/badge';
+// import { MoreHorizontal } from 'lucide-react';
+// import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+// import { Button } from '@/components/ui/button';
+import { getRouteApi } from '@tanstack/react-router';
 import { MemberStatus, MemberRole } from '@/types/members';
-interface TypeTableContent {
-	user: UserData[];
-}
 
-export const TableUserContent = ({ user }: TypeTableContent) => {
+const routeApi = getRouteApi('/_authenticated/users');
+export const TableUserContent = () => {
+	// Render the TableUserContent component with users data
+	const { users } = routeApi.useLoaderData();
 	const getRoleText = (role_app: MemberRole) => {
 		return role_app === MemberRole.MEMBER
 			? 'Miembro'
@@ -19,9 +19,8 @@ export const TableUserContent = ({ user }: TypeTableContent) => {
 					? 'Vendedor '
 					: 'Almacenero'; // Aquí puedes ajustar el texto según tu lógica
 	};
-	const getStatusText = (status: MemberStatus) => {
-		return status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo'; // Aquí puedes ajustar el texto según tu lógica
-	};
+	const getStatusText = (status: MemberStatus) => (status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo');
+	console.dir(users);
 	return (
 		<Table>
 			<TableHeader>
@@ -35,8 +34,8 @@ export const TableUserContent = ({ user }: TypeTableContent) => {
 					</TableHead>
 				</TableRow>
 			</TableHeader>
-			<TableBody>
-				{user?.map((user) => (
+			{/* <TableBody>
+				{users?.map((user) => (
 					<TableRow key={user.id.toString()}>
 						<TableCell className='hidden md:table-cell'>{user.name}</TableCell>
 						<TableCell className='hidden md:table-cell'>{user.lastname}</TableCell>
@@ -68,7 +67,7 @@ export const TableUserContent = ({ user }: TypeTableContent) => {
 						</TableCell>
 					</TableRow>
 				))}
-			</TableBody>
+			</TableBody> */}
 		</Table>
 	);
 };
