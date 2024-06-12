@@ -3,6 +3,7 @@ export const enum MemberStatus {
 	INACTIVE = 'INACTIVE',
 }
 
+
 // Definir enumeración para MemberRole
 export const enum MemberRole {
 	MEMBER = 'MEMBER',
@@ -10,6 +11,7 @@ export const enum MemberRole {
 	SELLER = 'SELLER',
 	STOREKEEPER = 'STOREKEEPER',
 }
+
 export type MemberData = {
 	member_id: string;
 	member_lastname: string;
@@ -17,7 +19,6 @@ export type MemberData = {
 	member_status: MemberStatus;
 	member_role_app: MemberRole;
 };
-
 
 export type User = {
 	email: string;

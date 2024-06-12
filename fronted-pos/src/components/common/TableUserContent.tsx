@@ -5,30 +5,59 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { getAllUsers } from '@/lib/user/getUser';
-import { MemberStatus, MemberRole } from '@/types/members';
+import { MemberStatus, MemberRole, MemberData, User } from '@/types/members';
 
 export const TableUserContent = () => {
-	const [users, setUsers] = useState([]);
+	const [users, setUsers] = useState<User[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchUsers = async () => {
-			const usersData = await getAllUsers({ current: 1, pageSize: 10 });
-			setUsers(usersData);
+			try {
+				const usersData: MemberData[] = await getAllUsers({ current: 1, pageSize: 10 });
+				console.log('Fetched users data:', usersData); // Log the fetched data
+				setUsers(usersData.map(user => ({
+					email: '',  // Asumiendo que no tienes esta información disponible
+					name: user.member_name,
+					lastname: user.member_lastname,
+					role_app: user.member_role_app,
+					status: user.member_status,
+				})));
+			} catch (error) {
+				console.error('Error fetching users:', error);
+				setError('Failed to fetch users');
+			} finally {
+				setLoading(false);
+			}
 		};
 		fetchUsers();
 	}, []);
 
 	const getRoleText = (role_app: MemberRole) => {
-		return role_app === MemberRole.MEMBER
-			? 'Miembro'
-			: role_app === MemberRole.OTRO_ROL
-				? 'Administrador'
-				: role_app === MemberRole.SELLER
-					? 'Vendedor'
-					: 'Almacenero';
+		switch (role_app) {
+			case MemberRole.MEMBER:
+				return 'Miembro';
+			case MemberRole.OTRO_ROL:
+				return 'Administrador';
+			case MemberRole.SELLER:
+				return 'Vendedor';
+			case MemberRole.STOREKEEPER:
+				return 'Almacenero';
+			default:
+				return '';
+		}
 	};
 
 	const getStatusText = (status: MemberStatus) => (status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo');
+
+	if (loading) {
+		return <p>Loading...</p>;
+	}
+
+	if (error) {
+		return <p>{error}</p>;
+	}
 
 	return (
 		<Table>
@@ -45,13 +74,13 @@ export const TableUserContent = () => {
 			</TableHeader>
 			<TableBody>
 				{users?.map((user, index) => (
-					<TableRow key={user.member_id} className={index % 2 === 0 ? '' : 'bg-slate-200/70 hover:bg-slate-200/70'}>
-						<TableCell>{user.member_name}</TableCell>
-						<TableCell>{user.member_lastname}</TableCell>
-						<TableCell className='hidden md:table-cell'>{getRoleText(user.member_role_app)}</TableCell>
+					<TableRow key={user.email || user.name} className={index % 2 === 0 ? '' : 'bg-slate-200/70 hover:bg-slate-200/70'}>
+						<TableCell>{user.name}</TableCell>
+						<TableCell>{user.lastname}</TableCell>
+						<TableCell className='hidden md:table-cell'>{getRoleText(user.role_app)}</TableCell>
 						<TableCell className='hidden md:table-cell'>
-							<Badge variant={user.member_status === MemberStatus.ACTIVE ? 'outline' : 'secondary'} className='border-none bg-blue-200'>
-								{getStatusText(user.member_status)}
+							<Badge variant={user.status === MemberStatus.ACTIVE ? 'outline' : 'secondary'} className='border-none bg-blue-200'>
+								{getStatusText(user.status)}
 							</Badge>
 						</TableCell>
 						<TableCell>
@@ -75,5 +104,3 @@ export const TableUserContent = () => {
 		</Table>
 	);
 };
-
-// BORREN ESTO ES PARA VER SI DE VERDA SE SUBIO MIS CAMBIOS XD
