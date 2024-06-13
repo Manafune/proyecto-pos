@@ -1,5 +1,6 @@
 import supabase from '@/lib/supabase';
-import { AddressByCustomer, AddressCustomer } from '@/types/clients';
+import { AddressCustomer } from '@/types/clients';
+import { AddressMemberSchemaType } from '../validation/client';
 export const getAllClients = async ({ current, pageSize }: { current: number; pageSize: number }) => {
 	try {
 		const pageCurrent = (current - 1) * pageSize;
@@ -25,6 +26,7 @@ export const getClientById = async ({ id, timeout }: { id: string; timeout: (mil
 		.abortSignal(timeout(3000));
 	const address = client?.[0];
 	const customer = address?.customer[0];
-	const addressCustomer = { ...address, customer: { ...customer } };
-	return addressCustomer as AddressByCustomer;
+	const addressCustomer = { ...address, customer: { ...customer, birth_date: new Date(customer?.birth_date ?? '') } } as AddressMemberSchemaType;
+
+	return addressCustomer;
 };

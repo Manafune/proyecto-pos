@@ -5,7 +5,7 @@ import { ClientsPagination } from '@/routes/_authenticated/(clients)/clients';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAddClient } from '@/hooks/clientsAdd';
-import { ClientsRowBody } from '../ClientsRowBody';
+import { ClientsRowBody } from '@/components/Clients/ClientsRowBody';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { tableHeaders } from '@/data/users/table';
 import { cn } from '@/lib/utils';

@@ -9,19 +9,19 @@ interface ClientsRowBody {
 }
 const formatBirthDate = (dateString: string) => {
 	if (!dateString) return '';
+
 	const date = new Date(dateString);
 	const formattedDate = new Intl.DateTimeFormat('en-CA', {
 		year: 'numeric',
 		month: '2-digit',
 		day: '2-digit'
 	}).format(date);
+
 	return formattedDate;
 };
-
 export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) => {
 	const { city, state, street, customer: client, id } = customer;
-	// console.log(client.)
-	//
+
 	return (
 		<TableRow className='grid items-center h-full px-2'>
 			<TableCell className='p-0'>
@@ -59,10 +59,10 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) =
 				<Input
 					type='date'
 					className='h-auto'
-					defaultValue={formatBirthDate(client?.birth_date ?? '')}
+					defaultValue={formatBirthDate(client?.birth_date.toString() ?? '')}
 					id={`birth-date-${id}`}
 					onChange={(e) => {
-						client !== undefined && onUpdateCustomer({ ...customer, customer: { ...client, birth_date: e.target.value } });
+						client !== undefined && onUpdateCustomer({ ...customer, customer: { ...client, birth_date: new Date(e.target.value) } });
 					}}
 				></Input>
 			</TableCell>

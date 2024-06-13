@@ -13,6 +13,7 @@ import { ClientsPagination } from '@/routes/_authenticated/(clients)/clients';
 import { Link } from '@tanstack/react-router';
 import { useQuery } from '@/hooks/useQuery';
 import { updateAddresDetails } from '@/lib/clients/putClients';
+import { AddressMemberSchema, AddressMemberSchemaType } from '@/lib/validation/client';
 const route = getRouteApi('/_authenticated/clients/$id');
 const steps = [
 	{
@@ -31,10 +32,14 @@ const steps = [
 
 export const ClientsUpdate = () => {
 	const loaderData = route.useParams();
-	const { data: client, onUpdateData } = useQuery<AddressByCustomer>({
+	const { data: client, onUpdateData } = useQuery<AddressMemberSchemaType>({
 		fetchFunction: getClientById,
 		params: { id: loaderData.id }
 	});
+	const onUpdateCustomer = (data: Partial<AddressByCustomer>) => {
+		const validateCustomer = AddressMemberSchema.safeParse(data);
+		console.log(validateCustomer);
+	};
 	const handleSubmit = () => {
 		const customer = client?.customer;
 		client &&
@@ -131,7 +136,7 @@ export const ClientsUpdate = () => {
 											))}
 									</TableRow>
 								</TableHeader>
-								<TableBody className='h-full '>{client !== null && <ClientsRowBody customer={client} onUpdateCustomer={onUpdateData} />}</TableBody>
+								<TableBody className='h-full '>{client !== null && <ClientsRowBody customer={client} onUpdateCustomer={onUpdateCustomer} />}</TableBody>
 							</Table>
 						</CardContent>
 					</Card>

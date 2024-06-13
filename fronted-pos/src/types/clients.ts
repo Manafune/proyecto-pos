@@ -20,7 +20,7 @@ export interface Customer {
 	id?: number;
 	dni: string;
 	last_name: string;
-	birth_date: string;
+	birth_date: Date;
 	first_name: string;
 }
 
