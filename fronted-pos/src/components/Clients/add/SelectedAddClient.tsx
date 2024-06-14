@@ -33,6 +33,20 @@ export const SelectedAddClient = () => {
 					<h1 className='flex-1 shrink-0 whitespace-nowrap text-4xl grow font-semibold tracking-tight sm:grow-0'>Añadir Cliente</h1>
 				</div>
 			</div>
+			<div className='hidden items-center gap-2 md:ml-auto md:flex'>
+				<Link
+					to='/clients'
+					className={buttonVariants({
+						variant: 'outline'
+					})}
+					search={(searchParams) => {
+						const prevSearchParams = searchParams as ClientsPagination;
+						return { ...prevSearchParams };
+					}}
+				>
+					Descartar
+				</Link>
+			</div>
 			<div className='grid gap-4 w-full'>
 				<div className='grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-6'>
 					<Card x-chunk='dashboard-07-chunk-0'>

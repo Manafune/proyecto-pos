@@ -10,7 +10,7 @@ export const ClientContext = createContext<ClientContextType | null>(null);
 
 export const ClientsAddStore = ({ children }: { children: ReactNode }) => {
 	const [client, setClient] = useState<AddressByCustomer>({
-		customer: { dni: '', first_name: '', last_name: '', birth_date: '' },
+		customer: { dni: '', first_name: '', last_name: '', birth_date: new Date() },
 		city: '',
 		state: '',
 		street: ''

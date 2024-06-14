@@ -76,7 +76,7 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) =
 					id={`${'city-'}${id}`}
 					defaultValue={city}
 					onChange={(e) => {
-						onUpdateCustomer({ city: e.target.value });
+						client !== undefined && onUpdateCustomer({ ...customer, city: e.target.value, customer: { ...client } });
 					}}
 				></Input>
 			</TableCell>
@@ -90,7 +90,7 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) =
 					defaultValue={state ?? ''}
 					id={`${'state-'}${id}`}
 					onChange={(e) => {
-						onUpdateCustomer({ state: e.target.value });
+						client !== undefined && onUpdateCustomer({ ...customer, state: e.target.value, customer: { ...client } });
 					}}
 				></Input>
 			</TableCell>
@@ -104,7 +104,7 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) =
 					defaultValue={street ?? ''}
 					id={`${'street-'}${id}`}
 					onChange={(e) => {
-						onUpdateCustomer({ street: e.target.value });
+						client !== undefined && onUpdateCustomer({ ...customer, street: e.target.value, customer: { ...client } });
 					}}
 				></Input>
 			</TableCell>

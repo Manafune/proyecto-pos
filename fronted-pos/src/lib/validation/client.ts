@@ -8,14 +8,13 @@ const CustomerSchema = z.object({
 	first_name: z.string({ message: 'El Nombre debe ser texto.' }).min(1, { message: 'El Nombre es obligatorio y no puede estar vacío.' })
 });
 
-const AddressSchema = z.object({
+export const AddressSchema = z.object({
 	id: z.number({ message: 'El id debe ser numerico' }).min(0, { message: 'El id debe ser mayor a cero' }),
 	street: z.string().min(1, { message: 'La Calle es obligatoria y no puede estar vacía.' }),
 	city: z.string().min(1, { message: 'La ciudad es obligatoria y no puede estar vacía.' }),
 	state: z.string().min(1, { message: 'El departamento es obligatorio y no puede estar vacío.' }),
 	customer: CustomerSchema
 });
-export const AddressMemberSchema = AddressSchema.extend({
-	customer: CustomerSchema
-});
-export type AddressMemberSchemaType = z.infer<typeof AddressMemberSchema>;
+
+export type AddressMemberSchemaType = z.infer<typeof AddressSchema>;
+//

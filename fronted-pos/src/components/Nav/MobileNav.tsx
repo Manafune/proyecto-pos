@@ -13,6 +13,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import supabase from '@/lib/supabase';
+import { Label } from '../ui/label';
 const MobileNav = () => {
 	return (
 		<div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>
@@ -60,13 +61,13 @@ const MobileNav = () => {
 					<BreadcrumbList>
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Link href='#'>Panel</Link>
+								<Label>Panel</Label>
 							</BreadcrumbLink>
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Link href='#'>Productos</Link>
+								<Label>Productos</Label>
 							</BreadcrumbLink>
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />
