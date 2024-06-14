@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as AuthenticatedusersUsersImport } from './routes/_authenticated/(users)/users'
+import { Route as AuthenticatedsalesSalesImport } from './routes/_authenticated/(sales)/sales'
 import { Route as AuthenticatedproductsProductsImport } from './routes/_authenticated/(products)/products'
 import { Route as AuthenticatedclientsClientsImport } from './routes/_authenticated/(clients)/clients'
 
@@ -29,6 +30,9 @@ const AuthSignUpLazyImport = createFileRoute('/_auth/sign-up')()
 const AuthSignInLazyImport = createFileRoute('/_auth/sign-in')()
 const AuthenticatedusersUsersIndexLazyImport = createFileRoute(
   '/_authenticated/(users)/users/',
+)()
+const AuthenticatedsalesSalesIndexLazyImport = createFileRoute(
+  '/_authenticated/(sales)/sales/',
 )()
 const AuthenticatedproductsProductsIndexLazyImport = createFileRoute(
   '/_authenticated/(products)/products/',
@@ -90,6 +94,11 @@ const AuthenticatedusersUsersRoute = AuthenticatedusersUsersImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
+const AuthenticatedsalesSalesRoute = AuthenticatedsalesSalesImport.update({
+  path: '/sales',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
 const AuthenticatedproductsProductsRoute =
   AuthenticatedproductsProductsImport.update({
     path: '/products',
@@ -108,6 +117,16 @@ const AuthenticatedusersUsersIndexLazyRoute =
     getParentRoute: () => AuthenticatedusersUsersRoute,
   } as any).lazy(() =>
     import('./routes/_authenticated/(users)/users.index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AuthenticatedsalesSalesIndexLazyRoute =
+  AuthenticatedsalesSalesIndexLazyImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedsalesSalesRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/(sales)/sales.index.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -232,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedproductsProductsImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/(sales)/sales': {
+      id: '/_authenticated/sales'
+      path: '/sales'
+      fullPath: '/sales'
+      preLoaderRoute: typeof AuthenticatedsalesSalesImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/(users)/users': {
       id: '/_authenticated/users'
       path: '/users'
@@ -281,6 +307,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedproductsProductsIndexLazyImport
       parentRoute: typeof AuthenticatedproductsProductsImport
     }
+    '/_authenticated/(sales)/sales/': {
+      id: '/_authenticated/sales/'
+      path: '/'
+      fullPath: '/sales/'
+      preLoaderRoute: typeof AuthenticatedsalesSalesIndexLazyImport
+      parentRoute: typeof AuthenticatedsalesSalesImport
+    }
     '/_authenticated/(users)/users/': {
       id: '/_authenticated/users/'
       path: '/'
@@ -313,6 +346,9 @@ export const routeTree = rootRoute.addChildren({
         AuthenticatedproductsProductsAddLazyRoute,
         AuthenticatedproductsProductsIndexLazyRoute,
       }),
+    AuthenticatedsalesSalesRoute: AuthenticatedsalesSalesRoute.addChildren({
+      AuthenticatedsalesSalesIndexLazyRoute,
+    }),
     AuthenticatedusersUsersRoute: AuthenticatedusersUsersRoute.addChildren({
       AuthenticatedusersUsersIndexLazyRoute,
     }),

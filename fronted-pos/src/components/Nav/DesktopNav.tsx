@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 const navItems = [
 	{ icon: UserRoundCog, label: 'Usuarios', path: '/users', roles: ['ADMIN'] },
-	{ icon: ShoppingCart, label: 'Ventas', path: '/orders', roles: ['ADMIN', 'SELLER',] },
+	{ icon: ShoppingCart, label: 'Ventas', path: '/sales', roles: ['ADMIN', 'SELLER',] },
 	{ icon: Package, label: 'Productos', path: '/products', roles: ['ADMIN', 'STOREKEEPER'] },
 	{ icon: Users2, label: 'Clientes', path: '/clients', roles: ['ADMIN', 'SELLER',]},
 	{ icon: LineChart, label: 'Analiticas', path: '/analytics', roles: ['ADMIN']}
