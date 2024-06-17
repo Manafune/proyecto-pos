@@ -1,11 +1,7 @@
-export type RemovePrefix<OriginalKeys, Prefix extends string> = {
-	[Key in keyof OriginalKeys as Key extends `${Prefix}${infer Rest}` ? Uncapitalize<Rest> : Key]: OriginalKeys[Key];
-};
-export type AddPrefix<OriginalKeys, Prefix extends string> = {
-	[Key in keyof OriginalKeys as `${Prefix}${Key & string}`]: OriginalKeys[Key];
-};
+import { AddPrefix } from './common';
+
 export interface AddressCustomer {
-	id?: number;
+	id: number;
 	street: string;
 	city: string;
 	state: string;
@@ -17,13 +13,13 @@ export type AddressByCustomer = Omit<AddressCustomer, 'customer'> & {
 };
 
 export interface Customer {
-	id?: number;
+	id: number;
 	dni: string;
 	last_name: string;
 	birth_date: Date;
 	first_name: string;
 }
-
+export type ErrorsCustomer = Omit<AddressByCustomer, 'id' | 'customer'> & Omit<Customer, 'id' | 'birth_date'> & { birth_date: string };
 type PrefixCustomer = AddPrefix<Customer, 'customer_'>;
 type PrefixAddress = AddPrefix<Omit<AddressCustomer, 'customer'>, 'address_'>;
 export type PrefixAddressCustomer = PrefixCustomer & PrefixAddress;

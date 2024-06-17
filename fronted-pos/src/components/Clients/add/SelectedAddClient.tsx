@@ -7,11 +7,14 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { useAddClient } from '@/hooks/clientsAdd';
 import { ClientsRowBody } from '@/components/Clients/ClientsRowBody';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { tableHeaders } from '@/data/users/table';
+import { tableHeaders } from '@/data/table';
 import { cn } from '@/lib/utils';
+import { useCustomerValidation } from '@/hooks/useCustomerValidation';
 
 export const SelectedAddClient = () => {
 	const { client, onUpdateCustomer } = useAddClient();
+
+	const { errors, onValidateClient } = useCustomerValidation({ onUpdateData: onUpdateCustomer });
 	return (
 		<div className='grid flex-1 auto-rows-max gap-4'>
 			<div className='grid grid-flow-col'>
@@ -63,7 +66,8 @@ export const SelectedAddClient = () => {
 										autoComplete='off'
 										placeholder='Ejemplo: Nombre'
 										onChange={(e) => {
-											client?.customer !== undefined && onUpdateCustomer({ ...client, customer: { ...client.customer, first_name: e.target.value } });
+											client?.customer !== undefined &&
+												onUpdateCustomer({ ...client, customer: { ...client.customer, first_name: e.target.value } });
 										}}
 										defaultValue={client?.customer?.first_name ?? ''}
 									/>
@@ -88,7 +92,9 @@ export const SelectedAddClient = () => {
 											))}
 									</TableRow>
 								</TableHeader>
-								<TableBody className='h-full '>{client !== null && <ClientsRowBody customer={client} onUpdateCustomer={onUpdateCustomer} />}</TableBody>
+								<TableBody className='h-full '>
+									{client !== null && <ClientsRowBody customer={client} onUpdateCustomer={onValidateClient} errors={errors} />}
+								</TableBody>
 							</Table>
 						</CardContent>
 						<CardFooter>

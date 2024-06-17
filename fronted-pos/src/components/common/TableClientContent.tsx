@@ -7,13 +7,12 @@ import { MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
 import { ClientsPagination } from '@/routes/_authenticated/(clients)/clients';
-import { tableHeaders } from '@/data/users/table';
+import { tableHeaders } from '@/data/table';
 interface TypeTableContent {
 	addressClients: AddressCustomer[];
 }
 
 export const TableClientContent = ({ addressClients }: TypeTableContent) => {
-	console.log(addressClients);
 	return (
 		<Table>
 			<TableHeader>
@@ -31,12 +30,12 @@ export const TableClientContent = ({ addressClients }: TypeTableContent) => {
 			<TableBody>
 				{addressClients?.map(({ customer, city, id, state, street }) => (
 					<TableRow key={id}>
-						{customer?.map((client) => (
-							<React.Fragment key={client.id.toString()}>
+						{customer?.map((client, idx) => (
+							<React.Fragment key={idx}>
 								<TableCell>{client.first_name}</TableCell>
 								<TableCell>{client.last_name}</TableCell>
 								<TableCell>{client.dni}</TableCell>
-								<TableCell>{client.birth_date}</TableCell>
+								<TableCell>{client.birth_date.toString()}</TableCell>
 							</React.Fragment>
 						))}
 						<TableCell>{city}</TableCell>

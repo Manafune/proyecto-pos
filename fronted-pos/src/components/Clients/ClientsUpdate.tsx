@@ -4,7 +4,7 @@ import { CardSteps } from '@/components/Card/CardSteps';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { tableHeaders } from '@/data/users/table';
+import { tableHeaders } from '@/data/table';
 import { ClientsRowBody } from './ClientsRowBody';
 import { ChevronLeft } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -12,22 +12,10 @@ import { ClientsPagination } from '@/routes/_authenticated/(clients)/clients';
 import { Link } from '@tanstack/react-router';
 import { useQuery } from '@/hooks/useQuery';
 import { updateAddresDetails } from '@/lib/clients/putClients';
-import { AddressMemberSchemaType, AddressSchema } from '@/lib/validation/client';
+import { AddressMemberSchemaType } from '@/lib/validation/client';
+import { stepsClient } from '@/data/steps';
+import { useCustomerValidation } from '@/hooks/useCustomerValidation';
 const route = getRouteApi('/_authenticated/clients/$id');
-const steps = [
-	{
-		title: 'Paso 1',
-		description: 'Elige los datos que quieres cambiar'
-	},
-	{
-		title: 'Paso 2',
-		description: 'Asegurate de que los nuevos datos sean correctos'
-	},
-	{
-		title: 'Paso 3',
-		description: 'Guarda o descarta los cambios realizados'
-	}
-];
 
 export const ClientsUpdate = () => {
 	const loaderData = route.useParams();
@@ -35,30 +23,22 @@ export const ClientsUpdate = () => {
 		fetchFunction: getClientById,
 		params: { id: loaderData.id }
 	});
-	const onUpdateCustomer = (data: Partial<AddressMemberSchemaType>) => {
-		if (typeof data.customer?.id !== 'undefined' && typeof data.id !== 'undefined') {
-			const validateCustomer = AddressSchema.safeParse(data);
-			const errors = validateCustomer.error;
-			console.dir(errors);
-			// console.log(validateCustomer.error?.errors);
-			onUpdateData(data);
-		}
-	};
+	const { errors, onValidateClient } = useCustomerValidation({ onUpdateData });
+
 	const handleSubmit = () => {
 		const customer = client?.customer;
-		client &&
-			customer &&
-			updateAddresDetails({
-				address_id: client?.id,
-				address_state: client?.state,
-				address_city: client?.city,
-				address_street: client?.state,
-				customer_dni: customer?.dni,
-				customer_first_name: customer?.first_name,
-				customer_birth_date: customer?.birth_date,
-				customer_id: customer?.id,
-				customer_last_name: customer?.last_name
-			});
+		const clientValidate = Object.entries(client ?? {})
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			.filter(([_, value]) => typeof value !== 'object')
+			.map(([key, value]) => [`address_${key}`, value]);
+		const dataCustomer = Object.fromEntries(Object.entries(customer ?? {}).map(([key, value]) => [`customer_${key}`, value]));
+		const transformed = {
+			...Object.fromEntries(clientValidate),
+			...dataCustomer
+		};
+		const isError = Object.values(errors).some((error) => error.length > 1);
+		const isThruth = client && customer;
+		isThruth && !isError && updateAddresDetails({ ...transformed });
 	};
 
 	return (
@@ -79,7 +59,9 @@ export const ClientsUpdate = () => {
 						<ChevronLeft className='h-4 w-4' />
 						<span className='sr-only'>Volver</span>
 					</Link>
-					<h1 className='flex-1 shrink-0 whitespace-nowrap text-4xl grow font-semibold tracking-tight sm:grow-0'>{client?.customer?.first_name ?? ''}</h1>
+					<h1 className='flex-1 shrink-0 whitespace-nowrap text-4xl grow font-semibold tracking-tight sm:grow-0'>
+						{client?.customer?.first_name ?? ''}
+					</h1>
 				</div>
 				<div className='hidden items-center gap-2 md:ml-auto md:flex'>
 					<Link
@@ -115,7 +97,8 @@ export const ClientsUpdate = () => {
 										autoComplete='off'
 										placeholder='Ejemplo: Marcos'
 										onChange={(e) => {
-											client?.customer !== undefined && onUpdateData({ ...client, customer: { ...client.customer, first_name: e.target.value } });
+											client?.customer !== undefined &&
+												onUpdateData({ ...client, customer: { ...client.customer, first_name: e.target.value } });
 										}}
 										defaultValue={client?.customer?.first_name ?? ''}
 									/>
@@ -140,12 +123,14 @@ export const ClientsUpdate = () => {
 											))}
 									</TableRow>
 								</TableHeader>
-								<TableBody className='h-full '>{client !== null && <ClientsRowBody customer={client} onUpdateCustomer={onUpdateCustomer} />}</TableBody>
+								<TableBody className='h-full '>
+									{client !== null && <ClientsRowBody customer={client} onUpdateCustomer={onValidateClient} errors={errors} />}
+								</TableBody>
 							</Table>
 						</CardContent>
 					</Card>
 				</div>
-				<CardSteps steps={steps} title='¿Cómo Actualizar Cliente?' className='w-full' />
+				<CardSteps steps={stepsClient} title='¿Cómo Actualizar Cliente?' className='w-full' />
 			</div>
 		</div>
 	);

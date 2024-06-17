@@ -1,11 +1,13 @@
-import { AddressByCustomer } from '@/types/clients';
+import { AddressByCustomer, ErrorsCustomer } from '@/types/clients';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 
 interface ClientsRowBody {
 	customer: AddressByCustomer;
 	onUpdateCustomer: (params: Partial<AddressByCustomer>) => void;
+	errors: ErrorsCustomer;
 }
 const formatBirthDate = (dateString: string) => {
 	if (!dateString) return '';
@@ -19,7 +21,7 @@ const formatBirthDate = (dateString: string) => {
 
 	return formattedDate;
 };
-export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) => {
+export const ClientsRowBody = ({ customer, onUpdateCustomer, errors }: ClientsRowBody) => {
 	const { city, state, street, customer: client, id } = customer;
 
 	return (
@@ -32,7 +34,7 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) =
 					type='text'
 					defaultValue={client?.last_name ?? ''}
 					id={`${'lastName-'}${id}`}
-					className='h-auto'
+					className={cn('h-auto', { 'bg-red-300': errors.last_name })}
 					onChange={(e) => {
 						client !== undefined && onUpdateCustomer({ ...customer, customer: { ...client, last_name: e.target.value } });
 					}}
@@ -44,9 +46,9 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) =
 				</Label>
 				<Input
 					type='text'
-					className='h-auto'
 					defaultValue={client?.dni ?? ''}
 					id={`${'dni-'}${id}`}
+					className={cn('h-auto', { 'bg-red-300': errors.dni })}
 					onChange={(e) => {
 						client !== undefined && onUpdateCustomer({ ...customer, customer: { ...client, dni: e.target.value } });
 					}}
@@ -58,7 +60,7 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) =
 				</Label>
 				<Input
 					type='date'
-					className='h-auto'
+					className={cn('h-auto', { 'bg-red-300': errors.birth_date })}
 					defaultValue={formatBirthDate(client?.birth_date.toString() ?? '')}
 					id={`birth-date-${id}`}
 					onChange={(e) => {
@@ -72,7 +74,7 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) =
 				</Label>
 				<Input
 					type='text'
-					className='h-auto'
+					className={cn('h-auto', { 'bg-red-300': errors.city })}
 					id={`${'city-'}${id}`}
 					defaultValue={city}
 					onChange={(e) => {
@@ -86,7 +88,7 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) =
 				</Label>
 				<Input
 					type='text'
-					className='h-auto'
+					className={cn('h-auto', { 'bg-red-300': errors.state })}
 					defaultValue={state ?? ''}
 					id={`${'state-'}${id}`}
 					onChange={(e) => {
@@ -100,7 +102,7 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer }: ClientsRowBody) =
 				</Label>
 				<Input
 					type='text'
-					className='min-w-max h-auto'
+					className={cn('h-auto', { 'bg-red-300': errors.street })}
 					defaultValue={street ?? ''}
 					id={`${'street-'}${id}`}
 					onChange={(e) => {
