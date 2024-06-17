@@ -1,3 +1,4 @@
+import { SalesAdd } from '@/components/Sales/SalesAdd';
 import { createFileRoute } from '@tanstack/react-router'
 
 export interface SalesPagination {
@@ -6,5 +7,5 @@ export interface SalesPagination {
 }
 
 export const Route = createFileRoute('/_authenticated/(sales)/sales')({
-  component: () => <div>Hello /_authenticated/(sales)/sales!</div>
+  component: () => <SalesAdd/>
 })
