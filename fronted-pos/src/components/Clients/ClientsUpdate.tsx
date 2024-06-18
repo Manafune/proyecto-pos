@@ -77,7 +77,7 @@ export const ClientsUpdate = () => {
 						Descartar
 					</Link>
 					<Button size='sm' onClick={handleSubmit}>
-						Guardar Producto
+						Guardar Cambios
 					</Button>
 				</div>
 			</div>

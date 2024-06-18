@@ -1,21 +1,21 @@
 import { createContext, useState, ReactNode } from 'react';
-import { AddressByCustomer } from '@/types/clients';
+import { AddressMemberSchemaType } from '@/lib/validation/client';
 
 interface ClientContextType {
-	client: AddressByCustomer;
-	onUpdateCustomer: (params: Partial<AddressByCustomer>) => void;
+	client: AddressMemberSchemaType;
+	onUpdateCustomer: (params: Partial<AddressMemberSchemaType>) => void;
 }
 
 export const ClientContext = createContext<ClientContextType | null>(null);
 
 export const ClientsAddStore = ({ children }: { children: ReactNode }) => {
-	const [client, setClient] = useState<AddressByCustomer>({
+	const [client, setClient] = useState<AddressMemberSchemaType>({
 		customer: { dni: '', first_name: '', last_name: '', birth_date: new Date() },
 		city: '',
 		state: '',
 		street: ''
 	});
-	const onUpdateCustomer = (params: Partial<AddressByCustomer>) => {
+	const onUpdateCustomer = (params: Partial<AddressMemberSchemaType>) => {
 		setClient((prevClient) => ({ ...prevClient, ...params }));
 	};
 
