@@ -22,7 +22,7 @@ export const updateProductDetails = async ({
 	const { data, error } = await supabase.from('product').update({ name, container, price, stock }).eq('id', id).select();
 
 	if (error) {
-		console.error('Error updating product details:', error);
+		console.error('Error al actualizar detalles de producto:', error);
 		throw error;
 	}
 

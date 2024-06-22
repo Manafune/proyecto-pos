@@ -1,12 +1,18 @@
 import { z } from 'zod';
+export const MemberRoleEnum = z.enum(['MEMBER', 'OTRO_ROL', 'SELLER', 'STOREKEEPER'], {
+	required_error: 'Debe seleccionar un rol',
+  });
+
 export const BaseSchema = z.object({
 	email: z.string().trim().min(1, { message: 'Este campo no debe estar vacio.' }).email('No es un email valido.'),
 	password: z.string().trim().min(8, { message: 'La contraseña debe tener al menos 8 caracteres' })
 });
 export const SignOutSchema = BaseSchema.extend({
 	name: z.string().trim().min(5, { message: 'El nombre debe tener al menos 5 caracteres' }),
-	lastname: z.string().trim().min(5, { message: 'El apellido debe tener al menos 5 caracteres' })
+	lastname: z.string().trim().min(5, { message: 'El apellido debe tener al menos 5 caracteres' }),
+	role: MemberRoleEnum
 });
+
 export const ProfileSchema = SignOutSchema.omit({ email: true })
 	.extend({
 		confirmPassword: z.string()

@@ -46,7 +46,7 @@ export const Users = () => {
 						<File className='h-3.5 w-3.5 text-white' />
 						<span className='sr-only sm:not-sr-only text-white sm:whitespace-nowrap'>Export</span>
 					</Button>
-					<Link className='h-8 gap-1 text-sm bg-[#10b981] hover:bg-[#34d399] text-white flex flex-row items-center p-[0.5em] rounded-[0.5em]'>
+					<Link to='/users/add' className='h-8 gap-1 text-sm bg-[#10b981] hover:bg-[#34d399] text-white flex flex-row items-center p-[0.5em] rounded-[0.5em]'>
 						<PlusCircle className='h-3.5 w-3.5' />
 						<span className='sr-only leading-none sm:not-sr-only sm:whitespace-nowrap'>Nuevo Usuario</span>
 					</Link>
