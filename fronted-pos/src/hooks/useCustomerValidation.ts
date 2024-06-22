@@ -18,6 +18,7 @@ export const useCustomerValidation = ({ onUpdateData }: { onUpdateData: (params:
 
 		setErrors((prevErrors) => ({ ...prevErrors, ...(newErrors ?? initializeErrors()) }));
 		onUpdateData(data);
+		return newErrors;
 	};
 
 	return { errors, onValidateClient };

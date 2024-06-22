@@ -4,30 +4,20 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { AddressMemberSchemaType } from '@/lib/validation/client';
+import { formatDateString } from '@/lib/clients/addClient';
 
 interface ClientsRowBody {
 	customer: AddressMemberSchemaType;
 	onUpdateCustomer: (params: Partial<AddressMemberSchemaType>) => void;
 	errors: ErrorsCustomer;
 }
-const formatBirthDate = (dateString: string) => {
-	if (!dateString) return '';
 
-	const date = new Date(dateString);
-	const formattedDate = new Intl.DateTimeFormat('en-CA', {
-		year: 'numeric',
-		month: '2-digit',
-		day: '2-digit'
-	}).format(date);
-
-	return formattedDate;
-};
 export const ClientsRowBody = ({ customer, onUpdateCustomer, errors }: ClientsRowBody) => {
 	const { city, state, street, customer: client } = customer;
 
 	return (
 		<TableRow className='grid items-center h-full px-2'>
-			<TableCell className='p-0'>
+			<TableCell className='p-0 flex flex-col gap-1'>
 				<Label className='sr-only' htmlFor={'lastName'}>
 					Apellido
 				</Label>
@@ -39,9 +29,10 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer, errors }: ClientsRo
 					onChange={(e) => {
 						client !== undefined && onUpdateCustomer({ ...customer, customer: { ...client, last_name: e.target.value } });
 					}}
-				></Input>
+				/>
+				{errors?.last_name && <span className='text-sm text-red-600'>{errors.last_name}</span>}
 			</TableCell>
-			<TableCell className='p-0'>
+			<TableCell className='p-0 flex flex-col gap-1'>
 				<Label className='sr-only' htmlFor='dni'>
 					DNI
 				</Label>
@@ -53,23 +44,25 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer, errors }: ClientsRo
 					onChange={(e) => {
 						client !== undefined && onUpdateCustomer({ ...customer, customer: { ...client, dni: e.target.value } });
 					}}
-				></Input>
+				/>
+				{errors?.dni && <span className='text-sm text-red-600'>{errors.dni}</span>}
 			</TableCell>
-			<TableCell className='p-0'>
+			<TableCell className='p-0 flex flex-col gap-1'>
 				<Label className='sr-only' htmlFor={'birth-date'}>
 					Fecha de nac.
 				</Label>
 				<Input
 					type='date'
 					className={cn('h-auto', { 'border-2 border-red-400 focus-visible:ring-red-700': errors.birth_date })}
-					defaultValue={formatBirthDate(client?.birth_date.toString() ?? '')}
+					defaultValue={formatDateString(client?.birth_date.toString() ?? '')}
 					id={`birth-date`}
 					onChange={(e) => {
 						client !== undefined && onUpdateCustomer({ ...customer, customer: { ...client, birth_date: new Date(e.target.value) } });
 					}}
-				></Input>
+				/>
+				{errors?.birth_date && <span className='text-sm text-red-600'>{errors.birth_date}</span>}
 			</TableCell>
-			<TableCell className='p-0'>
+			<TableCell className='p-0 flex flex-col gap-1'>
 				<Label className='sr-only' htmlFor={'city'}>
 					Ciudad
 				</Label>
@@ -81,9 +74,10 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer, errors }: ClientsRo
 					onChange={(e) => {
 						client !== undefined && onUpdateCustomer({ ...customer, city: e.target.value, customer: { ...client } });
 					}}
-				></Input>
+				/>
+				{errors?.city && <span className='text-sm text-red-600'>{errors.city}</span>}
 			</TableCell>
-			<TableCell className='p-0'>
+			<TableCell className='p-0 flex flex-col gap-1'>
 				<Label className='sr-only' htmlFor={'state'}>
 					Depto.
 				</Label>
@@ -95,9 +89,10 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer, errors }: ClientsRo
 					onChange={(e) => {
 						client !== undefined && onUpdateCustomer({ ...customer, state: e.target.value, customer: { ...client } });
 					}}
-				></Input>
+				/>
+				{errors?.state && <span className='text-sm text-red-600'>{errors.state}</span>}
 			</TableCell>
-			<TableCell className='p-0'>
+			<TableCell className='p-0 flex flex-col gap-1'>
 				<Label className='sr-only' htmlFor={'street'}>
 					Calle
 				</Label>
@@ -109,7 +104,8 @@ export const ClientsRowBody = ({ customer, onUpdateCustomer, errors }: ClientsRo
 					onChange={(e) => {
 						client !== undefined && onUpdateCustomer({ ...customer, street: e.target.value, customer: { ...client } });
 					}}
-				></Input>
+				/>
+				{errors?.street && <span className='text-sm text-red-600'>{errors.street}</span>}
 			</TableCell>
 		</TableRow>
 	);

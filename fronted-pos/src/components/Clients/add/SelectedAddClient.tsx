@@ -18,17 +18,18 @@ export const SelectedAddClient = () => {
 
 	const { errors, onValidateClient } = useCustomerValidation({ onUpdateData: onUpdateCustomer });
 	const onSubmitData = async () => {
-		const isError = Object.values(errors).some((error) => error.length > 1);
-		onValidateClient(client)
-		if (isError) return
-		await addClient({ client })
-		return navigate({
-			to: '/clients',
-			search: (searchParams) => {
-				const prevSearchParams = searchParams as ClientsPagination;
-				return { ...prevSearchParams };
-			}
-		})
+		const errors = onValidateClient(client);
+		const isError = Object.values(errors ?? {}).some((error) => error.length > 1);
+		if (isError) return;
+		const isAdded = await addClient({ client });
+		isAdded &&
+			navigate({
+				to: '/clients',
+				search: (searchParams) => {
+					const prevSearchParams = searchParams as ClientsPagination;
+					return { ...prevSearchParams, current: 1 };
+				}
+			});
 	};
 
 	return (
@@ -71,21 +72,20 @@ export const SelectedAddClient = () => {
 							<CardTitle>Nombre</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<div className='grid gap-6 '>
-								<div className='relative grid items-center'>
-									<Input
-										id='name'
-										type='text'
-										className={cn('w-full', { 'border-2 border-red-400 focus-visible:ring-red-700': errors.first_name })}
-										autoComplete='off'
-										placeholder='Ejemplo: Nombre'
-										onChange={(e) => {
-											client?.customer !== undefined &&
-												onValidateClient({ ...client, customer: { ...client.customer, first_name: e.target.value } });
-										}}
-										defaultValue={client?.customer?.first_name ?? ''}
-									/>
-								</div>
+							<div className='relative grid items-center gap-1'>
+								<Input
+									id='name'
+									type='text'
+									className={cn('w-full', { 'border-2 border-red-400 focus-visible:ring-red-700': errors.first_name })}
+									autoComplete='off'
+									placeholder='Ejemplo: Nombre'
+									onChange={(e) => {
+										client?.customer !== undefined &&
+											onValidateClient({ ...client, customer: { ...client.customer, first_name: e.target.value } });
+									}}
+									defaultValue={client?.customer?.first_name ?? ''}
+								/>
+								{errors?.first_name && <span className='text-sm text-red-600'>{errors.first_name}</span>}
 							</div>
 						</CardContent>
 					</Card>

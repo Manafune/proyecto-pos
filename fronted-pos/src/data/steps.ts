@@ -12,7 +12,7 @@ export const stepsClient = [
 		description: 'Guarda o descarta los cambios realizados'
 	}
 ];
-export const stepUsers=[
+export const stepUsers = [
 	{
 		title: 'Paso 1',
 		description: 'Escribir el correo electrónico del usuario'
@@ -32,5 +32,28 @@ export const stepUsers=[
 	{
 		title: 'Paso 5',
 		description: 'Seleccionar el estado del usuario'
+	}
+];
+
+export const stepClientsAdd = [
+	{
+		title: 'Paso 1',
+		description: 'Ingresa el nombre del cliente'
+	},
+	{
+		title: 'Paso 2',
+		description: 'Ingresa el apellido del cliente'
+	},
+	{
+		title: 'Paso 3',
+		description: 'Digita el DNI del cliente'
+	},
+	{
+		title: 'Paso 4',
+		description: 'Ingresa la fecha de nacimiento del cliente'
+	},
+	{
+		title: 'Paso 5',
+		description: 'Ingresa la dirección del cliente'
 	}
 ];

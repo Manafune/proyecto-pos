@@ -1,5 +1,5 @@
 import { getClientById } from '@/lib/clients/getClient';
-import { getRouteApi } from '@tanstack/react-router';
+import { getRouteApi, useNavigate, Link } from '@tanstack/react-router';
 import { CardSteps } from '@/components/Card/CardSteps';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,7 +9,6 @@ import { ClientsRowBody } from './ClientsRowBody';
 import { ChevronLeft } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { ClientsPagination } from '@/routes/_authenticated/(clients)/clients';
-import { Link } from '@tanstack/react-router';
 import { useQuery } from '@/hooks/useQuery';
 import { updateAddresDetails } from '@/lib/clients/putClients';
 import { AddressMemberSchemaType } from '@/lib/validation/client';
@@ -19,13 +18,15 @@ const route = getRouteApi('/_authenticated/clients/$id');
 
 export const ClientsUpdate = () => {
 	const loaderData = route.useParams();
+	const navigate = useNavigate({ from: '/clients/' });
+
 	const { data: client, onUpdateData } = useQuery<AddressMemberSchemaType>({
 		fetchFunction: getClientById,
 		params: { id: loaderData.id }
 	});
 	const { errors, onValidateClient } = useCustomerValidation({ onUpdateData });
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		const customer = client?.customer;
 		const clientValidate = Object.entries(client ?? {})
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -38,7 +39,16 @@ export const ClientsUpdate = () => {
 		};
 		const isError = Object.values(errors).some((error) => error.length > 1);
 		const isThruth = client && customer;
-		isThruth && !isError && updateAddresDetails({ ...transformed });
+		if (isThruth && isError) return;
+		const isUploaded = await updateAddresDetails({ ...transformed });
+		isUploaded &&
+			navigate({
+				to: '/clients',
+				search: (searchParams) => {
+					const prevSearchParams = searchParams as ClientsPagination;
+					return { ...prevSearchParams };
+				}
+			});
 	};
 
 	return (
