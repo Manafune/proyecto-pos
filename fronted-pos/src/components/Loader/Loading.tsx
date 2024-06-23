@@ -1,0 +1,12 @@
+import '@/components/Loader/stylesheets/loading.css'
+
+export const Loading = () =>{
+    return (
+        <div className="loader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    )
+}

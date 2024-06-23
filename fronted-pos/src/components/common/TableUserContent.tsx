@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { getAllUsers } from '@/lib/user/getUser';
 import { MemberStatus, MemberRole, MemberData, User } from '@/types/members';
+import { Loading } from '../Loader/Loading';
 
 export const TableUserContent = () => {
 	const [users, setUsers] = useState<User[]>([]);
@@ -38,7 +39,7 @@ export const TableUserContent = () => {
 		switch (role_app) {
 			case MemberRole.MEMBER:
 				return 'Miembro';
-			case MemberRole.OTRO_ROL:
+			case MemberRole.ADMIN:
 				return 'Administrador';
 			case MemberRole.SELLER:
 				return 'Vendedor';
@@ -52,7 +53,7 @@ export const TableUserContent = () => {
 	const getStatusText = (status: MemberStatus) => (status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo');
 
 	if (loading) {
-		return <p>Loading...</p>;
+		return <div className="flex items-center justify-center h-screen"> <Loading /> </div>;
 	}
 
 	if (error) {
