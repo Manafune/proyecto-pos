@@ -1,5 +1,6 @@
-import { SalesAdd } from '@/components/Sales/SalesAdd';
-import { createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { getAllSales} from '@/lib/sales/getSales';
+import { SIZE_PAGINATION } from '@/config';
 
 export interface SalesPagination {
 	pageSize: number;
@@ -7,5 +8,24 @@ export interface SalesPagination {
 }
 
 export const Route = createFileRoute('/_authenticated/(sales)/sales')({
-  component: () => <SalesAdd/>
+	staleTime: 36_000,
+	loader: async ({ deps }) => {
+		const { pageSize, current } = deps as SalesPagination;
+		const clients = await getAllSales({ current, pageSize });
+		// console.log(resolve);
+		return {
+			clients
+			// 	totalClients: count
+		};
+	},
+
+	loaderDeps: ({ search: { pageSize, current } }) => ({ pageSize, current }),
+	validateSearch: (search: Partial<SalesPagination>) => {
+		const validatedSearch: SalesPagination = {
+			pageSize: search?.pageSize ?? SIZE_PAGINATION,
+			current: search?.current ?? 1
+		};
+		return validatedSearch;
+	},
+	component: () => <Outlet />
 })
