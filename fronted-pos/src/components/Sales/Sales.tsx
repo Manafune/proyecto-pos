@@ -57,6 +57,7 @@ export const Sales = () => {
 					</Link>
 				</div>
 			</div>
+			<TableSale />
 			<Boleta />
 		</Tabs>
   )

@@ -11,11 +11,11 @@ export const Route = createFileRoute('/_authenticated/(sales)/sales')({
 	staleTime: 36_000,
 	loader: async ({ deps }) => {
 		const { pageSize, current } = deps as SalesPagination;
-		const clients = await getAllSales({ current, pageSize });
+		const [data, count] = await getAllSales({ current, pageSize });
 		// console.log(resolve);
 		return {
-			clients
-			// 	totalClients: count
+			sales: data,
+			totalSales: count
 		};
 	},
 

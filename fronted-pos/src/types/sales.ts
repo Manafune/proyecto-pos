@@ -1,6 +1,6 @@
 export const enum SaleStatus {
-    ACTIVE = 'ACTIVE',
-    INACTIVE = 'INACTIVE',
+    COMPLETED = 'COMPLETED',
+    CANCELED = 'CANCELED',
 }
 export interface SaleDetail {
     id: number;
