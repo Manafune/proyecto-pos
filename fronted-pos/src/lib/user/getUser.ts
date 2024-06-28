@@ -2,10 +2,10 @@ import supabase from '@/lib/supabase';
 import { MemberData } from '@/types/members';
 import { type User } from '@/types/user';
 
-
 export interface UserData extends Omit<User, 'id'> {
 	id: number;
 }
+
 export const getAllUsers = async ({ current, pageSize }: { current: number; pageSize: number }): Promise<MemberData[]> => {
 	try {
 		const pageCurrent = (current - 1) * pageSize;
@@ -40,5 +40,20 @@ export const getAllUsers = async ({ current, pageSize }: { current: number; page
 	} catch (error) {
 		console.error('Error fetching users:', error);
 		return [];
+	}
+};
+
+export const getCountUsers = async (): Promise<number> => {
+	try {
+		const { count, error } = await supabase
+			.from('member')
+			.select('*', { count: 'exact', head: true });
+
+		if (error) throw new Error(error.message);
+
+		return count ?? 0;
+	} catch (error) {
+		console.error('Error fetching user count:', error);
+		return 0;
 	}
 };

@@ -1,5 +1,5 @@
 import { SIZE_PAGINATION } from '@/config';
-import { getAllUsers, getCountUsers} from '@/lib/user/getUser';
+import { getAllUsers, getCountUsers } from '@/lib/user/getUser';
 import { Outlet, createFileRoute } from '@tanstack/react-router';
 
 export interface UsersPagination {

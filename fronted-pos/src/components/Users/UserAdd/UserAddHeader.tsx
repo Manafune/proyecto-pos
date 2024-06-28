@@ -41,7 +41,7 @@ const UserAddHeader: React.FC<UserAddHeaderProps> = ({ handleSubmit, onSubmit })
                 >
                     Descartar
                 </Link>
-                <Button onClick={handleSubmit(onSubmit)} className="bg-blue-600 text-white">Añadir Usuario</Button>
+                <Button onClick={handleSubmit(onSubmit)} className="bg-green-600 text-white">Añadir Usuario</Button>
             </div>
         </div>
     );
