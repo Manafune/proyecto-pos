@@ -20,9 +20,13 @@ const Boleta: React.FC = () => {
     customer: 'Cliente Ejemplo',
     products: [
       { name: 'Producto 1', quantity: 2, price: 10 },
+      { name: 'Producto 2', quantity: 1, price: 20 },
+      { name: 'Producto 3', quantity: 1, price: 20 },
+      { name: 'Producto 2', quantity: 1, price: 20 },
+      { name: 'Producto 2', quantity: 1, price: 20 },
       { name: 'Producto 2', quantity: 1, price: 20 }
     ],
-    total: 40
+    total: 50
   });
 
   return (
