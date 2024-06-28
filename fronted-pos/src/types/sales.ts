@@ -2,21 +2,28 @@ export const enum SaleStatus {
     COMPLETED = 'COMPLETED',
     CANCELED = 'CANCELED',
 }
-export interface SaleDetail {
-    id: number;
-    sale_id: number;
-    product_id: number;
-    quantity: number;
-    price: number;
-    subtotal: number;
+export interface DetailSales {
+  id: number
+  quantity: number
+  price: number
+  subtotal: number
+  products: Products
+  details_sales: SaleData
 }
 
+export interface Products {
+  id: number
+  name: string
+}
 
-export interface Sale {
-    id: number;
-    customer_id: number;
-    sale_date: Date;
-    total: number;
-    status: SaleStatus; 
-    sale_details: SaleDetail[];
+export interface SaleData {
+  id: number
+  total: number
+  status: string
+  customer: Customer
+  sale_date: string
+}
+
+export interface Customer {
+  first_name: string
 }

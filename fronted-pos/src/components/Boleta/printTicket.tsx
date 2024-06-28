@@ -72,9 +72,10 @@ const InvoicePdf: React.FC<{ invoice: Invoice }> = ({ invoice }) => {
 		});
 
 		// Total
-		y += 8; // Espacio adicional antes de mostrar el total
-		doc.setFontSize(10);
-		doc.text(`Total: S/.${invoice.total.toFixed(2)}`, textX, y, { align: 'center' });
+		y += 4; // Espacio adicional antes de mostrar el total
+		doc.setFontSize(8);
+		doc.text('Total',50,y);
+		doc.text(`S/.${invoice.total.toFixed(2)}`, 69, y, { align: 'center' });
 
 		// Guardar PDF con nombre específico
 		const pdfUrl = doc.output('bloburl');

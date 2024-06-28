@@ -1,21 +1,21 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
+// import { Badge } from '@/components/ui/badge';
 import { MoreHorizontal } from 'lucide-react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+// import React from 'react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Link, useRouter } from '@tanstack/react-router';
-import { SaleData } from '@/lib/sales/getSales';
-import { SaleStatus } from '@/types/sales';
+// import { Link, useRouter } from '@tanstack/react-router';
+
+import {type DetailSales, } from '@/types/sales';
 // import { ProductsPagination } from '@/routes/_authenticated/(products)/products';
 interface TypeTableContent {
-	sales: SaleData[];
-	totalSales: number;
+	sales: DetailSales[]
 }
 
 export const TableSaleContent = ({ sales }: TypeTableContent) => {
 
-	const getStatusText = (status: SaleStatus) => (status === SaleStatus.COMPLETED ? 'Completa' : 'Cancelada');
-	
+	// const getStatusText = (status: SaleStatus) => (status === SaleStatus.COMPLETED ? 'Completa' : 'Cancelada');
+	//  console.log(sales)
     return (
 		<Table>
 			<TableHeader>
@@ -30,16 +30,21 @@ export const TableSaleContent = ({ sales }: TypeTableContent) => {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{sales?.map((sale, index) => (
-					<TableRow key={sale.id} className={index % 2 === 0 ? '' : 'bg-slate-200/70 hover:bg-slate-200/70'}>
-						<TableCell className='hidden md:table-cell'>{sale.customer_id}</TableCell>
-						<TableCell className='hidden md:table-cell'>{sale.sale_date.toString()}</TableCell>
-						<TableCell className='hidden md:table-cell'>{sale.total}</TableCell>
-						<TableCell>
-							<Badge variant={sale.status === SaleStatus.COMPLETED ? 'outline' : 'secondary'} className='border-none bg-blue-200'>
-								{getStatusText(sale.status)}
-							</Badge>
-						</TableCell>
+				{sales?.map(({id,}) => (
+					<TableRow key={id} className={id % 2 === 0 ? '' : 'bg-slate-200/70 hover:bg-slate-200/70'}>
+						{/* {sales?.map((sale,idx) => (
+							<React.Fragment key={idx}>
+								<TableCell className='hidden md:table-cell'>{sale.}</TableCell>
+								<TableCell className='hidden md:table-cell'>{sale.sale_date.toString()}</TableCell>
+								<TableCell className='hidden md:table-cell'>{sale.}</TableCell>
+								<TableCell>
+									<Badge variant={sale.status === SaleStatus.COMPLETED ? 'outline' : 'secondary'} className='border-none bg-blue-200'>
+										{getStatusText(sale.status)}
+									</Badge>
+								</TableCell>
+								
+							</React.Fragment>
+						))} */}
 						<TableCell>
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>

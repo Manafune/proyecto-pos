@@ -5,6 +5,7 @@ export const TableSale = () => {
 
   const {sales} = routeApi.useLoaderData();
 
+
   return (
     <>
     <TableSaleContent sales={sales}/>
