@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { MoreHorizontal } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
+import { Link, useRouter } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { getAllUsers } from '@/lib/user/getUser';
 import { MemberStatus, MemberRole, MemberData, User } from '@/types/members';
@@ -12,6 +13,7 @@ export const TableUserContent = () => {
 	const [users, setUsers] = useState<User[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const route = useRouter();
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -19,7 +21,7 @@ export const TableUserContent = () => {
 				const usersData: MemberData[] = await getAllUsers({ current: 1, pageSize: 10 });
 				console.log('Fetched users data:', usersData); // Log the fetched data
 				setUsers(usersData.map(user => ({
-					email: '',  // Asumiendo que no tienes esta información disponible
+					email: user.member_id,
 					name: user.member_name,
 					lastname: user.member_lastname,
 					role_app: user.member_role_app,
@@ -92,10 +94,23 @@ export const TableUserContent = () => {
 										<span className='sr-only'>Toggle menu</span>
 									</Button>
 								</DropdownMenuTrigger>
-								<DropdownMenuContent align='end' side='bottom' className='p-2 bg-white rounded-md shadow-lg'>
-									<DropdownMenuLabel className='px-2 py-1 text-sm font-semibold text-gray-700'>Acciones</DropdownMenuLabel>
-									<DropdownMenuItem className='px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 rounded-md'>Editar</DropdownMenuItem>
-									<DropdownMenuItem className='px-2 py-1 text-sm text-gray-700 hover:bg-gray-100 rounded-md'>Cambiar Estado</DropdownMenuItem>
+								<DropdownMenuContent align='end'>
+									<DropdownMenuLabel>Acciones</DropdownMenuLabel>
+									<Link
+										to='/users/$id'
+										params={{ id: user.email }} // Asegúrate de que `user.email` sea único
+										search={{ pageSize: 10, current: 1, filter: 'ALL' }} // Proporciona un objeto de búsqueda con los valores requeridos
+									>
+										<DropdownMenuItem>Editar</DropdownMenuItem>
+									</Link>
+									<DropdownMenuItem
+										onClick={async () => {
+											// Aquí podrías agregar la lógica para cambiar el estado del usuario
+											console.log('Cambiar Estado');
+										}}
+									>
+										Cambiar Estado
+									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</TableCell>

@@ -1,3 +1,6 @@
+import { Description } from "@radix-ui/react-dialog";
+import { title } from "process";
+
 export const stepsClient = [
 	{
 		title: 'Paso 1',
@@ -56,4 +59,23 @@ export const stepClientsAdd = [
 		title: 'Paso 5',
 		description: 'Ingresa la dirección del cliente'
 	}
+];
+
+export const stepUserEdit = [
+
+	{
+		title: 'Paso 1',
+		description: 'Ingresa el cambio de nombre'
+	},
+
+	{
+		title: 'Paso 2',
+		description: 'Ingresa el cambio de apellido'
+	},
+
+	{
+		title: 'Paso 1',
+		description: 'Seleccion el cambio de rol'
+	},
+
 ];
