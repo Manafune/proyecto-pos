@@ -8,7 +8,7 @@ export interface DetailSales {
   price: number
   subtotal: number
   products: Products
-  details_sales: SaleData
+  sales?: SaleData
 }
 
 export interface Products {
@@ -19,7 +19,7 @@ export interface Products {
 export interface SaleData {
   id: number
   total: number
-  status: string
+  status: SaleStatus
   customer: Customer
   sale_date: string
 }
