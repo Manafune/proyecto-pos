@@ -7,13 +7,13 @@ import {
 	PaginationPrevious
 } from '@/components/ui/pagination';
 import { cn } from '@/lib/utils';
-import { ProductsPagination } from '@/routes/_authenticated/(products)/products';
+import { type ClientsPagination } from '@/routes/_authenticated/(clients)/clients';
 import { Link, getRouteApi } from '@tanstack/react-router';
 interface BasePagination {
 	total: number;
 }
-const route = getRouteApi('/_authenticated/products');
-export const BasePagination = ({ total }: BasePagination) => {
+const route = getRouteApi('/_authenticated/clients');
+export const ClientPagination = ({ total }: BasePagination) => {
 	const { pageSize, current } = route.useSearch();
 	const { prevPage, nextPage, totalPages } = {
 		prevPage: current - 1,
@@ -30,10 +30,10 @@ export const BasePagination = ({ total }: BasePagination) => {
 				<PaginationItem>
 					<Link
 						disabled={isDisabledPrevPage}
-						to='/products'
+						to='/clients'
 						className={cn('', { 'cursor-not-allowed': isDisabledPrevPage })}
 						search={(prev) => {
-							const data = prev as ProductsPagination;
+							const data = prev as ClientsPagination;
 							return { ...data, current: prevPage };
 						}}
 						{...(isDisabledPrevPage && { title: messageTitle })}
@@ -47,9 +47,9 @@ export const BasePagination = ({ total }: BasePagination) => {
 					.map((_, id) => (
 						<PaginationItem className='cursor-pointer  rounded-md' key={id}>
 							<Link
-								to='/products'
+								to='/clients'
 								search={(prev) => {
-									const data = prev as ProductsPagination;
+									const data = prev as ClientsPagination;
 									return { ...data, current: id + 1 };
 								}}
 								disabled={id + 1 === current}
@@ -61,10 +61,10 @@ export const BasePagination = ({ total }: BasePagination) => {
 				<PaginationItem>
 					<Link
 						disabled={isDisabledNextPage}
-						to='/products'
+						to='/clients'
 						className={cn('', { 'cursor-not-allowed': isDisabledNextPage })}
 						search={(prev) => {
-							const data = prev as ProductsPagination;
+							const data = prev as ClientsPagination;
 							return { ...data, current: nextPage };
 						}}
 						{...(isDisabledNextPage && { title: messageTitle })}

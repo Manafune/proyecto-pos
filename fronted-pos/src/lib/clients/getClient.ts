@@ -35,23 +35,27 @@ export const getClientById = async ({ id, timeout }: { id: string; timeout: (mil
 };
 
 export const getClientByDNI = async (dni: string) => {
-    try {
-        const { data, error } = await supabase
-            .from('address')
-            .select('id,street,city,state,customer(id,first_name,last_name,dni,birth_date)')
-            .eq('customer.dni', dni);
+	try {
+		const { data, error } = await supabase
+			.from('address')
+			.select('id,street,city,state,customer(id,first_name,last_name,dni,birth_date)')
+			.eq('customer.dni', dni);
 
-        if (error) throw new Error(error.message);
-        const address = data?.[0];
-        const customer = address?.customer[0];
-        const addressCustomer = {
-            ...address,
-            customer: { ...customer, birth_date: new Date(customer?.birth_date ?? '') }
-        } as AddressMemberSchemaType;
+		if (error) throw new Error(error.message);
+		const address = data?.[0];
+		const customer = address?.customer[0];
+		const addressCustomer = {
+			...address,
+			customer: { ...customer, birth_date: new Date(customer?.birth_date ?? '') }
+		} as AddressMemberSchemaType;
 
-        return addressCustomer;
-    } catch (error) {
-        console.error('Error fetching client by DNI:', error);
-        return null;
-    }
+		return addressCustomer;
+	} catch (error) {
+		console.error('Error fetching client by DNI:', error);
+		return null;
+	}
+};
+export const getCountClients = async () => {
+	const { data } = await supabase.rpc('total_customers');
+	return data;
 };

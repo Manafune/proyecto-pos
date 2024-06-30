@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { MoreHorizontal } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Link, useRouter } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { getAllUsers } from '@/lib/user/getUser';
 import { MemberStatus, MemberRole, MemberData, User } from '@/types/members';
@@ -13,20 +13,21 @@ export const TableUserContent = () => {
 	const [users, setUsers] = useState<User[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const route = useRouter();
 
 	useEffect(() => {
 		const fetchUsers = async () => {
 			try {
 				const usersData: MemberData[] = await getAllUsers({ current: 1, pageSize: 10 });
 				console.log('Fetched users data:', usersData); // Log the fetched data
-				setUsers(usersData.map(user => ({
-					email: user.member_id,
-					name: user.member_name,
-					lastname: user.member_lastname,
-					role_app: user.member_role_app,
-					status: user.member_status,
-				})));
+				setUsers(
+					usersData.map((user) => ({
+						email: user.member_id,
+						name: user.member_name,
+						lastname: user.member_lastname,
+						role_app: user.member_role_app,
+						status: user.member_status
+					}))
+				);
 			} catch (error) {
 				console.error('Error fetching users:', error);
 				setError('Failed to fetch users');
@@ -55,7 +56,12 @@ export const TableUserContent = () => {
 	const getStatusText = (status: MemberStatus) => (status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo');
 
 	if (loading) {
-		return <div className="flex items-center justify-center h-screen"> <Loading /> </div>;
+		return (
+			<div className='flex items-center justify-center h-screen'>
+				{' '}
+				<Loading />{' '}
+			</div>
+		);
 	}
 
 	if (error) {
