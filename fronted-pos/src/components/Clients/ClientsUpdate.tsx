@@ -14,6 +14,7 @@ import { updateAddresDetails } from '@/lib/clients/putClients';
 import { AddressMemberSchemaType } from '@/lib/validation/client';
 import { stepsClient } from '@/data/steps';
 import { useCustomerValidation } from '@/hooks/useCustomerValidation';
+import { cn } from '@/lib/utils';
 const route = getRouteApi('/_authenticated/clients/$id');
 
 export const ClientsUpdate = () => {
@@ -25,7 +26,7 @@ export const ClientsUpdate = () => {
 		params: { id: loaderData.id }
 	});
 	const { errors, onValidateClient } = useCustomerValidation({ onUpdateData });
-
+	console.log(errors);
 	const handleSubmit = async () => {
 		const customer = client?.customer;
 		const clientValidate = Object.entries(client ?? {})
@@ -98,21 +99,20 @@ export const ClientsUpdate = () => {
 							<CardTitle className='text-xl'>Actualizar Cliente</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<div className='grid gap-6 '>
-								<div className='relative grid items-center'>
-									<Input
-										id='name'
-										type='text'
-										className='w-full'
-										autoComplete='off'
-										placeholder='Ejemplo: Marcos'
-										onChange={(e) => {
-											client?.customer !== undefined &&
-												onUpdateData({ ...client, customer: { ...client.customer, first_name: e.target.value } });
-										}}
-										defaultValue={client?.customer?.first_name ?? ''}
-									/>
-								</div>
+							<div className='relative grid items-center gap-1'>
+								<Input
+									id='name'
+									type='text'
+									className={cn('w-full', { 'border-2 border-red-400 focus-visible:ring-red-700': errors.first_name })}
+									autoComplete='off'
+									placeholder='Ejemplo: Nombre'
+									onInput={(e) => {
+										client?.customer !== undefined &&
+											onValidateClient({ ...client, customer: { ...client.customer, first_name: e.currentTarget.value } });
+									}}
+									defaultValue={client?.customer?.first_name ?? ''}
+								/>
+								{errors?.first_name && <span className='text-sm text-red-600'>{errors.first_name}</span>}
 							</div>
 						</CardContent>
 					</Card>

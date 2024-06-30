@@ -7,6 +7,7 @@ export const useCustomerValidation = ({ onUpdateData }: { onUpdateData: (params:
 	const [errors, setErrors] = useState<ErrorsCustomer>(initializeErrors());
 
 	const onValidateClient = (data: Partial<AddressMemberSchemaType>) => {
+		console.log(data);
 		const validateCustomer = AddressSchema.safeParse(data);
 		const validationErrors = validateCustomer.error?.errors;
 
