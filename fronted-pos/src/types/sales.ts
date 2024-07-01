@@ -21,7 +21,7 @@ export interface SaleData {
   status: SaleStatus
   customer: Customer
   sale_date: string
-  detail_sale?: DetailSales[]
+  detail_sale: DetailSales[]
 
 }
 
