@@ -8,7 +8,7 @@ export const TableSale = () => {
 
   return (
     <>
-    <TableSaleContent detail_sales={sales}/>
+    <TableSaleContent sales={sales}/>
     </>
 
   )

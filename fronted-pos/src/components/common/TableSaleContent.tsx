@@ -6,16 +6,16 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/compon
 import { Button } from '@/components/ui/button';
 // import { Link, useRouter } from '@tanstack/react-router';
 
-import {type DetailSales, SaleStatus} from '@/types/sales';
+import {type SaleData, SaleStatus} from '@/types/sales';
 // import { ProductsPagination } from '@/routes/_authenticated/(products)/products';
 interface TypeTableContent {
-	detail_sales: DetailSales[]
+	sales: SaleData[]
 }
 
-export const TableSaleContent = ({ detail_sales }: TypeTableContent) => {
+export const TableSaleContent = ({ sales }: TypeTableContent) => {
 
 	const getStatusText = (status: SaleStatus) => (status === SaleStatus.COMPLETED ? 'Completa' : 'Cancelada');
-	console.log(detail_sales);
+	console.log(sales);
     return (
 		<Table>
 			<TableHeader>
@@ -30,14 +30,14 @@ export const TableSaleContent = ({ detail_sales }: TypeTableContent) => {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{detail_sales?.map(({id,sales}) => (
-					<TableRow key={id} className={id % 2 === 0 ? '' : 'bg-slate-200/70 hover:bg-slate-200/70'}>
-								<TableCell className='hidden md:table-cell'>{sales?.customer.first_name}</TableCell>
-								<TableCell className='hidden md:table-cell'>{sales?.sale_date.toString()}</TableCell>
-								<TableCell className='hidden md:table-cell'>{sales?.total}</TableCell>
+				{sales?.map((sale) => (
+					<TableRow key={sale.id} className={sale.id % 2 === 0 ? '' : 'bg-slate-200/70 hover:bg-slate-200/70'}>
+								<TableCell className='hidden md:table-cell'>{sale.customer.first_name}</TableCell>
+								<TableCell className='hidden md:table-cell'>{new Date(sale.sale_date).toLocaleDateString()}</TableCell>
+								<TableCell className='hidden md:table-cell'>{sale.total}</TableCell>
 								<TableCell>
-									<Badge variant={sales?.status === SaleStatus.COMPLETED ? 'outline' : 'secondary'} className='border-none bg-blue-200'>
-										{ sales ? getStatusText(sales.status) : ''}
+									<Badge variant={sale?.status === SaleStatus.COMPLETED ? 'outline' : 'secondary'} className='border-none bg-blue-200'>
+										{ sale ? getStatusText(sale.status) : ''}
 									</Badge>
 								</TableCell>
 						<TableCell>
