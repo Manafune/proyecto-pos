@@ -3,7 +3,7 @@ import { Tabs } from '@/components/ui/tabs';
 import { Link } from '@tanstack/react-router';
 import { type SalesPagination } from '@/routes/_authenticated/(sales)/sales';
 import { TableSale } from '../Table/TableSale';
-import Boleta from '../Boleta/Boleta';
+
 
 
 export const Sales = () => {
@@ -58,7 +58,6 @@ export const Sales = () => {
 				</div>
 			</div>
 			<TableSale />
-			<Boleta />
 		</Tabs>
   )
 }

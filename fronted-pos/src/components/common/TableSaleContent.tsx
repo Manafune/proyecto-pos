@@ -1,19 +1,19 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { MoreHorizontal } from 'lucide-react';
-// import React from 'react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-// import { Link, useRouter } from '@tanstack/react-router';
-
+import Boleta from '../Boleta/Boleta';
 import {type SaleData, SaleStatus} from '@/types/sales';
+import { putSalesByState } from '@/lib/sales/putSales';
+import { useRouter } from '@tanstack/react-router';
 // import { ProductsPagination } from '@/routes/_authenticated/(products)/products';
 interface TypeTableContent {
 	sales: SaleData[]
 }
 
 export const TableSaleContent = ({ sales }: TypeTableContent) => {
-
+	const route = useRouter();
 	const getStatusText = (status: SaleStatus) => (status === SaleStatus.COMPLETED ? 'Completa' : 'Cancelada');
 	console.log(sales);
     return (
@@ -49,28 +49,21 @@ export const TableSaleContent = ({ sales }: TypeTableContent) => {
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align='end'>
-									{/* <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-									<Link
-										to='/products/$id'
-										params={{ id: sale.id.toString() }}
-										search={(prev) => {
-											const data = prev as ProductsPagination;
-											return { ...data };
-										}}
-									>
-										<DropdownMenuItem>Editar</DropdownMenuItem>
-									</Link> */}
-									{/* <DropdownMenuItem
+									<DropdownMenuLabel>Acciones</DropdownMenuLabel>
+									<DropdownMenuItem
 										onClick={async () => {
-											const data = await putProductsByState({
-												status: sale.status === MemberStatus.ACTIVE ? MemberStatus.INACTIVE : MemberStatus.ACTIVE,
+											const data = await putSalesByState({
+												status: sale.status === SaleStatus.COMPLETED ? SaleStatus.CANCELED : SaleStatus.COMPLETED,
 												idSale: sale.id
 											});
 											if (data !== undefined) route.invalidate();
 										}}
 									>
 										Cambiar Estado
-									</DropdownMenuItem> */}
+									</DropdownMenuItem>
+									<DropdownMenuItem>
+									<Boleta />
+									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</TableCell>
