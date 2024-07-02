@@ -9,7 +9,7 @@ import { useRouter } from '@tanstack/react-router';
 import { generatePDF } from '../Boleta/printTicket';
 import { getSaleById } from '@/lib/sales/getSales';
 import { Invoice } from '@/types/ticket';
-// import { ProductsPagination } from '@/routes/_authenticated/(products)/products';
+import { updateProductStock } from '@/lib/products/putProducts';
 interface TypeTableContent {
 	sales: SaleData[]
 }
@@ -49,6 +49,48 @@ export const TableSaleContent = ({ sales }: TypeTableContent) => {
 		}
 	};
 
+	const handleChangeStatus = async (sale: SaleData) => {
+        const confirmChange = window.confirm('¿Estás seguro de cambiar el estado?');
+
+        if (confirmChange) {
+            try {
+                // Llamar a la función para cambiar el estado de la venta
+                const updatedSale = await putSalesByState({
+                    status: sale.status === SaleStatus.COMPLETED ? SaleStatus.CANCELED : SaleStatus.COMPLETED,
+                    idSale: sale.id,
+                });
+
+                // Manejar cualquier lógica adicional después de actualizar la venta
+                console.log('Venta actualizada:', updatedSale);
+
+                // Obtener detalles de la venta actualizada para actualizar el stock de productos
+                const updatedSaleDetails = await getSaleById(sale.id);
+
+                // Actualizar el stock de productos basado en el nuevo estado de la venta
+                if (updatedSaleDetails) {
+                    for (const detail of updatedSaleDetails.detail_sale) {
+                        const { products, quantity } = detail;
+                        const newStock = sale.status === SaleStatus.COMPLETED
+                            ? products.stock + quantity
+                            : products.stock - quantity;
+
+						console.log(newStock);
+
+                        // Llamar a la función para actualizar el stock del producto
+                        await updateProductStock({ idProduct: products.id, newStock });
+
+                        console.log(`Stock actualizado para ${products.name}: ${newStock}`);
+                    }
+                }
+
+                // Invalidar la ruta para refrescar los datos
+                route.invalidate();
+            } catch (error) {
+                console.error('Error cambiando estado o actualizando stock:', error);
+            }
+        }
+    };
+
 
     return (
 		<Table>
@@ -84,15 +126,8 @@ export const TableSaleContent = ({ sales }: TypeTableContent) => {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align='end'>
 									<DropdownMenuLabel>Acciones</DropdownMenuLabel>
-									<DropdownMenuItem
-										onClick={async () => {
-											const data = await putSalesByState({
-												status: sale.status === SaleStatus.COMPLETED ? SaleStatus.CANCELED : SaleStatus.COMPLETED,
-												idSale: sale.id
-											});
-											if (data !== undefined) route.invalidate();
-										}}
-									>
+									<DropdownMenuItem onClick={() => handleChangeStatus(sale)}
+										>
 										Cambiar Estado
 									</DropdownMenuItem>
 									<DropdownMenuItem onClick={() => handlePrintInvoice(sale.id)}>

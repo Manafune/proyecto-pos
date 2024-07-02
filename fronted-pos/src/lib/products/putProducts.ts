@@ -28,3 +28,14 @@ export const updateProductDetails = async ({
 
 	return data;
 };
+
+export const updateProductStock = async ({ idProduct, newStock }: { idProduct: number; newStock: number }) => {
+    const { data, error } = await supabase.from('product').update({ stock: newStock }).eq('id', idProduct).select();
+
+    if (error) {
+        console.error('Error al actualizar el stock del producto:', error);
+        throw error;
+    }
+
+    return data;
+};

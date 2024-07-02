@@ -24,7 +24,7 @@ export const getSaleById = async (id: number) => {
     try {
         const { data, error } = await supabase
             .from('sale')
-            .select(`id,customer:customer_id(first_name),sale_date,total,status,detail_sale:sale_detail(products:product(name), quantity, price, subtotal)`)
+            .select(`id,customer:customer_id(first_name),sale_date,total,status,detail_sale:sale_detail(products:product(id,name,stock), quantity, price, subtotal)`)
             .eq('id', id)
             .single();
         if (error) throw new Error(error.message);
