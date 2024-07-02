@@ -5,7 +5,15 @@ export interface ProductData extends Omit<Product, 'id'> {
 	id: number;
 }
 
-export const getAllProducts = async ({ current, pageSize, filter }: { current: number; pageSize: number; filter: ProductsPagination['filter'] }) => {
+export const getAllProducts = async ({
+	current,
+	pageSize,
+	filter
+}: {
+	current: number;
+	pageSize: number;
+	filter: ProductsPagination['filter'];
+}) => {
 	try {
 		const pageCurrent = (current - 1) * pageSize;
 		const offset = pageCurrent + pageSize - 1;
@@ -43,4 +51,9 @@ export const getProductById = async ({ id }: { id: string }) => {
 	const { data: product } = await supabase.from('product').select('*').eq('id', id);
 
 	return product?.[0] as unknown as ProductData;
+};
+export const getProductByName = async ({ name }: { name: string }) => {
+	const { data: product } = await supabase.from('product').select('id,name,container,price,stock').eq('name', name);
+	console.log(product);
+	// return product?.[0] as unknown as ProductData;
 };

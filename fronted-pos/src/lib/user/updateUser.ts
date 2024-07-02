@@ -1,7 +1,7 @@
 import supabase from '@/lib/supabase';
 import { type ProfilechemaValidator } from '@/lib/validation/validation';
 import { MemberData } from '@/types/members';
-type UserType = Omit<ProfilechemaValidator, 'password'> & { id: string };
+type UserType = Omit<ProfilechemaValidator, 'password' | 'role'> & { id: string };
 
 interface ApiResponse {
 	data?: MemberData;
@@ -19,7 +19,8 @@ export const updateUserProfile = async ({ confirmPassword, lastname, name, id }:
 			}
 		});
 		if (authError !== null) {
-			const errorMessage = authError.name === 'AuthApiError' ? 'La nueva contraseña debe ser diferente a la anterior' : 'error al actualizar el usuario';
+			const errorMessage =
+				authError.name === 'AuthApiError' ? 'La nueva contraseña debe ser diferente a la anterior' : 'error al actualizar el usuario';
 			return { errors: [{ message: errorMessage, code: authError.code ?? '', name: 'Error de autenticacion' }] };
 		}
 
