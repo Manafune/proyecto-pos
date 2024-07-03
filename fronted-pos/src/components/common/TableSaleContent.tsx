@@ -30,7 +30,7 @@ export const TableSaleContent = ({ sales }: TypeTableContent) => {
 	
 			const invoice: Invoice = {
 				date: new Date(sale.sale_date).toLocaleDateString(),
-				customer: sale.customer.first_name,
+				customer: sale.customer.first_name + ' ' + sale.customer.last_name,
 				products: sale.detail_sale.map((detail) => ({
 					name: detail.products.name,
 					quantity: detail.quantity,
@@ -54,19 +54,12 @@ export const TableSaleContent = ({ sales }: TypeTableContent) => {
 
         if (confirmChange) {
             try {
-                // Llamar a la función para cambiar el estado de la venta
                 const updatedSale = await putSalesByState({
                     status: sale.status === SaleStatus.COMPLETED ? SaleStatus.CANCELED : SaleStatus.COMPLETED,
                     idSale: sale.id,
                 });
-
-                // Manejar cualquier lógica adicional después de actualizar la venta
                 console.log('Venta actualizada:', updatedSale);
-
-                // Obtener detalles de la venta actualizada para actualizar el stock de productos
                 const updatedSaleDetails = await getSaleById(sale.id);
-
-                // Actualizar el stock de productos basado en el nuevo estado de la venta
                 if (updatedSaleDetails) {
                     for (const detail of updatedSaleDetails.detail_sale) {
                         const { products, quantity } = detail;
@@ -82,8 +75,6 @@ export const TableSaleContent = ({ sales }: TypeTableContent) => {
                         console.log(`Stock actualizado para ${products.name}: ${newStock}`);
                     }
                 }
-
-                // Invalidar la ruta para refrescar los datos
                 route.invalidate();
             } catch (error) {
                 console.error('Error cambiando estado o actualizando stock:', error);
@@ -108,7 +99,7 @@ export const TableSaleContent = ({ sales }: TypeTableContent) => {
 			<TableBody>
 				{sales?.map((sale) => (
 					<TableRow key={sale.id} className={sale.id % 2 === 0 ? '' : 'bg-slate-200/70 hover:bg-slate-200/70'}>
-								<TableCell className='hidden md:table-cell'>{sale.customer.first_name}</TableCell>
+								<TableCell className='hidden md:table-cell'>{sale.customer.first_name} {sale.customer.last_name}</TableCell>
 								<TableCell className='hidden md:table-cell'>{new Date(sale.sale_date).toLocaleDateString()}</TableCell>
 								<TableCell className='hidden md:table-cell'>{sale.total}</TableCell>
 								<TableCell>

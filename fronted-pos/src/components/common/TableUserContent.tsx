@@ -109,14 +109,6 @@ export const TableUserContent = () => {
 									>
 										<DropdownMenuItem>Editar</DropdownMenuItem>
 									</Link>
-									<DropdownMenuItem
-										onClick={async () => {
-											// Aquí podrías agregar la lógica para cambiar el estado del usuario
-											console.log('Cambiar Estado');
-										}}
-									>
-										Cambiar Estado
-									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</TableCell>
