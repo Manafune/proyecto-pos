@@ -8,7 +8,7 @@ export const getAllSales = async ({ current, pageSize }: { current: number; page
 		const { data, error } = await supabase
 			.from('sale')
 			.select(
-				`id,customer:customer_id(first_name,last_name),sale_date,total,status,detail_sale:sale_detail(products:product(name), quantity, price, subtotal)`
+				`id,customer:customer_id(first_name,last_name),sale_date,total,status,detail_sale:sale_detail(products:product(id,name,stock), quantity, price, subtotal)`
 			)
 			.range(pageCurrent, offset);
 		if (error) throw new Error(error.message);
