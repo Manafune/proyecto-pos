@@ -1,7 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal } from 'lucide-react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
@@ -58,8 +56,7 @@ export const TableUserContent = () => {
 	if (loading) {
 		return (
 			<div className='flex items-center justify-center h-screen'>
-				{' '}
-				<Loading />{' '}
+				<Loading />
 			</div>
 		);
 	}
@@ -93,24 +90,15 @@ export const TableUserContent = () => {
 							</Badge>
 						</TableCell>
 						<TableCell>
-							<DropdownMenu>
-								<DropdownMenuTrigger asChild>
-									<Button aria-haspopup='true' size='icon' variant='ghost'>
-										<MoreHorizontal className='h-4 w-4' />
-										<span className='sr-only'>Toggle menu</span>
-									</Button>
-								</DropdownMenuTrigger>
-								<DropdownMenuContent align='end'>
-									<DropdownMenuLabel>Acciones</DropdownMenuLabel>
-									<Link
-										to='/users/$id'
-										params={{ id: user.email }} // Asegúrate de que `user.email` sea único
-										search={{ pageSize: 10, current: 1, filter: 'ALL' }} // Proporciona un objeto de búsqueda con los valores requeridos
-									>
-										<DropdownMenuItem>Editar</DropdownMenuItem>
-									</Link>
-								</DropdownMenuContent>
-							</DropdownMenu>
+							<Link
+								to='/users/$id'
+								params={{ id: user.email }}
+								search={{ pageSize: 10, current: 1, filter: 'ALL' }}
+							>
+								<Button size='sm' className='bg-green-600 text-white hover:bg-green-800'>
+									Editar
+								</Button>
+							</Link>
 						</TableCell>
 					</TableRow>
 				))}
