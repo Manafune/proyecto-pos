@@ -1,6 +1,6 @@
 import supabase from '@/lib/supabase';
 import { ProductsPagination } from '@/routes/_authenticated/(products)/products';
-import { type Product } from '@/types/products';
+import { type ResponseProduct, type Product } from '@/types/products';
 export interface ProductData extends Omit<Product, 'id'> {
 	id: number;
 }
@@ -52,8 +52,12 @@ export const getProductById = async ({ id }: { id: string }) => {
 
 	return product?.[0] as unknown as ProductData;
 };
-export const getProductByName = async ({ name }: { name: string }) => {
-	const { data: product } = await supabase.from('product').select('id,name,container,price,stock').eq('name', name);
-	console.log(product);
-	// return product?.[0] as unknown as ProductData;
+export const getProductsByName = async ({ name }: { name: string }) => {
+	try {
+		const { data: products, error } = await supabase.from('product').select('*').ilike('name', `${name}%`);
+		if (error) throw new Error(error.message);
+		return products as unknown as ResponseProduct;
+	} catch (error) {
+		console.log(error);
+	}
 };

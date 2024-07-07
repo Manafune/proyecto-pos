@@ -7,6 +7,7 @@ import { getClientByDNI } from '@/lib/clients/getClient';
 import { Customer } from '@/types/clients';
 import { toast } from 'sonner';
 import { ValidateSalesDni, ValidateSalesName } from '@/lib/validation/sale';
+import { getProductsByName } from '@/lib/products/getProduct';
 
 const initialProducts = [
 	{ name: 'Producto 1', quantity: 1, price: 100, subtotal: 100 },
@@ -67,9 +68,11 @@ export const SalesAdd = () => {
 		if (!isValidProduct) return;
 		setProductSelected(() => ({ error: '', value: e.target.value }));
 	};
-	const handleSearchProduct = () => {
+	const handleSearchProduct = async () => {
 		const isValidProduct = productValidated(productSelected.value);
 		if (!isValidProduct) return;
+		const products = await getProductsByName({ name: productSelected.value });
+		console.log(products);
 	};
 	return (
 		<div className='p-4 max-w-7xl mx-auto'>

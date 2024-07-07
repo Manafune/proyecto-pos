@@ -13,3 +13,13 @@ export interface Product {
 	container: Container;
 	id: string;
 }
+// ------------------------------ api supabas-------------------
+export interface ResponseProduct {
+	id: number;
+	name: string;
+	container: Container;
+	price: number;
+	stock: number;
+	created_at: string;
+	status: MemberStatus;
+}
