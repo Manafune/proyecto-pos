@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { getClientByDNI } from '@/lib/clients/getClient';
 import { Customer } from '@/types/clients';
 import { toast } from 'sonner';
+import { ValidateSalesDni } from '@/lib/validation/sale';
 
 const initialProducts = [
 	{ name: 'Producto 1', quantity: 1, price: 100, subtotal: 100 },
@@ -16,7 +17,7 @@ const initialProducts = [
 export const SalesAdd = () => {
 	const [newProduct, setNewProduct] = useState({ name: '', quantity: 0, price: 0, subtotal: 0 });
 	const [products, setProducts] = useState(initialProducts);
-	const [dniClient, setDniClient] = useState('');
+	const [dniClient, setDniClient] = useState({ value: '', error: '' });
 	const [client, setClient] = useState<Omit<Customer, 'birth_date'> | null>(null);
 	const handleAddProduct = () => {
 		const productToAdd = {
@@ -26,10 +27,24 @@ export const SalesAdd = () => {
 		setProducts([...products, productToAdd]);
 		setNewProduct({ name: '', quantity: 0, price: 0, subtotal: 0 });
 	};
-
 	const total = products.reduce((sum, product) => sum + product.subtotal, 0);
+	const handleModifiedDniClient = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const dniValidation = ValidateSalesDni.safeParse({ dni: e.target.value });
+		if (!dniValidation.success) {
+			const error = dniValidation.error.errors;
+			setDniClient((client) => ({ ...client, error: error[0].message }));
+			return;
+		}
+		setDniClient(() => ({ error: '', value: dniValidation.data.dni }));
+	};
 	const handleSearchClient = async () => {
-		const clientNew = await getClientByDNI(dniClient);
+		const dniValidation = ValidateSalesDni.safeParse({ dni: dniClient.value });
+		if (!dniValidation.success) {
+			const error = dniValidation.error.errors;
+			setDniClient((client) => ({ ...client, error: error[0].message }));
+			return;
+		}
+		const clientNew = await getClientByDNI(dniClient.value);
 		if (!clientNew) return toast.error(`No se encontro el client con el dni ${dniClient}`);
 		setClient(clientNew);
 	};
@@ -49,12 +64,13 @@ export const SalesAdd = () => {
 								id='dni'
 								className='flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300'
 								placeholder='Ingrese DNI del cliente'
-								onChange={(e) => setDniClient(e.target.value)}
+								onChange={handleModifiedDniClient}
 							/>
 							<Button type='button' className='rounded-r-md' onClick={handleSearchClient}>
 								Buscar
 							</Button>
 						</div>
+						{dniClient.error && <span className='text-sm text-red-600'>{dniClient.error}</span>}
 					</div>
 
 					<div className='mb-6 grid grid-cols-1 md:grid-cols-3 gap-6'>
