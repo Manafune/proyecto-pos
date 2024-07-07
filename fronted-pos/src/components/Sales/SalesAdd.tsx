@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { getClientByDNI } from '@/lib/clients/getClient';
 import { Customer } from '@/types/clients';
 import { toast } from 'sonner';
-import { ValidateSalesDni } from '@/lib/validation/sale';
+import { ValidateSalesDni, ValidateSalesName } from '@/lib/validation/sale';
 
 const initialProducts = [
 	{ name: 'Producto 1', quantity: 1, price: 100, subtotal: 100 },
@@ -15,10 +15,11 @@ const initialProducts = [
 ];
 
 export const SalesAdd = () => {
-	const [newProduct, setNewProduct] = useState({ name: '', quantity: 0, price: 0, subtotal: 0 });
-	const [products, setProducts] = useState(initialProducts);
 	const [dniClient, setDniClient] = useState({ value: '', error: '' });
 	const [client, setClient] = useState<Omit<Customer, 'birth_date'> | null>(null);
+	const [productSelected, setProductSelected] = useState({ value: '', error: '' });
+	const [newProduct, setNewProduct] = useState({ name: '', quantity: 0, price: 0, subtotal: 0 });
+	const [products, setProducts] = useState(initialProducts);
 	const handleAddProduct = () => {
 		const productToAdd = {
 			...newProduct,
@@ -28,25 +29,47 @@ export const SalesAdd = () => {
 		setNewProduct({ name: '', quantity: 0, price: 0, subtotal: 0 });
 	};
 	const total = products.reduce((sum, product) => sum + product.subtotal, 0);
-	const handleModifiedDniClient = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const dniValidation = ValidateSalesDni.safeParse({ dni: e.target.value });
+
+	const dniValidated = (dni: string) => {
+		const dniValidation = ValidateSalesDni.safeParse({ dni });
 		if (!dniValidation.success) {
 			const error = dniValidation.error.errors;
 			setDniClient((client) => ({ ...client, error: error[0].message }));
-			return;
+			return false;
 		}
-		setDniClient(() => ({ error: '', value: dniValidation.data.dni }));
+		return true;
 	};
-	const handleSearchClient = async () => {
-		const dniValidation = ValidateSalesDni.safeParse({ dni: dniClient.value });
-		if (!dniValidation.success) {
-			const error = dniValidation.error.errors;
-			setDniClient((client) => ({ ...client, error: error[0].message }));
-			return;
+	const productValidated = (product: string) => {
+		const productValidation = ValidateSalesName.safeParse({ name: product });
+		if (!productValidation.success) {
+			const error = productValidation.error.errors;
+			setProductSelected((product) => ({ ...product, error: error[0].message }));
+			return false;
 		}
+		return true;
+	};
+	const handleModifiedDniClient = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const isValidDni = dniValidated(e.target.value);
+		if (!isValidDni) return;
+		setDniClient(() => ({ error: '', value: e.target.value }));
+	};
+
+	const handleSearchClient = async () => {
+		const isValidDni = dniValidated(dniClient.value);
+		if (!isValidDni) return;
 		const clientNew = await getClientByDNI(dniClient.value);
-		if (!clientNew) return toast.error(`No se encontro el client con el dni ${dniClient}`);
+		if (!clientNew) return toast.error(`No se encontro el client con el dni ${dniClient.value}`);
 		setClient(clientNew);
+	};
+
+	const handleModifiedProductSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const isValidProduct = productValidated(e.target.value);
+		if (!isValidProduct) return;
+		setProductSelected(() => ({ error: '', value: e.target.value }));
+	};
+	const handleSearchProduct = () => {
+		const isValidProduct = productValidated(productSelected.value);
+		if (!isValidProduct) return;
 	};
 	return (
 		<div className='p-4 max-w-7xl mx-auto'>
@@ -122,13 +145,13 @@ export const SalesAdd = () => {
 								id='product'
 								className='flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300'
 								placeholder='Ingrese nombre del producto'
-								value={newProduct.name}
-								onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+								onChange={handleModifiedProductSelected}
 							/>
-							<Button type='button' className='rounded-r-md'>
+							<Button type='button' className='rounded-r-md' onClick={handleSearchProduct}>
 								Buscar
 							</Button>
 						</div>
+						{productSelected.error && <span className='text-sm text-red-600'>{productSelected.error}</span>}
 					</div>
 
 					<div className='mb-6 grid grid-cols-1 md:grid-cols-3 gap-6'>
