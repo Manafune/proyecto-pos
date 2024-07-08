@@ -56,7 +56,7 @@ export const getProductsByName = async ({ name }: { name: string }) => {
 	try {
 		const { data: products, error } = await supabase.from('product').select('*').ilike('name', `${name}%`);
 		if (error) throw new Error(error.message);
-		return products as unknown as ResponseProduct;
+		return products as unknown as ResponseProduct[];
 	} catch (error) {
 		console.log(error);
 	}

@@ -8,6 +8,7 @@ import { Customer } from '@/types/clients';
 import { toast } from 'sonner';
 import { ValidateSalesDni, ValidateSalesName } from '@/lib/validation/sale';
 import { getProductsByName } from '@/lib/products/getProduct';
+import { ResponseProduct } from '@/types/products';
 
 const initialProducts = [
 	{ name: 'Producto 1', quantity: 1, price: 100, subtotal: 100 },
@@ -19,17 +20,18 @@ export const SalesAdd = () => {
 	const [dniClient, setDniClient] = useState({ value: '', error: '' });
 	const [client, setClient] = useState<Omit<Customer, 'birth_date'> | null>(null);
 	const [productSelected, setProductSelected] = useState({ value: '', error: '' });
-	const [newProduct, setNewProduct] = useState({ name: '', quantity: 0, price: 0, subtotal: 0 });
+	const [productsSelection, setProductsSelection] = useState<ResponseProduct[]>([]);
+
 	const [products, setProducts] = useState(initialProducts);
-	const handleAddProduct = () => {
-		const productToAdd = {
-			...newProduct,
-			subtotal: newProduct.quantity * newProduct.price
-		};
-		setProducts([...products, productToAdd]);
-		setNewProduct({ name: '', quantity: 0, price: 0, subtotal: 0 });
-	};
 	const total = products.reduce((sum, product) => sum + product.subtotal, 0);
+	// const handleAddProduct = () => {
+	// 	const productToAdd = {
+	// 		...newProduct,
+	// 		subtotal: newProduct.quantity * newProduct.price
+	// 	};
+	// 	setProducts([...products, productToAdd]);
+	// 	setNewProduct({ name: '', quantity: 0, price: 0, subtotal: 0 });
+	// };
 
 	const dniValidated = (dni: string) => {
 		const dniValidation = ValidateSalesDni.safeParse({ dni });
@@ -72,7 +74,7 @@ export const SalesAdd = () => {
 		const isValidProduct = productValidated(productSelected.value);
 		if (!isValidProduct) return;
 		const products = await getProductsByName({ name: productSelected.value });
-		console.log(products);
+		products && setProductsSelection(products);
 	};
 	return (
 		<div className='p-4 max-w-7xl mx-auto'>
@@ -107,7 +109,7 @@ export const SalesAdd = () => {
 								name='first-name'
 								id='first-name'
 								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
-								value={client?.first_name}
+								defaultValue={client?.first_name}
 								readOnly
 							/>
 						</Label>
@@ -118,7 +120,7 @@ export const SalesAdd = () => {
 								type='text'
 								name='last-name'
 								id='last-name'
-								value={client?.last_name}
+								defaultValue={client?.last_name}
 								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
 								readOnly
 							/>
@@ -130,14 +132,14 @@ export const SalesAdd = () => {
 								type='text'
 								name='dni'
 								id='dni'
-								value={client?.dni}
+								defaultValue={client?.dni}
 								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
 								readOnly
 							/>
 						</Label>
 					</div>
 
-					<div className='mb-6'>
+					<div className={`${productsSelection.length >= 1 ? 'm-0' : 'mb-6'}`}>
 						<Label htmlFor='product' className='block text-sm font-medium text-gray-700'>
 							Buscar Producto
 						</Label>
@@ -156,7 +158,18 @@ export const SalesAdd = () => {
 						</div>
 						{productSelected.error && <span className='text-sm text-red-600'>{productSelected.error}</span>}
 					</div>
-
+					{productsSelection.length >= 1 && (
+						<ul className='p-1 [margin-block:0.75rem] h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] grid gap-1'>
+							{productsSelection.map((selection) => (
+								<li
+									key={selection.name}
+									className='relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent-foreground hover:bg-accent hover:cursor-pointer hover:text-accent-foreground focus:text-accent-foreground'
+								>
+									{selection.name}
+								</li>
+							))}
+						</ul>
+					)}
 					<div className='mb-6 grid grid-cols-1 md:grid-cols-3 gap-6'>
 						<div>
 							<Label htmlFor='product-name' className='block text-sm font-medium text-gray-700'>
@@ -168,7 +181,7 @@ export const SalesAdd = () => {
 								id='product-name'
 								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
 								readOnly
-								value={newProduct.name}
+								// value={newProduct.name}
 							/>
 						</div>
 						<div>
@@ -180,8 +193,8 @@ export const SalesAdd = () => {
 								name='quantity'
 								id='quantity'
 								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
-								value={newProduct.quantity}
-								onChange={(e) => setNewProduct({ ...newProduct, quantity: Number(e.target.value) })}
+								// value={newProduct.quantity}
+								// onChange={(e) => setNewProduct({ ...newProduct, quantity: Number(e.target.value) })}
 							/>
 						</div>
 						<div>
@@ -193,13 +206,13 @@ export const SalesAdd = () => {
 								name='price'
 								id='price'
 								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
-								value={newProduct.price}
-								onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
+								// value={newProduct.price}
+								// onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
 							/>
 						</div>
 					</div>
 
-					<Button type='button' className='w-full' onClick={handleAddProduct}>
+					<Button type='button' className='w-full'>
 						Añadir
 					</Button>
 				</div>
