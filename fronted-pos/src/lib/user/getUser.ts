@@ -1,6 +1,6 @@
 import supabase from '@/lib/supabase';
 import { MemberData } from '@/types/members';
-import { type User } from '@/types/user';
+import { type User } from '@/types/members';
 
 export interface UserData extends Omit<User, 'id'> {
 	id: number;

@@ -26,3 +26,11 @@ export type User = {
     role_app: MemberRole;
     status: MemberStatus;
 }
+
+export interface UpdateUserData {
+    id: number;
+    first_name: string;
+    last_name: string;
+    role: string;
+    status: string;
+}
