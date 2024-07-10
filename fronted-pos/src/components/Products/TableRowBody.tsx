@@ -49,6 +49,7 @@ export const TableRowBody = <TypeProduct extends Product | ProductData>({
 				<Input
 					id={`price-${product.id}`}
 					min={0.01}
+					max={10000}
 					type='number'
 					step={0.01}
 					inputMode='decimal'

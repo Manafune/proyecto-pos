@@ -11,7 +11,7 @@ import { ProductData, getProductById } from '@/lib/products/getProduct';
 import { Table, TableBody, TableHeader, TableHead, TableRow } from '@/components/ui/table';
 import { TableRowBody, TableRowBodyType } from '@/components/Products/TableRowBody';
 import type { ProductsPagination } from '@/routes/_authenticated/(products)/products';
-
+import { useRouter } from '@tanstack/react-router';
 import { updateProductDetails } from '@/lib/products/putProducts';
 import { toast } from 'sonner';
 import { CardSteps } from '../Card/CardSteps';
@@ -33,6 +33,7 @@ const steps = [
 const route = getRouteApi('/_authenticated/products/$id');
 
 export const ProductEdit = () => {
+	const router = useRouter();
 	const loaderData = route.useParams();
 	const navigate = useNavigate({ from: '/products' });
 	const [product, setProduct] = useState<ProductData | null>(null);
@@ -55,6 +56,7 @@ export const ProductEdit = () => {
 			if (product === null) return;
 			await updateProductDetails(product);
 			toast.success('El producto se ha modificado con éxito');
+			router.invalidate();
 			return navigate({
 				to: '/products',
 				search: (searchParams) => {
@@ -62,6 +64,7 @@ export const ProductEdit = () => {
 					return { ...prevSearchParams };
 				}
 			});
+			
 		} catch (error) {
 			console.log(error);
 		}

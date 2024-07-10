@@ -19,6 +19,11 @@ export const updateProductDetails = async ({
 	price: number;
 	stock: number;
 }) => {
+	if (price <= 0 || stock <= 0) {
+		const errorMessage = 'El Stock y el Precio deben ser mayores a cero';
+		console.error(errorMessage);
+		throw new Error(errorMessage);
+	}
 	const { data, error } = await supabase.from('product').update({ name, container, price, stock }).eq('id', id).select();
 
 	if (error) {

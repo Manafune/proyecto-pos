@@ -1,5 +1,5 @@
 import { getClientById } from '@/lib/clients/getClient';
-import { getRouteApi, useNavigate, Link } from '@tanstack/react-router';
+import { getRouteApi, useNavigate, Link, useRouter } from '@tanstack/react-router';
 import { CardSteps } from '@/components/Card/CardSteps';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -19,6 +19,7 @@ const route = getRouteApi('/_authenticated/clients/$id');
 
 export const ClientsUpdate = () => {
 	const loaderData = route.useParams();
+	const router = useRouter();
 	const navigate = useNavigate({ from: '/clients/' });
 
 	const { data: client, onUpdateData } = useQuery<AddressMemberSchemaType>({
@@ -42,6 +43,7 @@ export const ClientsUpdate = () => {
 		const isThruth = client && customer;
 		if (isThruth && isError) return;
 		const isUploaded = await updateAddresDetails({ ...transformed });
+		router.invalidate();
 		isUploaded &&
 			navigate({
 				to: '/clients',
