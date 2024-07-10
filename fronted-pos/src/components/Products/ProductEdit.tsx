@@ -15,6 +15,8 @@ import { useRouter } from '@tanstack/react-router';
 import { updateProductDetails } from '@/lib/products/putProducts';
 import { toast } from 'sonner';
 import { CardSteps } from '../Card/CardSteps';
+import { ProductSchema } from '@/lib/validation/product';
+
 const steps = [
 	{
 		title: 'Paso 1',
@@ -37,6 +39,7 @@ export const ProductEdit = () => {
 	const loaderData = route.useParams();
 	const navigate = useNavigate({ from: '/products' });
 	const [product, setProduct] = useState<ProductData | null>(null);
+	const [error, setError] = useState<string | null>(null);
 	useEffect(() => {
 		const getProduct = async () => {
 			const product = await getProductById({ id: loaderData.id });
@@ -54,6 +57,14 @@ export const ProductEdit = () => {
 	const onSubmitData = async () => {
 		try {
 			if (product === null) return;
+
+			const validationResult = ProductSchema.safeParse({ name: product.name });
+			if (!validationResult.success) {
+				setError(validationResult.error.errors[0].message); // Set error message
+				return;
+			}
+
+
 			await updateProductDetails(product);
 			toast.success('El producto se ha modificado con éxito');
 			router.invalidate();
@@ -130,6 +141,7 @@ export const ProductEdit = () => {
 										onChange={(e) => product !== null && onChangeProduct(product.id, { name: e.target.value })}
 									/>
 								</div>
+								{error && <span className='text-red-500'>{error}</span>}
 							</div>
 						</CardContent>
 					</Card>

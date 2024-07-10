@@ -5,6 +5,9 @@ export const ProductSchema = z.object({
 		.string()
 		.min(4, { message: 'El nombre del producto debe tener al menos 4 caracteres' })
 		.max(100, { message: 'El nombre del producto no puede ser mayor a 100 caracteres' }),
+});
+
+export const ProductPriceStockSchema = z.object({
 	stock: z
 		.number()
 		.int({ message: 'El stock debe ser un número entero' })
