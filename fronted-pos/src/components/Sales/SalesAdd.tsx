@@ -15,23 +15,31 @@ const initialProducts = [
 	{ name: 'Producto 2', quantity: 2, price: 150, subtotal: 300 },
 	{ name: 'Producto 3', quantity: 3, price: 200, subtotal: 600 }
 ];
-
+type ProductsSelectionType = ResponseProduct & { selected: boolean };
 export const SalesAdd = () => {
 	const [dniClient, setDniClient] = useState({ value: '', error: '' });
 	const [client, setClient] = useState<Omit<Customer, 'birth_date'> | null>(null);
 	const [productSelected, setProductSelected] = useState({ value: '', error: '' });
-	const [productsSelection, setProductsSelection] = useState<ResponseProduct[]>([]);
+	const [productsSelection, setProductsSelection] = useState<ProductsSelectionType[]>([]);
 
 	const [products, setProducts] = useState(initialProducts);
 	const total = products.reduce((sum, product) => sum + product.subtotal, 0);
-	// const handleAddProduct = () => {
-	// 	const productToAdd = {
-	// 		...newProduct,
-	// 		subtotal: newProduct.quantity * newProduct.price
-	// 	};
-	// 	setProducts([...products, productToAdd]);
-	// 	setNewProduct({ name: '', quantity: 0, price: 0, subtotal: 0 });
-	// };
+	const handleAddProduct = (id: number) => {
+		const productFind = productsSelection.find((product) => product.id === id);
+		if (!productFind) return;
+		const productToAdd = {
+			name: productFind.name,
+			quantity: 1,
+			price: productFind.price,
+			subtotal: 1 * productFind.price
+		};
+		const newProduct = productsSelection.map((product) => {
+			if (product.id === productFind?.id) return { ...product, selected: true };
+			return product;
+		});
+		setProductsSelection(newProduct);
+		setProducts((prevProducts) => [...prevProducts, productToAdd]);
+	};
 
 	const dniValidated = (dni: string) => {
 		const dniValidation = ValidateSalesDni.safeParse({ dni });
@@ -74,7 +82,7 @@ export const SalesAdd = () => {
 		const isValidProduct = productValidated(productSelected.value);
 		if (!isValidProduct) return;
 		const products = await getProductsByName({ name: productSelected.value });
-		products && setProductsSelection(products);
+		products && setProductsSelection(products.map((product) => ({ ...product, selected: false })));
 	};
 	return (
 		<div className='p-4 max-w-7xl mx-auto'>
@@ -164,57 +172,13 @@ export const SalesAdd = () => {
 								<li
 									key={selection.name}
 									className='relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent-foreground hover:bg-accent hover:cursor-pointer hover:text-accent-foreground focus:text-accent-foreground'
+									onClick={() => handleAddProduct(selection.id)}
 								>
 									{selection.name}
 								</li>
 							))}
 						</ul>
 					)}
-					<div className='mb-6 grid grid-cols-1 md:grid-cols-3 gap-6'>
-						<div>
-							<Label htmlFor='product-name' className='block text-sm font-medium text-gray-700'>
-								Producto
-							</Label>
-							<Input
-								type='text'
-								name='product-name'
-								id='product-name'
-								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
-								readOnly
-								// value={newProduct.name}
-							/>
-						</div>
-						<div>
-							<Label htmlFor='quantity' className='block text-sm font-medium text-gray-700'>
-								Cantidad
-							</Label>
-							<Input
-								type='number'
-								name='quantity'
-								id='quantity'
-								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
-								// value={newProduct.quantity}
-								// onChange={(e) => setNewProduct({ ...newProduct, quantity: Number(e.target.value) })}
-							/>
-						</div>
-						<div>
-							<Label htmlFor='price' className='block text-sm font-medium text-gray-700'>
-								Precio
-							</Label>
-							<Input
-								type='number'
-								name='price'
-								id='price'
-								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
-								// value={newProduct.price}
-								// onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
-							/>
-						</div>
-					</div>
-
-					<Button type='button' className='w-full'>
-						Añadir
-					</Button>
 				</div>
 
 				<div className='overflow-x-auto mb-6'>
