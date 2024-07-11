@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Label } from '@/components/ui/label';
 import { getClientByDNI } from '@/lib/clients/getClient';
 import { Customer } from '@/types/clients';
@@ -9,29 +8,36 @@ import { toast } from 'sonner';
 import { ValidateSalesDni, ValidateSalesName } from '@/lib/validation/sale';
 import { getProductsByName } from '@/lib/products/getProduct';
 import { ResponseProduct } from '@/types/products';
+import { TableSelectedProduct } from '../Table/TableSelectedProduct';
+import { cn } from '@/lib/utils';
 
-const initialProducts = [
-	{ name: 'Producto 1', quantity: 1, price: 100, subtotal: 100 },
-	{ name: 'Producto 2', quantity: 2, price: 150, subtotal: 300 },
-	{ name: 'Producto 3', quantity: 3, price: 200, subtotal: 600 }
-];
+export interface ProductsSelection {
+	name: string;
+	quantity: number;
+	price: number;
+	subtotal: number;
+	id: number;
+	stock: number;
+}
 type ProductsSelectionType = ResponseProduct & { selected: boolean };
 export const SalesAdd = () => {
 	const [dniClient, setDniClient] = useState({ value: '', error: '' });
 	const [client, setClient] = useState<Omit<Customer, 'birth_date'> | null>(null);
 	const [productSelected, setProductSelected] = useState({ value: '', error: '' });
 	const [productsSelection, setProductsSelection] = useState<ProductsSelectionType[]>([]);
+	const [products, setProducts] = useState<ProductsSelection[]>([]);
 
-	const [products, setProducts] = useState(initialProducts);
 	const total = products.reduce((sum, product) => sum + product.subtotal, 0);
 	const handleAddProduct = (id: number) => {
 		const productFind = productsSelection.find((product) => product.id === id);
-		if (!productFind) return;
+		if (!productFind || productFind.selected === true) return;
 		const productToAdd = {
 			name: productFind.name,
 			quantity: 1,
 			price: productFind.price,
-			subtotal: 1 * productFind.price
+			id: productFind.id,
+			subtotal: 1 * productFind.price,
+			stock: productFind.stock
 		};
 		const newProduct = productsSelection.map((product) => {
 			if (product.id === productFind?.id) return { ...product, selected: true };
@@ -40,7 +46,13 @@ export const SalesAdd = () => {
 		setProductsSelection(newProduct);
 		setProducts((prevProducts) => [...prevProducts, productToAdd]);
 	};
+	const handleChangeQuantityProduct = (id: number, quantity: number) => {
+		const productFind = productsSelection.find((product) => product.id === id);
 
+		if (!productFind || productFind.stock <= quantity) return;
+		const newProducts = products.map((product) => (product.id === productFind.id ? { ...product, quantity: quantity } : { ...product }));
+		setProducts(newProducts);
+	};
 	const dniValidated = (dni: string) => {
 		const dniValidation = ValidateSalesDni.safeParse({ dni });
 		if (!dniValidation.success) {
@@ -171,56 +183,25 @@ export const SalesAdd = () => {
 							{productsSelection.map((selection) => (
 								<li
 									key={selection.name}
-									className='relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent-foreground hover:bg-accent hover:cursor-pointer hover:text-accent-foreground focus:text-accent-foreground'
+									className={cn(
+										'relative flex cursor-default select-none items-center rounded-sm  text-sm outline-none transition-colors border-2 ring-offset-background focus:bg-accent-foreground hover:cursor-pointer hover:text-accent-foreground focus:text-accent-foreground',
+										{ 'ring-offset-red-700  bg-red-200': selection.selected === true }
+									)}
 									onClick={() => handleAddProduct(selection.id)}
 								>
-									{selection.name}
+									<button
+										className='size-full [padding-inline:1em] [padding-block:0.5em] disabled:cursor-not-allowed'
+										disabled={selection.selected === true}
+									>
+										{selection.name}
+									</button>
 								</li>
 							))}
 						</ul>
 					)}
 				</div>
 
-				<div className='overflow-x-auto mb-6'>
-					<Table className='min-w-full divide-y divide-gray-200'>
-						<TableHeader>
-							<TableRow>
-								<TableHead className='w-[100px]'>Producto</TableHead>
-								<TableHead>Cantidad</TableHead>
-								<TableHead>Precio</TableHead>
-								<TableHead className='text-right'>Subtotal</TableHead>
-							</TableRow>
-						</TableHeader>
-						<TableBody>
-							{products.map((product) => (
-								<TableRow key={product.name}>
-									<TableCell className='font-medium text-sm'>{product.name}</TableCell>
-									<TableCell>
-										<Input type='number' value={product.quantity} className='w-16' readOnly />
-									</TableCell>
-									<TableCell>${product.price}</TableCell>
-									<TableCell className='text-right'>${product.subtotal}</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-
-					<div className='grid grid-cols-[50%_1fr_1fr] mb-6'>
-						<p className='text-lg font-medium text-gray-700'>Total: ${total}</p>
-						<Button
-							type='button'
-							className='bg-green-600 text-white hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
-						>
-							Generar Venta
-						</Button>
-						<Button
-							type='button'
-							className='ml-2 bg-gray-300 text-gray-700 hover:bg-gray-400 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-						>
-							Cancelar
-						</Button>
-					</div>
-				</div>
+				<TableSelectedProduct products={products} total={total} onChangeQuantityProduct={handleChangeQuantityProduct} />
 			</div>
 		</div>
 	);
