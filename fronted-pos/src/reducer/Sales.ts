@@ -19,6 +19,7 @@ export interface SalesState {
 }
 export type SalesAction =
 	| { type: 'ADD_PRODUCT_TOTAL'; payload: { id: number } }
+	| { type: 'DELETE_PRODUCT_FROM_TOTAL'; payload: { id: number } }
 	| { type: 'ADD_CLIENT'; payload: { client: SalesState['client'] } }
 	| { type: 'ADD_PRODUCTS_SELECTION'; payload: { products: SalesState['productsSelection'] } }
 	| { type: 'CHANGE_QUANTITY_PRODUCTS'; payload: { id: number; quantity: number } }
@@ -102,6 +103,20 @@ const salesActionHandlers: Record<SalesAction['type'], (state: SalesState, actio
 			...state,
 			productsSelection,
 			products: [...state.products, productToAdd]
+		};
+	},
+	DELETE_PRODUCT_FROM_TOTAL: (state, action) => {
+		if (action.type !== 'DELETE_PRODUCT_FROM_TOTAL') return { ...state };
+		const { id } = action.payload;
+
+		const products = state.products.filter((product) => product.id !== id);
+		const productsSelection = state.productsSelection.map((productSelection) =>
+			productSelection.id === id ? { ...productSelection, selected: false } : { ...productSelection }
+		);
+		return {
+			...state,
+			products,
+			productsSelection
 		};
 	},
 	ADD_CLIENT: (state, action) => {

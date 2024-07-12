@@ -5,8 +5,9 @@ import { Input } from '../ui/input';
 import { SalesSummary } from '../Sales/SalesSummary';
 import { type ProductsSelected } from '@/reducer/Sales';
 import { useSalesStore } from '@/hooks/useSales';
+import { X } from 'lucide-react';
 export const TableSelectedProduct = ({ products, total }: { products: ProductsSelected[]; total: number }) => {
-	const { onChangeQuantityProducts } = useSalesStore();
+	const { onChangeQuantityProducts, onDeleteProductFromTotal } = useSalesStore();
 	return (
 		<div className='overflow-x-auto mb-6'>
 			{products.length >= 1 && (
@@ -21,7 +22,7 @@ export const TableSelectedProduct = ({ products, total }: { products: ProductsSe
 					</TableHeader>
 					<TableBody>
 						{products.map((product) => (
-							<TableRow key={product.name}>
+							<TableRow key={product.name} className='group relative'>
 								<TableCell className='font-medium text-sm'>{product.name}</TableCell>
 								<TableCell>
 									<Input
@@ -36,6 +37,12 @@ export const TableSelectedProduct = ({ products, total }: { products: ProductsSe
 								</TableCell>
 								<TableCell>${product.price}</TableCell>
 								<TableCell className='text-right'>${product.subtotal}</TableCell>
+								<td
+									className='absolute hidden rounded-full size-[1.2rem] bg-red-500 z-[100] text-white group-hover:grid group-hover:items-center group-hover:justify-center group-hover:inset-[0.2rem_0.2rem_0_auto] cursor-pointer'
+									onClick={() => onDeleteProductFromTotal({ id: product.id })}
+								>
+									<X className='size-[95%] block' />
+								</td>
 							</TableRow>
 						))}
 					</TableBody>

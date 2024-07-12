@@ -1,6 +1,6 @@
 import { Table, TableBody, TableHeader, TableHead, TableRow } from '@/components/ui/table';
 import { TableRowBody } from '@/components/Products/TableRowBody';
-import { useAddProductsStore } from '@/hooks/productsAdd';
+import { useAddProductsStore } from '@/hooks/useProductsAdd';
 
 export const StockProductTable = () => {
 	const { onDeleteProductFromTotal, storeAddProducts, onUpdateProductFromTotal } = useAddProductsStore();
@@ -17,7 +17,13 @@ export const StockProductTable = () => {
 			</TableHeader>
 			<TableBody>
 				{storeAddProducts.products.map((product) => (
-					<TableRowBody key={product.id} product={product} updateProduct={onUpdateProductFromTotal} deleteProduct={onDeleteProductFromTotal} isName={true} />
+					<TableRowBody
+						key={product.id}
+						product={product}
+						updateProduct={onUpdateProductFromTotal}
+						deleteProduct={onDeleteProductFromTotal}
+						isName={true}
+					/>
 				))}
 			</TableBody>
 		</Table>

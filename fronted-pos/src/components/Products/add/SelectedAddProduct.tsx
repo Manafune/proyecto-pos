@@ -4,7 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-import { useAddProductsStore } from '@/hooks/productsAdd';
+import { useAddProductsStore } from '@/hooks/useProductsAdd';
 export const SelectedAddProduct = () => {
 	const { onChangeProductSelection, onAddProductToTotal, storeAddProducts } = useAddProductsStore();
 	return (
