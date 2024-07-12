@@ -66,9 +66,9 @@ export const TableContent = ({ products }: TypeTableContent) => {
 											return { ...data };
 										}}
 									>
-										<DropdownMenuItem>Editar</DropdownMenuItem>
+										<DropdownMenuItem className="rounded bg-cyan-300 text-black px-4 py-2 hover:bg-cyan-400 hover:text-black">Editar</DropdownMenuItem>
 									</Link>
-									<DropdownMenuItem
+									<DropdownMenuItem className="rounded mt-2 bg-yellow-300 text-black px-4 py-2 hover:bg-yellow-400 hover:text-black"
 										onClick={async () => {
 											const data = await putProductsByState({
 												status: product.status === MemberStatus.ACTIVE ? MemberStatus.INACTIVE : MemberStatus.ACTIVE,

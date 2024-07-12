@@ -95,7 +95,7 @@ export const TableUserContent = () => {
 								params={{ id: user.email }}
 								search={{ pageSize: 10, current: 1, filter: 'ALL' }}
 							>
-								<Button size='sm' className='bg-green-600 text-white hover:bg-green-800'>
+								<Button size='sm' className='bg-cyan-600 text-white hover:bg-cyan-800'>
 									Editar
 								</Button>
 							</Link>
