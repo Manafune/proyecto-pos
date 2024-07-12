@@ -24,9 +24,10 @@ export type SalesAction =
 	| { type: 'ADD_PRODUCTS_SELECTION'; payload: { products: SalesState['productsSelection'] } }
 	| { type: 'CHANGE_QUANTITY_PRODUCTS'; payload: { id: number; quantity: number } }
 	| { type: 'CHANGE_DNI_CLIENT'; payload: { dni: string } }
-	| { type: 'CHANGE_DNI_CLIENT_ERROR'; payload: { error: string } }
+	| { type: 'CHANGE_DNI_CLIENT_ERROR'; payload: SalesState['dniClient'] }
 	| { type: 'CHANGE_PRODUCT_SELECTED'; payload: { product: string } }
-	| { type: 'CHANGE_PRODUCT_SELECTED_ERROR'; payload: { error: string } };
+	| { type: 'CHANGE_PRODUCT_SELECTED_ERROR'; payload: SalesState['productSelected'] }
+	| { type: 'RESET_SALES' };
 export const initialState: SalesState = {
 	dniClient: { dni: '', error: '' },
 	client: null,
@@ -46,19 +47,19 @@ const salesActionHandlers: Record<SalesAction['type'], (state: SalesState, actio
 	},
 	CHANGE_DNI_CLIENT_ERROR: (state, action) => {
 		if (action.type !== 'CHANGE_DNI_CLIENT_ERROR') return { ...state };
-		const { error } = action.payload;
+		const { error, dni } = action.payload;
 		return {
 			...state,
-			dniClient: { ...state.dniClient, error }
+			dniClient: { dni, error }
 		};
 	},
 	CHANGE_QUANTITY_PRODUCTS: (state, action) => {
 		if (action.type !== 'CHANGE_QUANTITY_PRODUCTS') return { ...state };
 		const { id, quantity } = action.payload;
 		const productFind = state.productsSelection.find((product) => product.id === id);
-		if (!productFind || productFind.stock <= quantity) return { ...state };
+		if (!productFind || productFind.stock < quantity) return { ...state };
 		const newProducts = state.products.map((product) =>
-			product.id === productFind.id ? { ...product, quantity: quantity, subtotal: quantity * product.price } : { ...product }
+			product.id === productFind?.id ? { ...product, quantity: quantity, subtotal: quantity * product.price } : { ...product }
 		);
 		return {
 			...state,
@@ -76,10 +77,10 @@ const salesActionHandlers: Record<SalesAction['type'], (state: SalesState, actio
 	},
 	CHANGE_PRODUCT_SELECTED_ERROR: (state, action) => {
 		if (action.type !== 'CHANGE_PRODUCT_SELECTED_ERROR') return { ...state };
-		const { error } = action.payload;
+		const { error, product } = action.payload;
 		return {
 			...state,
-			productSelected: { ...state.productSelected, error }
+			productSelected: { product, error }
 		};
 	},
 	ADD_PRODUCT_TOTAL: (state, action) => {
@@ -134,6 +135,9 @@ const salesActionHandlers: Record<SalesAction['type'], (state: SalesState, actio
 			...state,
 			productsSelection: products
 		};
+	},
+	RESET_SALES: () => {
+		return structuredClone(initialState);
 	}
 };
 export const salesReducer = (state: SalesState = initialState, action: SalesAction): SalesState => {

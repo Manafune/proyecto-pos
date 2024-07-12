@@ -1,6 +1,8 @@
+import { useSalesStore } from '@/hooks/useSales';
 import { Button } from '../ui/button';
 
 export const SalesSummary = ({ total }: { total: number }) => {
+	const { onResetSales } = useSalesStore();
 	return (
 		<div className='grid grid-cols-[50%_1fr_1fr] mb-6'>
 			<p className='text-lg font-medium text-gray-700'>Total: ${total}</p>
@@ -10,6 +12,7 @@ export const SalesSummary = ({ total }: { total: number }) => {
 			<Button
 				type='button'
 				className='ml-2 bg-gray-300 text-gray-700 hover:bg-gray-400 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+				onClick={onResetSales}
 			>
 				Cancelar
 			</Button>

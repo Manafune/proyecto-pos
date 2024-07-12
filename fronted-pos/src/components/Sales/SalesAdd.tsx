@@ -27,6 +27,7 @@ export const SalesAdd = () => {
 								id='dni'
 								className='flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300'
 								placeholder='Ingrese DNI del cliente'
+								value={dniClient.dni}
 								onChange={(e) => onChangeDniClient(e.target.value)}
 							/>
 							<Button type='button' className='rounded-r-md' onClick={onSearchClient}>
@@ -44,7 +45,7 @@ export const SalesAdd = () => {
 								name='first-name'
 								id='first-name'
 								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
-								defaultValue={client?.first_name}
+								value={client?.first_name ?? ''}
 								readOnly
 							/>
 						</Label>
@@ -55,7 +56,7 @@ export const SalesAdd = () => {
 								type='text'
 								name='last-name'
 								id='last-name'
-								defaultValue={client?.last_name}
+								value={client?.last_name ?? ''}
 								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
 								readOnly
 							/>
@@ -67,7 +68,7 @@ export const SalesAdd = () => {
 								type='text'
 								name='dni'
 								id='dni'
-								defaultValue={client?.dni}
+								value={client?.dni ?? ''}
 								className='mt-1 block w-full sm:text-sm border-gray-300 rounded-md'
 								readOnly
 							/>
@@ -85,6 +86,7 @@ export const SalesAdd = () => {
 								id='product'
 								className='flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300'
 								placeholder='Ingrese nombre del producto'
+								value={productSelected.product}
 								onChange={(e) => onChangeProductSelected({ product: e.target.value })}
 							/>
 							<Button type='button' className='rounded-r-md' onClick={onSearchProducts}>

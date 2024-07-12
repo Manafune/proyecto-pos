@@ -10,7 +10,7 @@ export const useSalesStore = () => {
 	const dniValidated = (dni: string) => {
 		const { success, error } = ValidateSalesDni.safeParse({ dni });
 		if (!success) {
-			dispatch({ type: 'CHANGE_DNI_CLIENT_ERROR', payload: { error: error.errors[0].message } });
+			dispatch({ type: 'CHANGE_DNI_CLIENT_ERROR', payload: { error: error.errors[0].message, dni } });
 			return false;
 		}
 		return true;
@@ -18,7 +18,7 @@ export const useSalesStore = () => {
 	const productValidated = (product: string) => {
 		const { success, error } = ValidateSalesName.safeParse({ name: product });
 		if (!success) {
-			dispatch({ type: 'CHANGE_PRODUCT_SELECTED_ERROR', payload: { error: error.errors[0].message } });
+			dispatch({ type: 'CHANGE_PRODUCT_SELECTED_ERROR', payload: { error: error.errors[0].message, product } });
 			return false;
 		}
 		return true;
@@ -61,6 +61,9 @@ export const useSalesStore = () => {
 	const onDeleteProductFromTotal = ({ id }: { id: number }) => {
 		dispatch({ type: 'DELETE_PRODUCT_FROM_TOTAL', payload: { id } });
 	};
+	const onResetSales = () => {
+		dispatch({ type: 'RESET_SALES' });
+	};
 	return {
 		storeSales,
 		onChangeDniClient,
@@ -69,6 +72,7 @@ export const useSalesStore = () => {
 		onAddProductTotal,
 		onSearchClient,
 		onSearchProducts,
-		onDeleteProductFromTotal
+		onDeleteProductFromTotal,
+		onResetSales
 	};
 };

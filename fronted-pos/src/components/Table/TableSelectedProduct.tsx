@@ -28,7 +28,7 @@ export const TableSelectedProduct = ({ products, total }: { products: ProductsSe
 									<Input
 										type='number'
 										onChange={(e) => onChangeQuantityProducts({ id: product.id, quantity: Number(e.target.value) })}
-										defaultValue={product.quantity}
+										value={product.quantity}
 										className='w-16'
 										step={1}
 										min={1}
