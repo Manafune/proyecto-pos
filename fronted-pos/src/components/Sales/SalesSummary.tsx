@@ -3,9 +3,10 @@ import { Button } from '../ui/button';
 
 export const SalesSummary = ({ total }: { total: number }) => {
 	const { onResetSales } = useSalesStore();
+	const formatCurrency = (value: number) => new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(value);
 	return (
 		<div className='grid grid-cols-[50%_1fr_1fr] mb-6'>
-			<p className='text-lg font-medium text-gray-700'>Total: ${total}</p>
+			<p className='text-lg font-medium text-gray-700'>Total: {formatCurrency(total)}</p>
 			<Button type='button' className='bg-green-600 text-white hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500'>
 				Generar Venta
 			</Button>

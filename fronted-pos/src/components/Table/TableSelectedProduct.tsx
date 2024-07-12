@@ -6,8 +6,10 @@ import { SalesSummary } from '../Sales/SalesSummary';
 import { type ProductsSelected } from '@/reducer/Sales';
 import { useSalesStore } from '@/hooks/useSales';
 import { X } from 'lucide-react';
+
 export const TableSelectedProduct = ({ products, total }: { products: ProductsSelected[]; total: number }) => {
 	const { onChangeQuantityProducts, onDeleteProductFromTotal } = useSalesStore();
+	const formatCurrency = (value: number) => new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(value);
 	return (
 		<div className='overflow-x-auto mb-6'>
 			{products.length >= 1 && (
@@ -35,8 +37,8 @@ export const TableSelectedProduct = ({ products, total }: { products: ProductsSe
 										max={product.stock}
 									/>
 								</TableCell>
-								<TableCell>${product.price}</TableCell>
-								<TableCell className='text-right'>${product.subtotal}</TableCell>
+								<TableCell>{formatCurrency(product.price)}</TableCell>
+								<TableCell className='text-right'>{formatCurrency(product.subtotal)}</TableCell>
 								<td
 									className='absolute hidden rounded-full size-[1.2rem] bg-red-500 z-[100] text-white group-hover:grid group-hover:items-center group-hover:justify-center group-hover:inset-[0.2rem_0.2rem_0_auto] cursor-pointer'
 									onClick={() => onDeleteProductFromTotal({ id: product.id })}
