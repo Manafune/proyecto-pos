@@ -1,3 +1,5 @@
+import { Customer } from './clients';
+
 export const enum SaleStatus {
 	COMPLETED = 'COMPLETED',
 	CANCELED = 'CANCELED'
@@ -23,9 +25,4 @@ export interface SaleData {
 	customer: Customer;
 	sale_date: string;
 	detail_sale: DetailSales[];
-}
-
-export interface Customer {
-	first_name: string;
-	last_name: string;
 }

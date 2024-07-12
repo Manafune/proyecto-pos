@@ -3,7 +3,7 @@ import { ActionProductsAdd, initialState, reducerProducts, State } from '@/reduc
 
 interface ReturnData {
 	storeAddProducts: State;
-	dispatch: React.Dispatch<ActionProductsAdd>; // Tipo de la función dispatch
+	dispatch: React.Dispatch<ActionProductsAdd>;
 }
 
 export const ProductsContext = createContext<ReturnData>({
@@ -11,7 +11,6 @@ export const ProductsContext = createContext<ReturnData>({
 	dispatch: () => {}
 });
 
-// Create a provider component
 export const ProductsAddStore = ({ children }: { children: ReactNode }) => {
 	const [storeAddProducts, dispatch] = useReducer(reducerProducts, initialState);
 

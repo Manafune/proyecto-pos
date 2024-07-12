@@ -1,18 +1,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-import { ProductsSelection } from '../Sales/SalesAdd';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { SalesSummary } from '../Sales/SalesSummary';
-export const TableSelectedProduct = ({
-	products,
-	total,
-	onChangeQuantityProduct
-}: {
-	products: ProductsSelection[];
-	total: number;
-	onChangeQuantityProduct: (id: number, quantity: number) => void;
-}) => {
+import { type ProductsSelected } from '@/reducer/Sales';
+import { useSalesStore } from '@/hooks/useSales';
+export const TableSelectedProduct = ({ products, total }: { products: ProductsSelected[]; total: number }) => {
+	const { onChangeQuantityProducts } = useSalesStore();
 	return (
 		<div className='overflow-x-auto mb-6'>
 			{products.length >= 1 && (
@@ -32,7 +26,7 @@ export const TableSelectedProduct = ({
 								<TableCell>
 									<Input
 										type='number'
-										onChange={(e) => onChangeQuantityProduct(product.id, Number(e.target.value))}
+										onChange={(e) => onChangeQuantityProducts({ id: product.id, quantity: Number(e.target.value) })}
 										defaultValue={product.quantity}
 										className='w-16'
 										step={1}

@@ -1,6 +1,11 @@
-import { SalesAdd } from '@/components/Sales/SalesAdd'
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { SalesAdd } from '@/components/Sales/SalesAdd';
+import { SalesStore } from '@/components/store/SalesStore';
+import { createLazyFileRoute } from '@tanstack/react-router';
 
 export const Route = createLazyFileRoute('/_authenticated/(sales)/sales/add')({
-  component: () => <SalesAdd/>
-})
+	component: () => (
+		<SalesStore>
+			<SalesAdd />
+		</SalesStore>
+	)
+});

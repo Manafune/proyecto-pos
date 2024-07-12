@@ -1,101 +1,16 @@
-import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { getClientByDNI } from '@/lib/clients/getClient';
-import { Customer } from '@/types/clients';
-import { toast } from 'sonner';
-import { ValidateSalesDni, ValidateSalesName } from '@/lib/validation/sale';
-import { getProductsByName } from '@/lib/products/getProduct';
 import { ResponseProduct } from '@/types/products';
 import { TableSelectedProduct } from '../Table/TableSelectedProduct';
-import { cn } from '@/lib/utils';
+import { SalesList } from './SalesList';
+import { useSalesStore } from '@/hooks/useSales';
 
-export interface ProductsSelection {
-	name: string;
-	quantity: number;
-	price: number;
-	subtotal: number;
-	id: number;
-	stock: number;
-}
-type ProductsSelectionType = ResponseProduct & { selected: boolean };
+export type ProductsSelectionType = ResponseProduct & { selected: boolean };
 export const SalesAdd = () => {
-	const [dniClient, setDniClient] = useState({ value: '', error: '' });
-	const [client, setClient] = useState<Omit<Customer, 'birth_date'> | null>(null);
-	const [productSelected, setProductSelected] = useState({ value: '', error: '' });
-	const [productsSelection, setProductsSelection] = useState<ProductsSelectionType[]>([]);
-	const [products, setProducts] = useState<ProductsSelection[]>([]);
-
-	const total = products.reduce((sum, product) => sum + product.subtotal, 0);
-	const handleAddProduct = (id: number) => {
-		const productFind = productsSelection.find((product) => product.id === id);
-		if (!productFind || productFind.selected === true) return;
-		const productToAdd = {
-			name: productFind.name,
-			quantity: 1,
-			price: productFind.price,
-			id: productFind.id,
-			subtotal: 1 * productFind.price,
-			stock: productFind.stock
-		};
-		const newProduct = productsSelection.map((product) => {
-			if (product.id === productFind?.id) return { ...product, selected: true };
-			return product;
-		});
-		setProductsSelection(newProduct);
-		setProducts((prevProducts) => [...prevProducts, productToAdd]);
-	};
-	const handleChangeQuantityProduct = (id: number, quantity: number) => {
-		const productFind = productsSelection.find((product) => product.id === id);
-
-		if (!productFind || productFind.stock <= quantity) return;
-		const newProducts = products.map((product) => (product.id === productFind.id ? { ...product, quantity: quantity } : { ...product }));
-		setProducts(newProducts);
-	};
-	const dniValidated = (dni: string) => {
-		const dniValidation = ValidateSalesDni.safeParse({ dni });
-		if (!dniValidation.success) {
-			const error = dniValidation.error.errors;
-			setDniClient((client) => ({ ...client, error: error[0].message }));
-			return false;
-		}
-		return true;
-	};
-	const productValidated = (product: string) => {
-		const productValidation = ValidateSalesName.safeParse({ name: product });
-		if (!productValidation.success) {
-			const error = productValidation.error.errors;
-			setProductSelected((product) => ({ ...product, error: error[0].message }));
-			return false;
-		}
-		return true;
-	};
-	const handleModifiedDniClient = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const isValidDni = dniValidated(e.target.value);
-		if (!isValidDni) return;
-		setDniClient(() => ({ error: '', value: e.target.value }));
-	};
-
-	const handleSearchClient = async () => {
-		const isValidDni = dniValidated(dniClient.value);
-		if (!isValidDni) return;
-		const clientNew = await getClientByDNI(dniClient.value);
-		if (!clientNew) return toast.error(`No se encontro el client con el dni ${dniClient.value}`);
-		setClient(clientNew);
-	};
-
-	const handleModifiedProductSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const isValidProduct = productValidated(e.target.value);
-		if (!isValidProduct) return;
-		setProductSelected(() => ({ error: '', value: e.target.value }));
-	};
-	const handleSearchProduct = async () => {
-		const isValidProduct = productValidated(productSelected.value);
-		if (!isValidProduct) return;
-		const products = await getProductsByName({ name: productSelected.value });
-		products && setProductsSelection(products.map((product) => ({ ...product, selected: false })));
-	};
+	const { storeSales, onChangeProductSelected, onChangeDniClient, onSearchClient, onSearchProducts } = useSalesStore();
+	const { dniClient, client, productsSelection, productSelected, products } = storeSales;
+	const total = products.reduce((prev, acc) => prev + acc.subtotal, 0);
 	return (
 		<div className='p-4 max-w-7xl mx-auto'>
 			<h2 className='text-xl font-bold mb-4'>Ventas</h2>
@@ -112,9 +27,9 @@ export const SalesAdd = () => {
 								id='dni'
 								className='flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300'
 								placeholder='Ingrese DNI del cliente'
-								onChange={handleModifiedDniClient}
+								onChange={(e) => onChangeDniClient(e.target.value)}
 							/>
-							<Button type='button' className='rounded-r-md' onClick={handleSearchClient}>
+							<Button type='button' className='rounded-r-md' onClick={onSearchClient}>
 								Buscar
 							</Button>
 						</div>
@@ -170,38 +85,17 @@ export const SalesAdd = () => {
 								id='product'
 								className='flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300'
 								placeholder='Ingrese nombre del producto'
-								onChange={handleModifiedProductSelected}
+								onChange={(e) => onChangeProductSelected({ product: e.target.value })}
 							/>
-							<Button type='button' className='rounded-r-md' onClick={handleSearchProduct}>
+							<Button type='button' className='rounded-r-md' onClick={onSearchProducts}>
 								Buscar
 							</Button>
 						</div>
 						{productSelected.error && <span className='text-sm text-red-600'>{productSelected.error}</span>}
 					</div>
-					{productsSelection.length >= 1 && (
-						<ul className='p-1 [margin-block:0.75rem] h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] grid gap-1'>
-							{productsSelection.map((selection) => (
-								<li
-									key={selection.name}
-									className={cn(
-										'relative flex cursor-default select-none items-center rounded-sm  text-sm outline-none transition-colors border-2 ring-offset-background focus:bg-accent-foreground hover:cursor-pointer hover:text-accent-foreground focus:text-accent-foreground',
-										{ 'ring-offset-red-700  bg-red-200': selection.selected === true }
-									)}
-									onClick={() => handleAddProduct(selection.id)}
-								>
-									<button
-										className='size-full [padding-inline:1em] [padding-block:0.5em] disabled:cursor-not-allowed'
-										disabled={selection.selected === true}
-									>
-										{selection.name}
-									</button>
-								</li>
-							))}
-						</ul>
-					)}
+					<SalesList productsSelection={productsSelection} />
 				</div>
-
-				<TableSelectedProduct products={products} total={total} onChangeQuantityProduct={handleChangeQuantityProduct} />
+				<TableSelectedProduct products={products} total={total} />
 			</div>
 		</div>
 	);
