@@ -53,10 +53,21 @@ export const ProductEdit = () => {
 			if (prevProduct === null) return null;
 			return { ...prevProduct, ...updatedProps };
 		});
+		const productName = updatedProps.name ?? '';
+		if (productName.length < 4 || productName.length > 100) {
+			setError('El nombre del producto debe tener entre 4 y 100 caracteres');
+		} else {
+			setError(null);
+		}
 	};
 	const onSubmitData = async () => {
 		try {
 			if (product === null) return;
+			const productName = product.name;
+			if (productName.length < 4 || productName.length > 100) {
+				setError('El nombre del producto debe tener entre 4 y 100 caracteres');
+				return;
+	}
 
 			const validationResult = ProductSchema.safeParse({ name: product.name });
 			if (!validationResult.success) {
