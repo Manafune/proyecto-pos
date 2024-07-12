@@ -10,7 +10,7 @@ export interface UsersPagination {
 
 export const Route = createFileRoute('/_authenticated/(users)/users')({
 	loader: async ({ deps }) => {
-		const { pageSize, current, filter } = deps as UsersPagination;
+		const { pageSize, current } = deps as UsersPagination;
 		const [data, count] = await Promise.all([getAllUsers({ current, pageSize }), getCountUsers()]);
 		return {
 			users: data,

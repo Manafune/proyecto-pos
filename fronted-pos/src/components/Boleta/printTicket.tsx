@@ -1,7 +1,5 @@
-import React from 'react';
 import jsPDF from 'jspdf';
 import boletaImg from '@/utils/Logo.jpeg';
-import { Button } from '@/components/ui/button';
 import { Invoice } from '@/types/ticket';
 
 const generatePDF = (invoice: Invoice) => {
@@ -80,15 +78,4 @@ const generatePDF = (invoice: Invoice) => {
 	}
 };
 
-const InvoicePdf: React.FC<{ invoice: Invoice }> = ({ invoice }) => {
-	return (
-		<div>
-			<Button variant='outline' size='icon' className='overflow-hidden rounded-full' onClick={() => generatePDF(invoice)}>
-				<img src='https://imgur.com/3VTic93.jpeg' width={36} height={36} alt='Avatar' className='overflow-hidden rounded-full' />
-			</Button>
-		</div>
-	);
-};
-
-export default InvoicePdf;
 export { generatePDF };
