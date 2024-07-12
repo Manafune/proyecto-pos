@@ -107,8 +107,8 @@ export const TableSaleContent = ({ sales }: TypeTableContent) => {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent align='end'>
 									<DropdownMenuLabel>Acciones</DropdownMenuLabel>
-									<DropdownMenuItem onClick={() => handleChangeStatus(sale)}>Cambiar Estado</DropdownMenuItem>
-									<DropdownMenuItem onClick={() => handlePrintInvoice(sale.id)}>Imprimir Boleta</DropdownMenuItem>
+									<DropdownMenuItem className="rounded bg-yellow-300 text-black px-4 py-2 hover:bg-yellow-400 hover:text-black" onClick={() => handleChangeStatus(sale)}>Cambiar Estado</DropdownMenuItem>
+									<DropdownMenuItem className="rounded mt-2 bg-lime-300 text-black px-4 py-2 hover:bg-lime-400 hover:text-black"onClick={() => handlePrintInvoice(sale.id)}>Imprimir Boleta</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</TableCell>

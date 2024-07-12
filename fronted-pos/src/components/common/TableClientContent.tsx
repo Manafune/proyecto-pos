@@ -59,9 +59,9 @@ export const TableClientContent = ({ addressClients }: TypeTableContent) => {
 											return { ...data };
 										}}
 									>
-										<DropdownMenuItem>Editar</DropdownMenuItem>
+										<DropdownMenuItem className="rounded bg-cyan-300 text-black px-4 py-2 hover:bg-cyan-400 hover:text-black" >Editar</DropdownMenuItem>
 									</Link>
-									<DropdownMenuItem>Cambiar Estado</DropdownMenuItem>
+									<DropdownMenuItem className="rounded mt-2 bg-yellow-300 text-black px-4 py-2 hover:bg-yellow-400 hover:text-black" >Cambiar Estado</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</TableCell>
