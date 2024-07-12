@@ -1,7 +1,7 @@
 import { Package2, Package, Home, ShoppingCart, Users2, LineChart, PanelLeft } from 'lucide-react';
 // import { Input } from '@/components/ui/input';
 import { Link } from '@tanstack/react-router';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,6 +15,30 @@ import { Button } from '@/components/ui/button';
 import supabase from '@/lib/supabase';
 import { Label } from '../ui/label';
 const MobileNav = () => {
+	const translatedRoutes: Record<string, string> = {
+		users: 'Usuarios',
+		sales: 'Ventas',
+		products: 'Productos',
+		clients: 'Clientes',
+		settings: 'Ajustes'
+		// Add more as needed
+	};
+
+	const fullPath = window.location.pathname.replace('/', '');
+	const pathParts = fullPath.split('/');
+
+	// main route
+	const mainRoute = pathParts[0];
+	let operation = '';
+
+	if (pathParts.length > 1 && pathParts[1] !== 'add') {
+		operation = 'Actualizar';
+	} else if (pathParts.length > 1 && pathParts[1] === 'add') {
+		operation = 'Añadir';
+	}
+
+	const breadcrumbText = translatedRoutes[mainRoute as keyof typeof translatedRoutes] || mainRoute;
+
 	return (
 		<div className='flex flex-col sm:gap-4 sm:py-4 sm:pl-14'>
 			<header className='sticky top-0 z-30 max-w-screen-xl flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6'>
@@ -61,24 +85,34 @@ const MobileNav = () => {
 					<BreadcrumbList>
 						<BreadcrumbItem>
 							<BreadcrumbLink asChild>
-								<Label>Panel</Label>
+								<Label>Inicio</Label>
 							</BreadcrumbLink>
 						</BreadcrumbItem>
-						<BreadcrumbSeparator />
-						<BreadcrumbItem>
-							<BreadcrumbLink asChild>
-								<Label>Productos</Label>
-							</BreadcrumbLink>
-						</BreadcrumbItem>
-						<BreadcrumbSeparator />
-						<BreadcrumbItem>
-							<BreadcrumbPage>Todos los Productos</BreadcrumbPage>
-						</BreadcrumbItem>
+						{breadcrumbText && (
+							<>
+								<BreadcrumbSeparator />
+								<BreadcrumbItem>
+									<BreadcrumbLink asChild>
+										<Label>{breadcrumbText}</Label>
+									</BreadcrumbLink>
+								</BreadcrumbItem>
+							</>
+						)}
+						{operation && (
+							<>
+								<BreadcrumbSeparator />
+								<BreadcrumbItem>
+									<BreadcrumbLink asChild>
+										<Label>{operation}</Label>
+									</BreadcrumbLink>
+								</BreadcrumbItem>
+							</>
+						)}
 					</BreadcrumbList>
 				</Breadcrumb>
 				<div className='relative ml-auto flex-1 md:grow-0'>
 					{/* <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-					<Input type='search' placeholder='search...' className='w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]' /> */}
+					  <Input type='search' placeholder='search...' className='w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]' /> */}
 				</div>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
