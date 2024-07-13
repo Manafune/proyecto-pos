@@ -28,7 +28,7 @@ const UserForm: React.FC<UserFormProps> = ({ onSubmit, register, control, errors
                         <Input
                             id="name"
                             type="text"
-                            autoComplete="name"
+                            autoComplete="of"
                             placeholder="Nombre"
                             {...register('name')}
                             className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50"
