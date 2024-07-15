@@ -43,6 +43,7 @@ export const ClientsUpdate = () => {
 		const isThruth = client && customer;
 		if (isThruth && isError) return;
 		const isUploaded = await updateAddresDetails({ ...transformed });
+		alert("Cliente actualizado correctamente");
 		router.invalidate();
 		isUploaded &&
 			navigate({

@@ -22,6 +22,7 @@ export const SelectedAddClient = () => {
 		const isError = Object.values(errors ?? {}).some((error) => error.length > 1);
 		if (isError) return;
 		const isAdded = await addClient({ client });
+		alert("Cliente añadido correctamente");
 		isAdded &&
 			navigate({
 				to: '/clients',
