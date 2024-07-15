@@ -1,5 +1,5 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Settings, UserRoundCog, Store, Package, ShoppingCart, Users2, LineChart } from 'lucide-react';
+import { UserRoundCog, Store, Package, ShoppingCart, Users2, LineChart } from 'lucide-react';
 
 import { Link } from '@tanstack/react-router';
 import { useAuth } from '@/hooks/useAuth';
@@ -51,7 +51,7 @@ export const DesktopNav = () => {
 					</TooltipProvider>
 				))}
 			</nav>
-			<nav className='mt-auto flex flex-col items-center gap-4 px-2 sm:py-5'>
+			{/* <nav className='mt-auto flex flex-col items-center gap-4 px-2 sm:py-5'>
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
@@ -66,7 +66,7 @@ export const DesktopNav = () => {
 						<TooltipContent side='right'>Configuración</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
-			</nav>
+			</nav> */}
 		</aside>
 	);
 };

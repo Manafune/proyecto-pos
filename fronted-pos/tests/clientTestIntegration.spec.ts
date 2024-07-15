@@ -4,32 +4,32 @@ import { addClient } from '../src/lib/clients/addClient';
 
 const mock = [
 	{
-		id: 2,
-		street: 'Calle las Garmendias 123',
-		city: 'Lima',
-		state: 'Lima',
+		id: 3,
+		street: 'Avenida España',
+		city: 'Trujillo',
+		state: 'La Libertad',
 		customer: [
 			{
-				id: 3,
-				dni: '07154878',
-				last_name: 'Smith',
-				birth_date: '1985-10-18',
-				first_name: 'James'
+				id: 4,
+				dni: '45678942',
+				last_name: 'Johnson',
+				birth_date: '1978-03-25',
+				first_name: 'Michaelo'
 			}
 		]
 	},
 	{
-		id: 7,
-		street: '123 Main St',
-		city: 'Springfield',
-		state: 'IL',
+		id: 1,
+		street: 'Arequipa',
+		city: 'Lima',
+		state: 'Leoncio Prado',
 		customer: [
 			{
-				id: 7,
-				dni: '12345678',
-				last_name: 'Doris',
-				birth_date: '1990-01-01',
-				first_name: 'John'
+				id: 1,
+				dni: '98465745',
+				last_name: 'Lopez',
+				birth_date: '2000-01-01',
+				first_name: 'Carla'
 			}
 		]
 	}
@@ -72,7 +72,7 @@ test.describe('api supabase para datos', () => {
 		await supabaseTests.obtenerClientePorId(id, timeout);
 	});
 
-	test('Obtener Clientes y tamaño', async () => {
+	test.only('Obtener Clientes y tamaño', async () => {
 		const current = 1;
 		const pageSize = 2;
 		await supabaseTests.obtenerClientesYTamano(current, pageSize);
