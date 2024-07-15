@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
 import { ProfilechemaValidator } from '@/lib/validation/validation';
-import { MemberRole, MemberStatus } from '@/types/members';
+import { MemberRole} from '@/types/members';
 import { Button } from '@/components/ui/button';
 
 interface UserFormProps {
@@ -71,7 +71,7 @@ const UserForm: React.FC<UserFormProps> = ({ onSubmit, register, control, errors
                         />
                         {errors.role && <span className="text-sm text-red-600">{errors.role?.message}</span>}
                     </div>
-                    <div>
+                    {/* <div>
                         <Label htmlFor="status" className="text-lg">Estado</Label>
                         <Controller
                             name="status"
@@ -93,7 +93,7 @@ const UserForm: React.FC<UserFormProps> = ({ onSubmit, register, control, errors
                             )}
                         />
                         {errors.status && <span className="text-sm text-red-600">{errors.status?.message}</span>}
-                    </div>
+                    </div> */}
                     <div className="md:col-span-2 flex justify-end space-x-4">
                         <Button type="submit" className="bg-green-600 text-white">Guardar Cambios</Button>
                     </div>

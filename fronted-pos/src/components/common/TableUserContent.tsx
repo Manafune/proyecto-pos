@@ -19,6 +19,7 @@ export const TableUserContent = () => {
 				console.log('Fetched users data:', usersData); // Log the fetched data
 				setUsers(
 					usersData.map((user) => ({
+						id: user.member_id,
 						email: user.member_id,
 						name: user.member_name,
 						lastname: user.member_lastname,

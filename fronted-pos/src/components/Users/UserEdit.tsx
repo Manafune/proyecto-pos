@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { buttonVariants } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
@@ -8,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { stepUserEdit } from '@/data/steps';
+import { UsersPagination } from '@/routes/_authenticated/(users)/users';
 
 const UserEdit = () => {
   return (
@@ -21,6 +21,10 @@ const UserEdit = () => {
                 variant: 'outline',
                 className: 'mr-4 flex items-center'
               })}
+              search={(prev) => {
+                const data = prev as UsersPagination
+                return{ ...data};
+              }}
             >
               <ChevronLeft className='h-5 w-5' />
               <span className='ml-2'>Volver</span>

@@ -1,7 +1,6 @@
 import supabase from '@/lib/supabase';
 import { MemberData } from '@/types/members';
 import { type User } from '@/types/members';
-import { string } from 'zod';
 
 export interface UserData extends Omit<User, 'id'> {
 	id: number;
@@ -56,7 +55,7 @@ export const getCountUsers = async (): Promise<number> => {
 	} catch (error) {
 		console.error('Error fetching user count:', error);
 		return 0;
-	};
+	}
 };
 
 

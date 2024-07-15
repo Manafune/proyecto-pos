@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { UsersPagination } from '@/routes/_authenticated/(users)/users';
 import { buttonVariants } from '@/components/ui/button';
