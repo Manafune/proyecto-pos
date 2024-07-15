@@ -8,10 +8,11 @@ import { useSalesStore } from '@/hooks/useSales';
 import { X } from 'lucide-react';
 
 export const TableSelectedProduct = ({ products, total }: { products: ProductsSelected[]; total: number }) => {
-	const { onChangeQuantityProducts, onDeleteProductFromTotal } = useSalesStore();
+	const { onChangeQuantityProducts, onDeleteProductFromTotal, storeSales } = useSalesStore();
 	const formatCurrency = (value: number) => new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(value);
 	return (
 		<div className='overflow-x-auto mb-6'>
+			{products.length >= 1 && <h2 className='text-2xl md:text-3xl font-semibold text-center'>{storeSales.client?.first_name}</h2>}
 			{products.length >= 1 && (
 				<Table className='min-w-full divide-y divide-gray-200'>
 					<TableHeader>

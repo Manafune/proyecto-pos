@@ -6,7 +6,7 @@ interface ApiResponse {
 	errors?: { message: string; code: string; name: string }[];
 }
 
-const errorMessages: { [key: string]: string } = {
+const errorMessages: Record<string, string> = {
 	'23505': 'El nombre del producto no puede ser duplicado',
 	'23514': 'El Stock y el Precio debe ser mayor a cero'
 };

@@ -1,13 +1,24 @@
 import { useSalesStore } from '@/hooks/useSales';
 import { Button } from '../ui/button';
+import { insertSaleAndDetails } from '@/lib/sales/addSale';
 
 export const SalesSummary = ({ total }: { total: number }) => {
-	const { onResetSales } = useSalesStore();
+	const { onResetSales, storeSales } = useSalesStore();
+	const { client, products } = storeSales;
 	const formatCurrency = (value: number) => new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(value);
+	const handleGenerateSaleDetails = async () => {
+		if (!client) return;
+		const saleDetails = products.map((product) => ({ product_id: product.id, quantity: product.quantity, price: product.price }));
+		await insertSaleAndDetails({ sale: { id_customer: client.id, total }, saleDetails });
+	};
 	return (
 		<div className='grid grid-cols-[50%_1fr_1fr] mb-6'>
 			<p className='text-lg font-medium text-gray-700'>Total: {formatCurrency(total)}</p>
-			<Button type='button' className='bg-green-600 text-white hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500'>
+			<Button
+				type='button'
+				className='bg-green-600 text-white hover:bg-green-700 focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+				onClick={handleGenerateSaleDetails}
+			>
 				Generar Venta
 			</Button>
 			<Button
