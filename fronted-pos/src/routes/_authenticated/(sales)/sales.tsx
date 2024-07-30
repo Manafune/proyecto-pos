@@ -1,5 +1,5 @@
-import { Outlet, createFileRoute } from '@tanstack/react-router'
-import { getAllSales} from '@/lib/sales/getSales';
+import { Outlet, createFileRoute } from '@tanstack/react-router';
+import { getAllSales, getCountSales } from '@/lib/sales/getSales';
 import { SIZE_PAGINATION } from '@/config';
 
 export interface SalesPagination {
@@ -11,10 +11,11 @@ export const Route = createFileRoute('/_authenticated/(sales)/sales')({
 	staleTime: 36_000,
 	loader: async ({ deps }) => {
 		const { pageSize, current } = deps as SalesPagination;
-		const data = await getAllSales({ current, pageSize });
+		const [sales, count] = await Promise.all([getAllSales({ current, pageSize }), getCountSales()]);
 
 		return {
-			sales: data,
+			sales,
+			totalSales: count
 		};
 	},
 
@@ -27,4 +28,4 @@ export const Route = createFileRoute('/_authenticated/(sales)/sales')({
 		return validatedSearch;
 	},
 	component: () => <Outlet />
-})
+});

@@ -10,6 +10,7 @@ export const getAllSales = async ({ current, pageSize }: { current: number; page
 			.select(
 				`id,customer:customer_id(first_name,last_name),sale_date,total,status,detail_sale:sale_detail(products:product(id,name,stock), quantity, price, subtotal)`
 			)
+			.order('sale_date', { ascending: false })
 			.range(pageCurrent, offset);
 		if (error) throw new Error(error.message);
 
@@ -18,7 +19,10 @@ export const getAllSales = async ({ current, pageSize }: { current: number; page
 		throw new Error(`Error fetching sales:${error}`);
 	}
 };
-
+export const getCountSales = async () => {
+	const { data } = await supabase.rpc('total_sales');
+	return data;
+};
 export const getSaleById = async (id: number) => {
 	try {
 		const { data, error } = await supabase
