@@ -28,8 +28,8 @@ export const TableClientContent = ({ addressClients }: TypeTableContent) => {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{addressClients?.map(({ customer, city, id, state, street }) => (
-					<TableRow key={id}>
+				{addressClients?.map(({ customer, city, id, state, street },index) => (
+					<TableRow key={id} className={index % 2 === 0 ? '' : 'bg-slate-200/70 hover:bg-slate-200/70'}>
 						{customer?.map((client, idx) => (
 							<React.Fragment key={idx}>
 								<TableCell>{client.first_name}</TableCell>

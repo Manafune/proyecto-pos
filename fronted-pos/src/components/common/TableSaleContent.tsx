@@ -85,8 +85,8 @@ export const TableSaleContent = ({ sales }: TypeTableContent) => {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{sales?.map((sale) => (
-					<TableRow key={sale.id} className={sale.id % 2 === 0 ? '' : 'bg-slate-200/70 hover:bg-slate-200/70'}>
+				{sales?.map((sale, index) => (
+					<TableRow key={sale.id} className={index % 2 === 0 ? '' : 'bg-slate-200/70 hover:bg-slate-200/70'}>
 						<TableCell className='hidden md:table-cell'>
 							{sale.customer.first_name} {sale.customer.last_name}
 						</TableCell>
