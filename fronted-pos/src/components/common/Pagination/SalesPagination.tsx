@@ -1,12 +1,19 @@
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import {
+	Pagination,
+	PaginationContent,
+	PaginationItem,
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious
+} from '@/components/ui/pagination';
 import { cn } from '@/lib/utils';
-import { SalesPagination } from '@/routes/_authenticated/(sales)/sales';
+import { type SalesPagination as SalesPaginationType } from '@/routes/_authenticated/(sales)/sales';
 import { Link, getRouteApi } from '@tanstack/react-router';
 interface BasePagination {
 	total: number;
 }
-const route = getRouteApi('/_authenticated/products');
-export const BasePagination = ({ total }: BasePagination) => {
+const route = getRouteApi('/_authenticated/sales');
+export const SalesPagination = ({ total }: BasePagination) => {
 	const { pageSize, current } = route.useSearch();
 	const { prevPage, nextPage, totalPages } = {
 		prevPage: current - 1,
@@ -26,7 +33,7 @@ export const BasePagination = ({ total }: BasePagination) => {
 						to='/sales'
 						className={cn('', { 'cursor-not-allowed': isDisabledPrevPage })}
 						search={(prev) => {
-							const data = prev as SalesPagination;
+							const data = prev as SalesPaginationType;
 							return { ...data, current: prevPage };
 						}}
 						{...(isDisabledPrevPage && { title: messageTitle })}
@@ -42,7 +49,7 @@ export const BasePagination = ({ total }: BasePagination) => {
 							<Link
 								to='/sales'
 								search={(prev) => {
-									const data = prev as SalesPagination;
+									const data = prev as SalesPaginationType;
 									return { ...data, current: id + 1 };
 								}}
 								disabled={id + 1 === current}
@@ -57,7 +64,7 @@ export const BasePagination = ({ total }: BasePagination) => {
 						to='/sales'
 						className={cn('', { 'cursor-not-allowed': isDisabledNextPage })}
 						search={(prev) => {
-							const data = prev as SalesPagination;
+							const data = prev as SalesPaginationType;
 							return { ...data, current: nextPage };
 						}}
 						{...(isDisabledNextPage && { title: messageTitle })}

@@ -19,7 +19,10 @@ export const getAllSales = async ({ current, pageSize }: { current: number; page
 		throw new Error(`Error fetching sales:${error}`);
 	}
 };
-
+export const getCountSales = async () => {
+	const { data } = await supabase.rpc('total_sales');
+	return data;
+};
 export const getSaleById = async (id: number) => {
 	try {
 		const { data, error } = await supabase
