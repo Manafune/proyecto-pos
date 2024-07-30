@@ -75,6 +75,7 @@ export const TableContent = ({ products }: TypeTableContent) => {
 												idProduct: product.id
 											});
 											if (data !== undefined) route.invalidate();
+											window.alert('Estado cambiado con éxito');
 										}}
 									>
 										Cambiar Estado

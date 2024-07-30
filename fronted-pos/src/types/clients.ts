@@ -1,4 +1,5 @@
 import { AddPrefix } from './common';
+import { MemberStatus } from '@/types/members';
 
 export interface AddressCustomer {
 	id: number;
@@ -6,6 +7,7 @@ export interface AddressCustomer {
 	city: string;
 	state: string;
 	customer?: Customer[];
+	status: MemberStatus
 }
 
 export type AddressByCustomer = Omit<AddressCustomer, 'customer'> & {

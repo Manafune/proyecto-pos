@@ -5,5 +5,6 @@ export const tableHeaders = [
 	{ label: 'Fecha de Nac.' },
 	{ label: 'Ciudad' },
 	{ label: 'Depto.' },
-	{ label: 'Calle' }
+	{ label: 'Calle' },
+	{ label: 'Estado'}
 ];
