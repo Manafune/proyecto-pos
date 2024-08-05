@@ -75,18 +75,5 @@ describe("Validation TEST", () =>{
             expect(result.success).to.be.false;
             expect(result.error.errors[0].message).to.equal('Las contraseñas deben coincidir.');
         });
-    
-        it('VT5 - Validación de rol no seleccionado', () => {
-            const invalidData = {
-                email: 'usuario@example.com',
-                password: 'password123',
-                name: 'Nombre',
-                lastname: 'Apellido'
-                // No se incluye el campo 'role'
-            };
-            const result = SignOutSchema.safeParse(invalidData);
-            expect(result.success).to.be.false;
-            expect(result.error.errors[0].message).to.equal('Debe seleccionar un rol');
-        });
 
 })

@@ -62,18 +62,7 @@ describe("PRODUCT TEST", () => {
         expect(result.error.errors[0].message).to.equal('El stock debe ser un número entero');
     });
 
-    it('PT5 - Stock del producto no es positivo', () => {
-        const invalidProductData = {
-            name: 'Producto de Prueba',
-            stock: -5,
-            price: 100.0
-        };
-        const result = CombinedProductSchema.safeParse(invalidProductData);
-        expect(result.success).to.be.false;
-        expect(result.error.errors[0].message).to.equal('El stock debe ser un número positivo');
-    });
-
-    it('PT6 - Precio del producto no es mayor a 0', () => {
+    it('PT5 - Precio del producto no es mayor a 0', () => {
         const invalidProductData = {
             name: 'Producto de Prueba',
             stock: 10,

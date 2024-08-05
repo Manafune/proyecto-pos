@@ -12,20 +12,39 @@ import { exportToExcel } from '@/utils/sales/excelAllSales';
 
 export const Sales = () => {
 	const [sales, setSales] = useState<SaleData[]>([]);
+	const [startDate, setStartDate] = useState<string>('');
+	const [endDate, setEndDate] = useState<string>('');
+
+	const fetchSales = async () => {
+		const salesData = await getAllSales({
+		current: 1,
+		pageSize: 100,
+		startDate,
+		endDate
+		});
+		setSales(salesData);
+	};
 
 	useEffect(() => {
-		const fetchSales = async () => {
-			const salesData = await getAllSales({ current: 1, pageSize: 100 }); // Ajusta según tus necesidades de paginación
-			setSales(salesData);
-		};
-
 		fetchSales();
-	}, []);
+	}, [startDate, endDate]);
 
 	return (
 		<Tabs defaultValue='all'>
 			<div className='flex items-center'>
 				<div className='ml-auto flex items-center gap-2'>
+						<input
+					type='date'
+					value={startDate}
+					onChange={(e) => setStartDate(e.target.value)}
+					placeholder='Start Date'
+				/>
+				<input
+					type='date'
+					value={endDate}
+					onChange={(e) => setEndDate(e.target.value)}
+					placeholder='End Date'
+				/>
 					<Button
 						size='sm'
 						variant='outline'

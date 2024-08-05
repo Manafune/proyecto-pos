@@ -40,6 +40,7 @@ export const exportToExcel = (sales: SaleData[]) => {
 
     XLSX.utils.book_append_sheet(wb, ws, 'Ventas');
     XLSX.utils.book_append_sheet(wb, wsDetail, 'Detalles de Ventas');
-
-    XLSX.writeFile(wb, 'reporte_ventas.xlsx');
+    const currentDate = new Date().toLocaleDateString('en-CA');
+    const fileName = `reporte_ventas_EXCEL_${currentDate}.xlsx`;
+    XLSX.writeFile(wb, fileName);
 };

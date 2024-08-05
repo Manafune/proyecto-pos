@@ -69,7 +69,8 @@ export const generatePDF = (sales: SaleData[]): void => {
 			8: { cellWidth: 20 } // Subtotal
 		}
 	});
-
+	const currentDate = new Date().toLocaleDateString('en-CA');
+	const fileName = `reporte_ventas_PDF_${currentDate}.pdf`;
 	// Descargar el PDF
-	doc.save('reporte_ventas.pdf');
+	doc.save(fileName);
 };
