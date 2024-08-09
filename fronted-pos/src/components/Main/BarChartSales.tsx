@@ -1,44 +1,61 @@
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts';
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 interface SalesBarChartProps {
 	data: {
 		monthName: string;
 		totalSales: number;
 	}[];
 }
-
+const builSalesBarChart = (products: SalesBarChartProps['data']) => {
+	const salesData: Array<{ name: string; fill: string; total: number }> = [];
+	const salesConfig: Record<string, { label: string; color: string }> = {};
+	let idx = 0;
+	for (const product of products) {
+		salesData.push({
+			name: product.monthName,
+			fill: `hsl(var(--chart-${idx + 1}))`,
+			total: product.totalSales
+		});
+		salesConfig[product.monthName] = { label: product.monthName, color: `hsl(var(--chart-${idx + 1}))` };
+		idx++;
+	}
+	return { salesData, salesConfig };
+};
 export const SalesBarChart = ({ data }: SalesBarChartProps) => {
-	const chartConfig: ChartConfig = {
-		totalSales: {
-			label: 'Ventas',
-			color: 'hsl(var(--chart-1))'
-		},
-		label: {
-			color: 'hsl(var(--background))'
-		}
-	};
+	const { salesConfig, salesData } = builSalesBarChart(data);
 
 	return (
-		<ChartContainer config={chartConfig}>
-			<BarChart accessibilityLayer data={data} layout='vertical' margin={{ right: 16 }}>
-				<CartesianGrid horizontal={false} />
-				<YAxis
-					dataKey='monthName'
-					type='category'
-					tickLine={false}
-					tickMargin={10}
-					axisLine={false}
-					tickFormatter={(value) => value.slice(0, 3)}
-					hide
-				/>
-				<XAxis dataKey='totalSales' type='number' hide />
-				<ChartTooltip cursor={false} content={<ChartTooltipContent indicator='line' />} />
-				<Bar dataKey='totalSales' layout='vertical' fill='var(--color-desktop)' radius={4}>
-					<LabelList dataKey='monthName' position='insideLeft' offset={8} className='fill-[--color-label]' fontSize={12} />
-					<LabelList dataKey='totalSales' position='right' offset={8} className='fill-foreground' fontSize={12} />
-				</Bar>
-			</BarChart>
-		</ChartContainer>
+		<Card>
+			<CardHeader>
+				<CardTitle>Ventas por Mes - Año 2024</CardTitle>
+				<CardDescription>Enero - Diciembre 2024</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<ChartContainer config={salesConfig} className='max-h-[15rem] col-span-1'>
+					<BarChart
+						accessibilityLayer
+						data={salesData}
+						layout='vertical'
+						margin={{
+							left: 0
+						}}
+					>
+						<CartesianGrid vertical={true} />
+						<YAxis
+							dataKey='name'
+							type='category'
+							tickLine={false}
+							tickMargin={10}
+							axisLine={false}
+							tickFormatter={(value) => salesConfig[value as keyof typeof salesConfig]?.label}
+						/>
+						<XAxis dataKey='total' type='number' hide />
+						<ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+						<Bar dataKey='total' layout='vertical' radius={5} />
+					</BarChart>
+				</ChartContainer>
+			</CardContent>
+		</Card>
 	);
 };
