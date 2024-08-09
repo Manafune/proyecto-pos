@@ -25,7 +25,7 @@ export const PieChartStock = ({ products }: PieChartStockTypes) => {
 	const { stockConfig, stockData } = buildStockContent(products);
 
 	return (
-		<Card className='flex flex-col col-span-2 row-span-1'>
+		<Card className='flex flex-col md:col-span-2 row-span-1'>
 			<CardHeader className='items-center pb-2'>
 				<CardTitle>Productos Con Mayor Stock</CardTitle>
 				<CardDescription>Relación de productos</CardDescription>

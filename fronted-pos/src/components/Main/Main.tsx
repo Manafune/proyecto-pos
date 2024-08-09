@@ -9,7 +9,7 @@ export const MainPage = () => {
 	const { salesByMonth, stockProducts } = routeApi.useLoaderData();
 	const chartData = formatSalesChart(salesByMonth);
 	return (
-		<div className='grid gap-[1em] grid-cols-3 grid-rows-2'>
+		<div className='grid gap-[1em] md:grid-cols-3 md:grid-rows-2'>
 			<PieChartStock products={stockProducts} />
 			<SalesBarChart data={chartData} />
 		</div>

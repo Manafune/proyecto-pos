@@ -26,13 +26,13 @@ export const SalesBarChart = ({ data }: SalesBarChartProps) => {
 	const { salesConfig, salesData } = builSalesBarChart(data);
 
 	return (
-		<Card>
-			<CardHeader>
+		<Card className='grid grid-rows-3'>
+			<CardHeader className='row-span-1'>
 				<CardTitle>Ventas por Mes - Año 2024</CardTitle>
 				<CardDescription>Enero - Diciembre 2024</CardDescription>
 			</CardHeader>
-			<CardContent>
-				<ChartContainer config={salesConfig} className='max-h-[15rem] col-span-1'>
+			<CardContent className='row-span-2'>
+				<ChartContainer config={salesConfig} className='md:col-span-1'>
 					<BarChart
 						accessibilityLayer
 						data={salesData}
