@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import supabase from '@/lib/supabase';
-import { SignOutSchema, type SignOutSchemaValidator } from '@/lib/validation/validation';
+import { SignUpSchema, type SignUpSchemaValidator } from '@/lib/validation/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
@@ -16,8 +16,8 @@ const SignOut = () => {
 		handleSubmit,
 		register,
 		formState: { errors }
-	} = useForm<SignOutSchemaValidator>({
-		resolver: zodResolver(SignOutSchema)
+	} = useForm<SignUpSchemaValidator>({
+		resolver: zodResolver(SignUpSchema)
 	});
 
 	const onSubmit = handleSubmit(async (data) => {
@@ -35,8 +35,9 @@ const SignOut = () => {
 			});
 			if (supaData.user && supaData.user.identities && supaData.user.identities.length === 0)
 				return toast.error('AuthApiError', { duration: 2000, description: 'El usuario ya existe' });
-
-			if (error) return toast.error(error.name, { duration: 2000, description: error.message });
+			if (error !== null && error.name === 'AuthApiError')
+				return toast.error('Usuario registrado', { duration: 2000, description: 'El usuario ya se registró anteriormente' });
+			window.alert('Usuario registrado');
 			return navigate({ to: '/sign-in' });
 		} catch (error) {
 			console.log(error);
