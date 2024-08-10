@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const MemberRoleEnum = z.enum(['MEMBER', 'ADMIN', 'SELLER', 'STOREKEEPER'], {
-	required_error: 'Debe seleccionar un rol',
+	required_error: 'Debe seleccionar un rol'
 });
 
 export const BaseSchema = z.object({
@@ -9,13 +9,12 @@ export const BaseSchema = z.object({
 	password: z.string().trim().min(8, { message: 'La contraseña debe tener al menos 8 caracteres' })
 });
 
-export const SignOutSchema = BaseSchema.extend({
+export const SignUpSchema = BaseSchema.extend({
 	name: z.string().trim().min(5, { message: 'El nombre debe tener al menos 5 caracteres' }),
-	lastname: z.string().trim().min(5, { message: 'El apellido debe tener al menos 5 caracteres' }),
-	role: MemberRoleEnum
+	lastname: z.string().trim().min(5, { message: 'El apellido debe tener al menos 5 caracteres' })
 });
 
-export const ProfileSchema = SignOutSchema.omit({ email: true })
+export const ProfileSchema = SignUpSchema.omit({ email: true })
 	.extend({
 		confirmPassword: z.string()
 	})
@@ -26,4 +25,4 @@ export const ProfileSchema = SignOutSchema.omit({ email: true })
 
 export type SignInSchemaValidator = z.infer<typeof BaseSchema>;
 export type ProfilechemaValidator = z.infer<typeof ProfileSchema>;
-export type SignOutSchemaValidator = z.infer<typeof SignOutSchema>;
+export type SignUpSchemaValidator = z.infer<typeof SignUpSchema>;
