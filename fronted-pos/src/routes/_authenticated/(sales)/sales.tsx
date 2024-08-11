@@ -12,7 +12,7 @@ export const Route = createFileRoute('/_authenticated/(sales)/sales')({
 	staleTime: 36_000,
 	loader: async ({ deps }) => {
 		const { pageSize, current, filter } = deps as SalesPagination;
-		const [sales, count] = await Promise.all([getAllSales({ current, pageSize }), getCountSales()]);
+		const [sales, count] = await Promise.all([getAllSales({ current, pageSize, filter }), getCountSales({ filter })]);
 
 		return {
 			sales,

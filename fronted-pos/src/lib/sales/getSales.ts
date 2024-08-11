@@ -4,14 +4,13 @@ import { type SaleData } from '@/types/sales';
 export interface SalesParams {
 	current: number;
 	pageSize: number;
-	filter: 'ALL' | 'CANCELLED' | 'COMPLETED';
+	filter: 'ALL' | 'CANCELED' | 'COMPLETED';
 }
 
 export const getAllSales = async ({ current, pageSize, filter }: SalesParams) => {
 	try {
 		const pageCurrent = (current - 1) * pageSize;
 		const offset = pageCurrent + pageSize - 1;
-
 		let query = supabase
 			.from('sale')
 			.select(
@@ -19,6 +18,7 @@ export const getAllSales = async ({ current, pageSize, filter }: SalesParams) =>
 			)
 			.order('sale_date', { ascending: false })
 			.range(pageCurrent, offset);
+
 		if (filter !== 'ALL') query = query.eq('status', filter);
 
 		const { data, error } = await query;
@@ -30,8 +30,10 @@ export const getAllSales = async ({ current, pageSize, filter }: SalesParams) =>
 	}
 };
 
-export const getCountSales = async () => {
-	const { data } = await supabase.rpc('total_sales');
+export const getCountSales = async ({ filter }: { filter: SalesParams['filter'] }) => {
+	const { data } = await supabase.rpc('total_sales', {
+		statussale: filter
+	});
 	return data;
 };
 
