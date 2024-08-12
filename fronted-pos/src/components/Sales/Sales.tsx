@@ -16,19 +16,45 @@ export const Sales = () => {
 	const [sales, setSales] = useState<SaleData[]>([]);
 	const [startDate, setStartDate] = useState<string>('');
 	const [endDate, setEndDate] = useState<string>('');
+
+	const validateDateRange = (start: string, end: string) => {
+        if (start && end && new Date(start) > new Date(end)) {
+            alert('La fecha de inicio no puede ser posterior a la fecha de fin.');
+			setStartDate('');
+            setEndDate('');
+            return false;
+        }
+        return true;
+    };
+	
 	useEffect(() => {
-		const fetchSales = async () => {
-			const salesData = await getAllSales({
-				current: 1,
-				pageSize: 100,
-				// startDate,
-				filter: 'ALL'
-				// endDate
-			});
-			setSales(salesData);
-		};
-		fetchSales();
-	}, [startDate, endDate]);
+        const fetchSales = async () => {
+            // Si no se han seleccionado fechas, obtener el mes anterior
+            let selectedStartDate = startDate;
+            let selectedEndDate = endDate;
+
+            if (!startDate && !endDate) {
+                const now = new Date();
+                const firstDayOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                const lastDayOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                selectedStartDate = firstDayOfLastMonth.toISOString().split('T')[0];
+                selectedEndDate = lastDayOfLastMonth.toISOString().split('T')[0];
+            }
+
+            const salesData = await getAllSales({
+                current: 1,
+                pageSize: 100,
+                filter: 'ALL',
+                startDate: selectedStartDate,
+                endDate: selectedEndDate
+            });
+            setSales(salesData);
+        };
+
+        if (validateDateRange(startDate, endDate)) {
+            fetchSales();
+        }
+    }, [startDate, endDate]);
 
 	return (
 		<Tabs defaultValue='all'>
@@ -55,8 +81,8 @@ export const Sales = () => {
 					</SelectContent>
 				</Select>
 				<div className='ml-auto flex items-center gap-2'>
-					<input type='date' value={startDate} onChange={(e) => setStartDate(e.target.value)} placeholder='Start Date' />
-					<input type='date' value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder='End Date' />
+					<input type='date' value={startDate} onChange={(e) => setStartDate(e.target.value)} placeholder='Fecha inicio' />
+					<input type='date' value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder='Fecha de Fin' />
 					<Button size='sm' variant='outline' className='h-8 bg-[#0ea5e9] hover:bg-[#38bdf8] gap-1' onClick={() => generatePDF(sales)}>
 						<File className='h-3.5 w-3.5 text-white' />
 						<span className='sr-only sm:not-sr-only sm:whitespace-nowrap text-white'>Exportar PDF</span>

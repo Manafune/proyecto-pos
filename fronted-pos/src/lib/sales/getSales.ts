@@ -5,9 +5,11 @@ export interface SalesParams {
 	current: number;
 	pageSize: number;
 	filter: 'ALL' | 'CANCELED' | 'COMPLETED';
+	startDate?: string;
+    endDate?: string;
 }
 
-export const getAllSales = async ({ current, pageSize, filter }: SalesParams) => {
+export const getAllSales = async ({ current, pageSize, filter, startDate, endDate}: SalesParams) => {
 	try {
 		const pageCurrent = (current - 1) * pageSize;
 		const offset = pageCurrent + pageSize - 1;
@@ -20,6 +22,8 @@ export const getAllSales = async ({ current, pageSize, filter }: SalesParams) =>
 			.range(pageCurrent, offset);
 
 		if (filter !== 'ALL') query = query.eq('status', filter);
+		if (startDate) query = query.gte('sale_date', startDate);
+        if (endDate) query = query.lte('sale_date', endDate);
 
 		const { data, error } = await query;
 		if (error) throw new Error(error.message);
