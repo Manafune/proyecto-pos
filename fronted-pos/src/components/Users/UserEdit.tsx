@@ -32,7 +32,6 @@ const UserEdit = () => {
     getUser();
   }, [loaderData.id]);
   const getStatusText = (status: MemberStatus) => (status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo');
-  const statusText = user?.member_status ? getStatusText(user.member_status) : '';
 
   const getRoleText = (role_app: MemberRole) => {
 		switch (role_app) {
@@ -119,7 +118,7 @@ const UserEdit = () => {
                     <Label htmlFor="status" className="text-lg">Estado</Label>
                     <Select>
                       <SelectTrigger className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50">
-                        <SelectValue placeholder={statusText} />
+                        <SelectValue placeholder={getStatusText(user?.member_status)} />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value={MemberStatus.ACTIVE}>Activo</SelectItem>
