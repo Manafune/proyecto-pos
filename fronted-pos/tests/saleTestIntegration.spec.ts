@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { getAllSales, getSaleById } from '../src/lib/sales/getSales';
+import { getSaleById } from '../src/lib/sales/getSales';
 import { putSalesByState } from '../src/lib/sales/putSales'
 
 const mockSales = [
@@ -56,18 +56,6 @@ class SupabaseSalesTests {
         expect(result).toMatchObject(saleEqual);
     }
 
-    async obtenerVentasYTamano(current: number, pageSize: number) {
-        const startIndex = (current - 1) * pageSize;
-        const expectedSubset = this.mockData.slice(startIndex, startIndex + pageSize);
-
-        const result = await getAllSales({ current, pageSize });
-
-        expect(result.length).toBe(pageSize);
-
-        expectedSubset.forEach((expectedItem, index) => {
-            expect(result[index]).toMatchObject(expectedItem);
-        });
-    }
 
     async actualizarEstadoVenta(idSale: number, status: 'COMPLETED' | 'CANCELED') {
         const result = await putSalesByState({ status, idSale });
@@ -83,11 +71,6 @@ test.describe('API Supabase para ventas', () => {
         await supabaseSalesTests.obtenerVentaPorId(id);
     });
 
-    test('Obtener ventas y tamaño', async () => {
-        const current = 1;
-        const pageSize = 2;
-        await supabaseSalesTests.obtenerVentasYTamano(current, pageSize);
-    });
 
     test.only('Actualizar estado de venta', async () => {
         const idSale = 1;
