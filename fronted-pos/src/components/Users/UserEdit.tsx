@@ -8,7 +8,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { stepUserEdit } from '@/data/steps';
 import { getUserById } from '@/lib/user/getUser';
-import { MemberData } from '@/types/members';
+import { MemberData, MemberRole, MemberStatus } from '@/types/members';
 import { useEffect, useState } from 'react';
 import { Loading } from '../Loader/Loading';
 
@@ -31,7 +31,23 @@ const UserEdit = () => {
 
     getUser();
   }, [loaderData.id]);
+  const getStatusText = (status: MemberStatus) => (status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo');
+  const statusText = user?.member_status ? getStatusText(user.member_status) : '';
 
+  const getRoleText = (role_app: MemberRole) => {
+		switch (role_app) {
+			case MemberRole.MEMBER:
+				return 'Miembro';
+			case MemberRole.ADMIN:
+				return 'Administrador';
+			case MemberRole.SELLER:
+				return 'Vendedor';
+			case MemberRole.STOREKEEPER:
+				return 'Almacenero';
+			default:
+				return '';
+		}
+	};
   if (!user) {
     return <div className="flex items-center justify-center min-h-screen"><Loading></Loading></div>; // O cualquier indicador de carga que prefieras
   }
@@ -87,9 +103,9 @@ const UserEdit = () => {
                   </div>
                   <div>
                     <Label htmlFor="role" className="text-lg">Rol</Label>
-                    <Select defaultValue={user?.member_role_app}>
+                    <Select>
                       <SelectTrigger className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50">
-                        <SelectValue placeholder="Seleccionar Rol" />
+                        <SelectValue placeholder={getRoleText(user?.member_role_app)} />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="member">Miembro</SelectItem>
@@ -101,13 +117,13 @@ const UserEdit = () => {
                   </div>
                   <div>
                     <Label htmlFor="status" className="text-lg">Estado</Label>
-                    <Select defaultValue={user?.member_status}>
+                    <Select>
                       <SelectTrigger className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50">
-                        <SelectValue placeholder="Seleccionar Estado" />
+                        <SelectValue placeholder={statusText} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="active">Activo</SelectItem>
-                        <SelectItem value="inactive">Inactivo</SelectItem>
+                        <SelectItem value="Active">Activo</SelectItem>
+                        <SelectItem value="Inactive">Inactivo</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
