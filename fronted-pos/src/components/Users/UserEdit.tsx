@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { getRouteApi, Link } from '@tanstack/react-router';
 import { buttonVariants } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,11 +7,38 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { stepUserEdit } from '@/data/steps';
-import { UsersPagination } from '@/routes/_authenticated/(users)/users';
+import { getUserById } from '@/lib/user/getUser';
+import { MemberData } from '@/types/members';
+import { useEffect, useState } from 'react';
+import { Loading } from '../Loader/Loading';
+
+const route = getRouteApi('/_authenticated/users/$id');
 
 const UserEdit = () => {
+  
+  const loaderData = route.useParams();
+
+  const [user, setUser] = useState<MemberData | null>(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      if (loaderData.id) {
+        const user = await getUserById(loaderData.id);
+        setUser(user);
+        console.log(user);
+      }
+    };
+
+    getUser();
+  }, [loaderData.id]);
+
+  if (!user) {
+    return <div className="flex items-center justify-center min-h-screen"><Loading></Loading></div>; // O cualquier indicador de carga que prefieras
+  }
+
+  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
+<div className="min-h-screen flex items-center justify-center bg-gray-50 p-8">
       <div className="w-full max-w-7xl">
         <div className='flex items-center justify-between mb-12'>
           <div className='flex items-center'>
@@ -21,10 +48,7 @@ const UserEdit = () => {
                 variant: 'outline',
                 className: 'mr-4 flex items-center'
               })}
-              search={(prev) => {
-                const data = prev as UsersPagination
-                return{ ...data};
-              }}
+              search={{ pageSize: 10, current: 1, filter: 'ALL' }}
             >
               <ChevronLeft className='h-5 w-5' />
               <span className='ml-2'>Volver</span>
@@ -48,6 +72,7 @@ const UserEdit = () => {
                       autoComplete="off"
                       placeholder="Nombre"
                       className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50"
+                      defaultValue={user?.member_name}
                     />
                   </div>
                   <div>
@@ -57,11 +82,12 @@ const UserEdit = () => {
                       type="text"
                       placeholder="Apellido"
                       className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50"
+                      defaultValue={user?.member_lastname}
                     />
                   </div>
                   <div>
                     <Label htmlFor="role" className="text-lg">Rol</Label>
-                    <Select>
+                    <Select defaultValue={user?.member_role_app}>
                       <SelectTrigger className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50">
                         <SelectValue placeholder="Seleccionar Rol" />
                       </SelectTrigger>
@@ -75,7 +101,7 @@ const UserEdit = () => {
                   </div>
                   <div>
                     <Label htmlFor="status" className="text-lg">Estado</Label>
-                    <Select>
+                    <Select defaultValue={user?.member_status}>
                       <SelectTrigger className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50">
                         <SelectValue placeholder="Seleccionar Estado" />
                       </SelectTrigger>

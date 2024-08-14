@@ -1,8 +1,7 @@
 import supabase from '@/lib/supabase';
 import { MemberData } from '@/types/members';
-import { type User } from '@/types/members';
 
-export interface UserData extends Omit<User, 'id'> {
+export interface UserData extends Omit<MemberData, 'id'> {
 	id: number;
 }
 
@@ -59,7 +58,39 @@ export const getCountUsers = async (): Promise<number> => {
 };
 
 
-export const getUsersById = async ({ id } : {id : string}) => {
-	const {data : member} = await supabase.from('member').select('*').eq('id', id);
-	return member?.[0] as unknown as MemberData;
+export const getUserById = async (id: string): Promise<MemberData | null> => {
+	try {
+		const { data, error } = await supabase
+			.from('member')
+			.select(
+				`
+                id,
+                name,
+                lastname,
+                member_role!inner (
+                    role,
+                    status
+                )
+            `
+			)
+			.eq('id', id)  // Utiliza el UUID directamente en la consulta
+			.single(); // Solo esperamos un registro
+
+		if (error) throw new Error(error.message);
+
+		if (data) {
+			return {
+				member_id: data.id,
+				member_name: data.name,
+				member_lastname: data.lastname,
+				member_role_app: data.member_role[0]?.role,
+				member_status: data.member_role[0]?.status
+			};
+		}
+		
+		return null;
+	} catch (error) {
+		console.error('Error fetching user by ID:', error);
+		return null;
+	}
 };
