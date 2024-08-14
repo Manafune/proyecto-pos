@@ -108,10 +108,10 @@ const UserEdit = () => {
                         <SelectValue placeholder={getRoleText(user?.member_role_app)} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="member">Miembro</SelectItem>
-                        <SelectItem value="admin">Admin</SelectItem>
-                        <SelectItem value="seller">Vendedor</SelectItem>
-                        <SelectItem value="storekeeper">Almacenero</SelectItem>
+                        <SelectItem value={MemberRole.MEMBER}>Miembro</SelectItem>
+                        <SelectItem value={MemberRole.ADMIN}>Admin</SelectItem>
+                        <SelectItem value={MemberRole.SELLER}>Vendedor</SelectItem>
+                        <SelectItem value={MemberRole.STOREKEEPER}>Almacenero</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -122,8 +122,8 @@ const UserEdit = () => {
                         <SelectValue placeholder={statusText} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Active">Activo</SelectItem>
-                        <SelectItem value="Inactive">Inactivo</SelectItem>
+                        <SelectItem value={MemberStatus.ACTIVE}>Activo</SelectItem>
+                        <SelectItem value={MemberStatus.INACTIVE}>Inactivo</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
