@@ -1,4 +1,4 @@
-import { getRouteApi, Link } from '@tanstack/react-router';
+import { getRouteApi, Link, useNavigate } from '@tanstack/react-router';
 import { buttonVariants } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,26 +11,70 @@ import { getUserById } from '@/lib/user/getUser';
 import { MemberData, MemberRole, MemberStatus } from '@/types/members';
 import { useEffect, useState } from 'react';
 import { Loading } from '../Loader/Loading';
+import { UsersPagination } from '@/routes/_authenticated/(users)/users';
+import { updateUser } from '@/lib/user/putUser';
 
 const route = getRouteApi('/_authenticated/users/$id');
 
 const UserEdit = () => {
-  
+  const navigate = useNavigate();
   const loaderData = route.useParams();
-
+  
   const [user, setUser] = useState<MemberData | null>(null);
-
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    role: MemberRole.MEMBER,
+    status: MemberStatus.ACTIVE
+  });
   useEffect(() => {
     const getUser = async () => {
       if (loaderData.id) {
         const user = await getUserById(loaderData.id);
         setUser(user);
+        if (user) {
+          setFormData({
+            first_name: user.member_name,
+            last_name: user.member_lastname,
+            role: user.member_role_app,
+            status: user.member_status
+          });}
         console.log(user);
       }
     };
 
     getUser();
   }, [loaderData.id]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSelectChange = (id: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (user) {
+      try {
+        await updateUser({
+          id: user.member_id,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          role: formData.role,
+          status: formData.status
+        });
+        navigate({
+          to: '/users',
+          search: (prev) => ({ ...prev as UsersPagination })
+        });
+      } catch (error) {
+        console.error('Error updating user:', error);
+      }
+    }
+  };
   const getStatusText = (status: MemberStatus) => (status === MemberStatus.ACTIVE ? 'Activo' : 'Inactivo');
 
   const getRoleText = (role_app: MemberRole) => {
@@ -78,31 +122,33 @@ const UserEdit = () => {
                 <CardTitle className="text-3xl mb-4">Editar Usuario</CardTitle>
               </CardHeader>
               <CardContent>
-                <form className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                <form className="grid grid-cols-1 gap-8 md:grid-cols-2"  onSubmit={handleSubmit}>
                   <div>
                     <Label htmlFor="name" className="text-lg">Nombre</Label>
                     <Input
-                      id="name"
+                      id="first_name"
                       type="text"
                       autoComplete="off"
                       placeholder="Nombre"
                       className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50"
-                      defaultValue={user?.member_name}
+                      value={formData.first_name}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div>
                     <Label htmlFor="lastname" className="text-lg">Apellido</Label>
                     <Input
-                      id="lastname"
+                      id="last_name"
                       type="text"
                       placeholder="Apellido"
                       className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50"
-                      defaultValue={user?.member_lastname}
+                      value={formData.last_name}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div>
                     <Label htmlFor="role" className="text-lg">Rol</Label>
-                    <Select>
+                    <Select value={formData.role} onValueChange={(value) => handleSelectChange('role', value)}>
                       <SelectTrigger className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50">
                         <SelectValue placeholder={getRoleText(user?.member_role_app)} />
                       </SelectTrigger>
@@ -116,7 +162,7 @@ const UserEdit = () => {
                   </div>
                   <div>
                     <Label htmlFor="status" className="text-lg">Estado</Label>
-                    <Select>
+                    <Select value={formData.status} onValueChange={(value) => handleSelectChange('status', value)}>
                       <SelectTrigger className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50">
                         <SelectValue placeholder={getStatusText(user?.member_status)} />
                       </SelectTrigger>

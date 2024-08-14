@@ -29,9 +29,9 @@ export type User = {
 }
 
 export interface UpdateUserData {
-    id: number;
+    id: string;
     first_name: string;
     last_name: string;
-    role: string;
-    status: string;
+    role: MemberRole;
+    status: MemberStatus;
 }
