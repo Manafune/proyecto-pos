@@ -66,6 +66,7 @@ const UserEdit = () => {
           role: formData.role,
           status: formData.status
         });
+        window.alert('Cambios realizados correctamente');
         navigate({
           to: '/users',
           search: (prev) => ({ ...prev as UsersPagination })

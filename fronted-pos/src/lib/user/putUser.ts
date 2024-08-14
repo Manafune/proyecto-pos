@@ -15,7 +15,7 @@ export const updateUser = async ({ id, first_name, last_name, role, status }: Up
         const { error: roleError } = await supabase
             .from('member_role')
             .update({ role, status })
-            .eq('member_id', id);
+            .eq('user_id', id);
 
         if (roleError) throw new Error(roleError.message);
 
