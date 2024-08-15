@@ -131,6 +131,7 @@ const UserEdit = () => {
                       type="text"
                       autoComplete="off"
                       placeholder="Nombre"
+                      disabled
                       className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50"
                       value={formData.first_name}
                       onChange={handleInputChange}
@@ -142,6 +143,7 @@ const UserEdit = () => {
                       id="last_name"
                       type="text"
                       placeholder="Apellido"
+                      disabled
                       className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-opacity-50"
                       value={formData.last_name}
                       onChange={handleInputChange}
