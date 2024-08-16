@@ -4,32 +4,32 @@ import { addClient } from '../src/lib/clients/addClient';
 
 const mock = [
 	{
-		id: 3,
-		street: 'Avenida España',
-		city: 'Trujillo',
-		state: 'La Libertad',
+		id: 2,
+		street: 'Calle las Garmendias 123',
+		city: 'Lima',
+		state: 'Lima',
 		customer: [
 			{
-				id: 4,
-				dni: '45678942',
-				last_name: 'Johnson',
-				birth_date: '1978-03-25',
-				first_name: 'Michaelo'
+				id: 3,
+				dni: '07154878',
+				last_name: 'Smith',
+				birth_date: '1985-10-18',
+				first_name: 'Pedro'
 			}
 		]
 	},
 	{
-		id: 1,
-		street: 'Arequipa',
+		id: 19,
+		street: '155 Main St',
 		city: 'Lima',
-		state: 'Leoncio Prado',
+		state: 'Lima',
 		customer: [
 			{
-				id: 1,
-				dni: '98465745',
-				last_name: 'Lopez',
-				birth_date: '2000-01-01',
-				first_name: 'Carla'
+				id: 19,
+				dni: '45815236',
+				last_name: 'Tapia',
+				birth_date: '2003-04-01',
+				first_name: 'Mary'
 			}
 		]
 	}
@@ -43,7 +43,7 @@ class SupabaseTests {
 		const customer = addressEqual?.customer[0];
 		const mockEqual = {
 			...addressEqual,
-			customer: { ...customer, birth_date: new Date(customer?.birth_date ?? '') }
+			customer: { ...customer }
 		};
 		const result = await getClientById({ id, timeout });
 		expect(result).toMatchObject(mockEqual);
@@ -67,12 +67,12 @@ const supabaseTests = new SupabaseTests();
 
 test.describe('api supabase para datos', () => {
 	test('obtener cliente por ID', async () => {
-		const id = '7';
+		const id = '3';
 		const { timeout } = AbortSignal;
 		await supabaseTests.obtenerClientePorId(id, timeout);
 	});
 
-	test.only('Obtener Clientes y tamaño', async () => {
+	test('Obtener Clientes y tamaño', async () => {
 		const current = 1;
 		const pageSize = 2;
 		await supabaseTests.obtenerClientesYTamano(current, pageSize);

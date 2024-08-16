@@ -32,13 +32,13 @@ const mockSales = [
         status: 'COMPLETED',
         detail_sale: [
             {
-                products: { name: 'LECHE GLORIA 395G' },
+                products: { name: 'Leche GLORIA 395G' },
                 quantity: 2,
                 price: 10.5,
                 subtotal: 21
             },
             {
-                products: { name: 'Arroz Costeño 500 G' },
+                products: { name: 'Filete de Pechuga SADIA 1Kg' },
                 quantity: 4,
                 price: 10.5,
                 subtotal: 42
@@ -72,7 +72,7 @@ test.describe('API Supabase para ventas', () => {
     });
 
 
-    test.only('Actualizar estado de venta', async () => {
+    test('Actualizar estado de venta', async () => {
         const idSale = 1;
         const status = 'COMPLETED';
         await supabaseSalesTests.actualizarEstadoVenta(idSale, status);
