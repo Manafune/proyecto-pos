@@ -1,5 +1,5 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { UserRoundCog, Store, Package, ShoppingCart, Users2, LineChart } from 'lucide-react';
+import { UserRoundCog, Store, Package, ShoppingCart, Users2 } from 'lucide-react';
 
 import { Link } from '@tanstack/react-router';
 import { useAuth } from '@/hooks/useAuth';
@@ -8,8 +8,7 @@ const navItems = [
 	{ icon: UserRoundCog, label: 'Usuarios', path: '/users', roles: ['ADMIN'] },
 	{ icon: ShoppingCart, label: 'Ventas', path: '/sales', roles: ['ADMIN', 'SELLER',] },
 	{ icon: Package, label: 'Productos', path: '/products', roles: ['ADMIN', 'STOREKEEPER'] },
-	{ icon: Users2, label: 'Clientes', path: '/clients', roles: ['ADMIN', 'SELLER',]},
-	{ icon: LineChart, label: 'Analiticas', path: '/analytics', roles: ['ADMIN']}
+	{ icon: Users2, label: 'Clientes', path: '/clients', roles: ['ADMIN', 'SELLER',]}
 ];
 
 export const DesktopNav = () => {
