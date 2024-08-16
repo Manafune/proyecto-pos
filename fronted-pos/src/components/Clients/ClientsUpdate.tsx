@@ -128,7 +128,7 @@ export const ClientsUpdate = () => {
 								<TableHeader>
 									<TableRow className='flex flex-col h-full justify-between'>
 										{tableHeaders
-											.filter((tableHeader) => tableHeader.label !== 'Nombre')
+											.filter((tableHeader) => tableHeader.label !== 'Estado' && tableHeader.label !== 'Nombre')
 											.map((head) => (
 												<TableHead className='hidden md:flex md:items-center' key={head.label}>
 													{head.label}
