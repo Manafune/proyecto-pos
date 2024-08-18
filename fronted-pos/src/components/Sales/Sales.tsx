@@ -18,43 +18,43 @@ export const Sales = () => {
 	const [endDate, setEndDate] = useState<string>('');
 
 	const validateDateRange = (start: string, end: string) => {
-        if (start && end && new Date(start) > new Date(end)) {
-            alert('La fecha de inicio no puede ser posterior a la fecha de fin.');
+		if (start && end && new Date(start) > new Date(end)) {
+			alert('La fecha de inicio no puede ser posterior a la fecha de fin.');
 			setStartDate('');
-            setEndDate('');
-            return false;
-        }
-        return true;
-    };
-	
+			setEndDate('');
+			return false;
+		}
+		return true;
+	};
+
 	useEffect(() => {
-        const fetchSales = async () => {
-            // Si no se han seleccionado fechas, obtener el mes anterior
-            let selectedStartDate = startDate;
-            let selectedEndDate = endDate;
+		const fetchSales = async () => {
+			// Si no se han seleccionado fechas, obtener el mes anterior
+			let selectedStartDate = startDate;
+			let selectedEndDate = endDate;
 
-            if (!startDate && !endDate) {
-                const now = new Date();
-                const firstDayOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                const lastDayOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-                selectedStartDate = firstDayOfLastMonth.toISOString().split('T')[0];
-                selectedEndDate = lastDayOfLastMonth.toISOString().split('T')[0];
-            }
+			if (!startDate && !endDate) {
+				const now = new Date();
+				const firstDayOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+				const lastDayOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+				selectedStartDate = firstDayOfLastMonth.toISOString().split('T')[0];
+				selectedEndDate = lastDayOfLastMonth.toISOString().split('T')[0];
+			}
 
-            const salesData = await getAllSales({
-                current: 1,
-                pageSize: 100,
-                filter: 'ALL',
-                startDate: selectedStartDate,
-                endDate: selectedEndDate
-            });
-            setSales(salesData);
-        };
+			const salesData = await getAllSales({
+				current: 1,
+				pageSize: 100,
+				filter: 'ALL',
+				startDate: selectedStartDate,
+				endDate: selectedEndDate
+			});
+			setSales(salesData);
+		};
 
-        if (validateDateRange(startDate, endDate)) {
-            fetchSales();
-        }
-    }, [startDate, endDate]);
+		if (validateDateRange(startDate, endDate)) {
+			fetchSales();
+		}
+	}, [startDate, endDate]);
 
 	return (
 		<Tabs defaultValue='all'>

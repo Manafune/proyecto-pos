@@ -67,14 +67,13 @@ export const ProductEdit = () => {
 			if (productName.length < 4 || productName.length > 100) {
 				setError('El nombre del producto debe tener entre 4 y 100 caracteres');
 				return;
-	}
+			}
 
 			const validationResult = ProductSchema.safeParse({ name: product.name });
 			if (!validationResult.success) {
 				setError(validationResult.error.errors[0].message); // Set error message
 				return;
 			}
-
 
 			await updateProductDetails(product);
 			toast.success('El producto se ha modificado con éxito');
@@ -86,7 +85,6 @@ export const ProductEdit = () => {
 					return { ...prevSearchParams };
 				}
 			});
-			
 		} catch (error) {
 			console.log(error);
 		}
@@ -149,7 +147,7 @@ export const ProductEdit = () => {
 										autoComplete='off'
 										placeholder='Ejemplo: Leche'
 										value={product?.name ?? ''}
-										onChange={(e) => product !== null && onChangeProduct(product.id, { name: e.target.value })}
+										onChange={(e) => product !== null && onChangeProduct(product.id.toString(), { name: e.target.value })}
 									/>
 								</div>
 								{error && <span className='text-red-500'>{error}</span>}

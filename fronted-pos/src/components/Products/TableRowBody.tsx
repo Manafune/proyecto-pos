@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
 import { ProductPriceStockSchema } from '@/lib/validation/product';
 export interface TableRowBodyType<TypeProduct> {
 	product: TypeProduct;
-	updateProduct: (id: string | number, updatedProps: Partial<TypeProduct>) => void;
-	deleteProduct?: (id: string | number) => void;
+	updateProduct: (id: string, updatedProps: Partial<TypeProduct>) => void;
+	deleteProduct?: (id: string) => void;
 	isTooltip?: boolean;
 	isName?: boolean;
 }
@@ -25,33 +25,33 @@ export const TableRowBody = <TypeProduct extends Product | ProductData>({
 	const [validationErrors, setValidationErrors] = useState<{ stock?: string; price?: string }>({});
 
 	useEffect(() => {
-		validateFields();
-	}, [product]);
-
-	const validateFields = () => {
-		const validationResult = ProductPriceStockSchema.safeParse({
-			stock: product.stock,
-			price: product.price
-		});
-
-		if (!validationResult.success) {
-			const errors: { stock?: string; price?: string } = {};
-			validationResult.error.errors.forEach((error) => {
-				if (error.path.includes('stock')) {
-					errors.stock = error.message;
-				} else if (error.path.includes('price')) {
-					errors.price = error.message;
-				}
+		const validateFields = () => {
+			const validationResult = ProductPriceStockSchema.safeParse({
+				stock: product.stock,
+				price: product.price
 			});
-			setValidationErrors(errors);
-		} else {
-			setValidationErrors({});
-		}
-	};
+
+			if (!validationResult.success) {
+				const errors: { stock?: string; price?: string } = {};
+				validationResult.error.errors.forEach((error) => {
+					if (error.path.includes('stock')) {
+						errors.stock = error.message;
+					} else if (error.path.includes('price')) {
+						errors.price = error.message;
+					}
+				});
+				setValidationErrors(errors);
+			} else {
+				setValidationErrors({});
+			}
+		};
+
+		validateFields();
+	}, [product.price, product.stock]);
 
 	const handleChangeStock = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newStockValue = Number(e.currentTarget.value);
-		updateProduct(product.id, {
+		updateProduct(product.id.toString(), {
 			...(product as Partial<TypeProduct>),
 			stock: newStockValue
 		});
@@ -59,14 +59,14 @@ export const TableRowBody = <TypeProduct extends Product | ProductData>({
 
 	const handleChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newPriceValue = Number(e.currentTarget.value);
-		updateProduct(product.id, {
+		updateProduct(product.id.toString(), {
 			...(product as Partial<TypeProduct>),
 			price: newPriceValue
 		});
 	};
 
 	const handleSelectContainer = (selectedContainer: string) => {
-		updateProduct(product.id, {
+		updateProduct(product.id.toString(), {
 			...(product as Partial<TypeProduct>),
 			container: selectedContainer
 		});
@@ -123,7 +123,7 @@ export const TableRowBody = <TypeProduct extends Product | ProductData>({
 			{isTooltip && deleteProduct && (
 				<td
 					className='absolute hidden rounded-full size-[1.2rem] bg-red-500 z-[100] text-white group-hover:grid group-hover:items-center group-hover:justify-center group-hover:inset-[0_0_0_auto] cursor-pointer '
-					onClick={() => deleteProduct(product.id)}
+					onClick={() => deleteProduct(product.id.toString())}
 				>
 					<X className='size-[95%] block' />
 				</td>

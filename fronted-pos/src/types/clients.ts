@@ -7,7 +7,7 @@ export interface AddressCustomer {
 	city: string;
 	state: string;
 	customer?: Customer[];
-	status: MemberStatus
+	status: MemberStatus;
 }
 
 export type AddressByCustomer = Omit<AddressCustomer, 'customer'> & {
@@ -21,7 +21,8 @@ export interface Customer {
 	birth_date: Date;
 	first_name: string;
 }
-export type ErrorsCustomer = Omit<AddressByCustomer, 'id' | 'customer'> & Omit<Customer, 'id' | 'birth_date'> & { birth_date: string };
+export type ErrorsCustomer = Omit<AddressByCustomer, 'id' | 'customer' | 'status'> &
+	Omit<Customer, 'id' | 'birth_date'> & { birth_date: string; status: string };
 type PrefixCustomer = AddPrefix<Customer, 'customer_'>;
 type PrefixAddress = AddPrefix<Omit<AddressCustomer, 'customer'>, 'address_'>;
 export type PrefixAddressCustomer = PrefixCustomer & PrefixAddress;

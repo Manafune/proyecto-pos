@@ -1,4 +1,4 @@
-import { ErrorsCustomer } from '@/types/clients';
+import { type ErrorsCustomer } from '@/types/clients';
 
 export const initializeErrors = (): ErrorsCustomer => ({
 	birth_date: '',
@@ -7,5 +7,6 @@ export const initializeErrors = (): ErrorsCustomer => ({
 	first_name: '',
 	last_name: '',
 	state: '',
+	status: '',
 	street: ''
 });
