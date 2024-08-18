@@ -1,4 +1,4 @@
-import { getRouteApi, Link, useNavigate } from '@tanstack/react-router';
+import { getRouteApi, Link, useNavigate, useRouter } from '@tanstack/react-router';
 import { buttonVariants } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,7 +19,8 @@ const route = getRouteApi('/_authenticated/users/$id');
 const UserEdit = () => {
   const navigate = useNavigate();
   const loaderData = route.useParams();
-  
+  const router = useRouter();
+
   const [user, setUser] = useState<MemberData | null>(null);
   const [formData, setFormData] = useState({
     first_name: '',
@@ -66,6 +67,7 @@ const UserEdit = () => {
           role: formData.role,
           status: formData.status
         });
+        router.invalidate();
         window.alert('Cambios realizados correctamente');
         navigate({
           to: '/users',
