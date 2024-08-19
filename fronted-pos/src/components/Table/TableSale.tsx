@@ -15,7 +15,7 @@ export const TableSale = () => {
 				total={totalSales as number}
 				currentPage={current}
 				pageSize={pageSize}
-				routePath='/clients'
+				routePath='/sales'
 				toSearchParams={(prev, newPage) => ({ ...prev, current: newPage })}
 			/>
 		</React.Fragment>
