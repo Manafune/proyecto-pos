@@ -44,9 +44,7 @@ export const getAllUsers = async ({ current, pageSize }: { current: number; page
 
 export const getCountUsers = async (): Promise<number> => {
 	try {
-		const { count, error } = await supabase
-			.from('member')
-			.select('*', { count: 'exact', head: true });
+		const { count, error } = await supabase.from('member').select('id', { count: 'exact', head: true });
 
 		if (error) throw new Error(error.message);
 
@@ -56,7 +54,6 @@ export const getCountUsers = async (): Promise<number> => {
 		return 0;
 	}
 };
-
 
 export const getUserById = async (id: string): Promise<MemberData | null> => {
 	try {
@@ -73,7 +70,7 @@ export const getUserById = async (id: string): Promise<MemberData | null> => {
                 )
             `
 			)
-			.eq('id', id)  // Utiliza el UUID directamente en la consulta
+			.eq('id', id) // Utiliza el UUID directamente en la consulta
 			.single(); // Solo esperamos un registro
 
 		if (error) throw new Error(error.message);
@@ -87,7 +84,7 @@ export const getUserById = async (id: string): Promise<MemberData | null> => {
 				member_status: data.member_role[0]?.status
 			};
 		}
-		
+
 		return null;
 	} catch (error) {
 		console.error('Error fetching user by ID:', error);

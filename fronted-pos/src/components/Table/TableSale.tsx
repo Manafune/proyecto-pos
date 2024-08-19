@@ -1,15 +1,23 @@
 import { TableSaleContent } from '@/components/common/TableSaleContent';
 import { getRouteApi } from '@tanstack/react-router';
 import React from 'react';
-import { SalesPagination } from '../common/Pagination/SalesPagination';
+import { BasePagination } from '../common/BasePagination';
+import { SalesPagination } from '@/routes/_authenticated/(sales)/sales';
 const routeApi = getRouteApi('/_authenticated/sales');
 export const TableSale = () => {
 	const { sales, totalSales } = routeApi.useLoaderData();
+	const { current, pageSize } = routeApi.useSearch();
 
 	return (
 		<React.Fragment>
 			<TableSaleContent sales={sales} />
-			<SalesPagination total={totalSales as number} />
+			<BasePagination<SalesPagination>
+				total={totalSales as number}
+				currentPage={current}
+				pageSize={pageSize}
+				routePath='/clients'
+				toSearchParams={(prev, newPage) => ({ ...prev, current: newPage })}
+			/>
 		</React.Fragment>
 	);
 };
