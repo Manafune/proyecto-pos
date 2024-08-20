@@ -1,5 +1,4 @@
-import { Package2, Package, Home, ShoppingCart, Users2, LineChart, PanelLeft } from 'lucide-react';
-// import { Input } from '@/components/ui/input';
+import { Package2, Package, Home, ShoppingCart, Users2, LineChart, PanelLeft, UserRound } from 'lucide-react';
 import { Link } from '@tanstack/react-router';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import {
@@ -116,8 +115,8 @@ const MobileNav = () => {
 				</div>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
-						<Button variant='outline' size='icon' className='overflow-hidden rounded-full'>
-							<img src='https://imgur.com/cpCSL7O.jpeg' width={36} height={36} alt='Avatar' className='overflow-hidden rounded-full' />
+						<Button variant='outline' size='icon' className='overflow-hidden rounded-full bg-gray-200'>
+							<UserRound />
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align='end'>

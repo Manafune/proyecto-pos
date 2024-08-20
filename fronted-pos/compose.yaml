@@ -1,0 +1,14 @@
+services:
+  web:
+    container_name: app-pos
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+    networks:
+      - fronted
+    ports:
+      - "${PORT}:${PORT}"
+networks:
+  fronted:
